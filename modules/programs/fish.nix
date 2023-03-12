@@ -26,6 +26,9 @@
         	mkdir $argv[1]
         	cd $argv[1]
       '';
+      batdiff = ''
+        ${pkgs.git}/bin/git diff --name-only --relative --diff-filter=d | xargs ${pkgs.bat}/bin/bat --diff
+      '';
     };
 
     shellInit = ''
@@ -33,12 +36,12 @@
       set -U fish_greeting ""
     '';
 
-    loginShellInit = ''
-      if status is-login
-          if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
-              exec Hyprland
-          end
-      end
-    '';
+    # loginShellInit = ''
+    #   if status is-login
+    #       if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
+    #           exec Hyprland
+    #       end
+    #   end
+    # '';
   };
 }

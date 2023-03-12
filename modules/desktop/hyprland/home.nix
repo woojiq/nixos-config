@@ -13,6 +13,7 @@ let
   slurp = "${pkgs.slurp}/bin/slurp";
   swappy = "${pkgs.swappy}/bin/swappy";
   notify-send = "${pkgs.libnotify}/bin/notify-send";
+  blueman-applet = "${pkgs.blueman}/bin/blueman-applet";
 in
 let
   cleanupScript = ''
@@ -23,6 +24,8 @@ let
   hyprlandConf = ''
     exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     exec-once = ${bar}
+    # May fix this: https://github.com/nix-community/home-manager/issues/2064
+    exec-once = ${blueman-applet}
 
     # Workspace setup
     windowrule = workspace 1 silent, ${browser_pure}
@@ -78,7 +81,8 @@ let
     bind = $mainMod, k, movefocus, u
 
     bind = $mainMod, q, killactive
-    bind = $mainMod, f, fullscreen
+    bind = $mainMod, m, fullscreen
+    bind = $mainMod, f, togglefloating
     bind = $mainMod, d, exec, ${wofi} --show drun
     bind = $shiftMod, d, exec, ${wofi} --show run
     bind = $mainMod, t, exec, ${terminal}

@@ -12,8 +12,8 @@
 
   users.users.${user} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "video" "audio" ];
-    shell = pkgs.fish;
+    extraGroups = [ "wheel" "networkmanager" "video" "audio" "docker" ];
+    # shell = pkgs.fish; # Fish doesn't take env vars when using rootless-docker
   };
 
   boot = {
@@ -80,6 +80,11 @@
     blueman.enable = true;
   };
   hardware.bluetooth.enable = true;
+
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
 
   nix = {
     settings = {

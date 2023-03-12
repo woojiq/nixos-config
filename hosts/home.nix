@@ -11,14 +11,17 @@
     homeDirectory = "/home/${ user}";
 
     packages = with pkgs; [
-      google-chrome
+      # Utilities
       unzip
       file
       powerstat # WAT consumption
       neofetch
+      bat
+      fd
+
+      # Used by another apps
       xdg-user-dirs
       xdg-utils
-      cinnamon.nemo
 
       # Programming
       nil
@@ -26,8 +29,11 @@
       rust-analyzer
       cargo
 
+      # Desktop application
       mpv
       evince
+      cinnamon.nemo
+      google-chrome
     ];
 
     pointerCursor = {
