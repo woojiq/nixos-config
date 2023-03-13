@@ -14,11 +14,13 @@
       grim
       slurp
       wl-clipboard
+      hyprpaper
     ];
   };
 
   programs.hyprland = {
     enable = true;
-    nvidiaPatches = true;
+    # I don't see a difference. Probably because I use only an integrated gpu
+    # nvidiaPatches = true;
   };
 }

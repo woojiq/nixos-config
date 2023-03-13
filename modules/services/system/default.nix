@@ -1,4 +1,4 @@
 [
-  # ./auto-cpufreq.nix # I don't see a significant impact
+  ./auto-cpufreq.nix
   ./keyd.nix
 ]

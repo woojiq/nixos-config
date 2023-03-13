@@ -51,6 +51,8 @@
       # TERM = "wezterm";
     };
 
+    file.${config.home.sessionVariables.XDG_WALLPAPERS_DIR}.source = ../stuff/Wallpapers;
+
     stateVersion = "22.11";
   };
 
@@ -73,6 +75,10 @@
       enable = true;
       enableFishIntegration = true;
     };
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
   };
 
   services = {
@@ -89,6 +95,7 @@
     videos = null;
     extraConfig = {
       XDG_SCREENSHOTS_DIR = "${config.home.homeDirectory}/Pictures/Screenshots";
+      XDG_WALLPAPERS_DIR = "${config.home.homeDirectory}/Pictures/Wallpapers";
     };
   };
 }

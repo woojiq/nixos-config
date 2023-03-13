@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 let
   browser = "${pkgs.google-chrome}/bin/google-chrome-stable";
@@ -14,8 +14,15 @@ let
   swappy = "${pkgs.swappy}/bin/swappy";
   notify-send = "${pkgs.libnotify}/bin/notify-send";
   blueman-applet = "${pkgs.blueman}/bin/blueman-applet";
+  hyprpaper = "${pkgs.hyprpaper}/bin/hyprpaper";
+  wallpapers = "${config.home.sessionVariables.XDG_WALLPAPERS_DIR}/1.png";
 in
 let
+  hyprpaperConf = ''
+    preload = ${wallpapers}
+    wallpaper = eDP-1,${wallpapers}
+    # ipc = off
+  '';
   cleanupScript = ''
     sleep 4
     hyprctl keyword windowrule "workspace unset, ${browser_pure}"
@@ -24,12 +31,15 @@ let
   hyprlandConf = ''
     exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     exec-once = ${bar}
-    # May fix this: https://github.com/nix-community/home-manager/issues/2064
+    # This issue may fix current problem: https://github.com/nix-community/home-manager/issues/2064
     exec-once = ${blueman-applet}
+    # Sometimes networkmanager needs to be reloaded to work
+    # exec-once = sudo systemctl restart NetworkManager
+    exec-once = ${hyprpaper}
 
     # Workspace setup
-    windowrule = workspace 1 silent, ${browser_pure}
-    windowrule = workspace 2 silent, ${terminal_pure}
+    exec-once = hyprctl keyword windowrule "workspace 1 silent, ${browser_pure}"
+    exec-once = hyprctl keyword windowrule "workspace 2 silent, ${terminal_pure}"
     exec-once = ${browser}
     exec-once = ${terminal}
     exec-once = ~/.config/hypr/cleanup_after_start.sh
@@ -42,6 +52,11 @@ let
     	layout = dwindle
     	# gaps_in = 0
     	gaps_out = 0
+    }
+
+    dwindle {
+      # I'm testing
+      pseudotile = true
     }
 
     monitor = eDP-1, 1920x1080@60, 0x0, 1
@@ -83,6 +98,7 @@ let
     bind = $mainMod, q, killactive
     bind = $mainMod, m, fullscreen
     bind = $mainMod, f, togglefloating
+    bind = $mainMod, p, pseudo
     bind = $mainMod, d, exec, ${wofi} --show drun
     bind = $shiftMod, d, exec, ${wofi} --show run
     bind = $mainMod, t, exec, ${terminal}
@@ -113,7 +129,7 @@ let
     bind = $shiftMod, 6, movetoworkspace, 6 
     bind = $shiftMod, 7, movetoworkspace, 7 
     bind = $shiftMod, 8, movetoworkspace, 8 
-    bind = $shiftMod, 9, movetoworkspace, 9 
+    bind = $shiftMod, 9, movetoworkspacesilent, 9 
     bind = $shiftMod, right, movetoworkspace, +1
     bind = $shiftMod, left, movetoworkspace, -1
 
@@ -135,6 +151,7 @@ let
 in
 {
   xdg.configFile."hypr/hyprland.conf".text = hyprlandConf;
+  xdg.configFile."hypr/hyprpaper.conf".text = hyprpaperConf;
   xdg.configFile."hypr/cleanup_after_start.sh" = {
     executable = true;
     text = cleanupScript;

@@ -78,12 +78,23 @@
     };
     gvfs.enable = true; # https://nixos.wiki/wiki/Nautilus
     blueman.enable = true;
+    flatpak = {
+      enable = true;
+      # Setup (create script if more than one app is installed):
+      # flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+      # flatpak install flathub com.obsproject.Studio
+    };
   };
-  hardware.bluetooth.enable = true;
+
+  hardware = {
+    bluetooth.enable = true;
+  };
 
   virtualisation.docker.rootless = {
     enable = true;
     setSocketVariable = true;
+    # Setup:
+    # mongo
   };
 
   nix = {
@@ -97,6 +108,9 @@
     };
     extraOptions = ''
       experimental-features = nix-command flakes
+      # To protect your nix-shell against garbage collection
+      keep-outputs = true
+      keep-derivations = true
     '';
   };
 

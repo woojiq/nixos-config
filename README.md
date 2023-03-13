@@ -1,8 +1,5 @@
 _Heavily inspired from: https://github.com/MatthiasBenaets/nixos-config_
 
-### FIX
-* Network Manager sometimes doesn't start after reboot
-
 ### TODO
 * Sway{idle + lock}
 * Window switching (Alt-tab)
