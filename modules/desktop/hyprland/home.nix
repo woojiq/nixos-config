@@ -33,8 +33,6 @@ let
     exec-once = ${bar}
     # This issue may fix current problem: https://github.com/nix-community/home-manager/issues/2064
     exec-once = ${blueman-applet}
-    # Sometimes networkmanager needs to be reloaded to work
-    # exec-once = sudo systemctl restart NetworkManager
     exec-once = ${hyprpaper}
 
     # Workspace setup
@@ -156,5 +154,7 @@ in
     executable = true;
     text = cleanupScript;
   };
+
+  # services.swayidle.enable = true; Also need to setup commands like swaylock
 }
 

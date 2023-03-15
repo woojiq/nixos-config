@@ -4,9 +4,6 @@
   programs.fish = {
     enable = true;
     functions = {
-      codemania = ''
-        find $argv[1] -wholename (string join ''' "*." $argv[2]) -not -path "*/target/*" | xargs wc -l | sort -nr
-      '';
       up = ''
         	if not set -q argv[1]
         		set argv[1] 1

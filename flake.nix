@@ -8,16 +8,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland.url = "github:hyprwm/Hyprland";
+    helix.url = "github:helix-editor/helix";
   };
 
-  outputs = inputs @ { self, nixpkgs, home-manager, hyprland }:
+  outputs = inputs @ { nixpkgs, home-manager, ... }:
     let
       user = "woojiq";
     in
     {
       nixosConfigurations = (
         import ./hosts {
-          inherit nixpkgs home-manager user hyprland;
+          inherit nixpkgs home-manager user inputs;
         }
       );
     };

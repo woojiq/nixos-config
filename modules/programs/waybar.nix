@@ -13,10 +13,10 @@
         "cpu"
         # "playerctl"
         "temperature"
+        "tray"
       ];
       modules-center = [
-        "tray"
-        # "hyprland/window"
+        "hyprland/window"
       ];
       modules-right = [
         "hyprland/language"
@@ -99,7 +99,7 @@
         tooltip-format-wifi = "{essid}({signalStrength}%)\n{gwaddr}  ";
         tooltip-format-ethernet = "{ifname}  ";
         tooltip-format-disconnected = "Disconnected";
-        # on-click = "sudo systemctl restart NetworkManager";
+        on-click = "sudo systemctl restart NetworkManager";
       };
       "battery" = {
         states = {

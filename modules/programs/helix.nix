@@ -42,7 +42,6 @@
         name = "nix";
         auto-format = true;
         formatter = { command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt"; args = [ ]; };
-
       }
     ];
     themes.sonokai-atlantis =

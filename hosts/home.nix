@@ -16,18 +16,23 @@
       file
       powerstat # WAT consumption
       neofetch
-      bat
       fd
+      tokei # Code statistics
 
       # Used by another apps
       xdg-user-dirs
       xdg-utils
 
       # Programming
+      ## Nix
       nil
       nixpkgs-fmt
-      rust-analyzer
+      ## Rust
+      rustc
       cargo
+      rust-analyzer
+      rustfmt
+      clippy
 
       # Desktop application
       mpv
@@ -71,6 +76,7 @@
   programs = {
     home-manager.enable = true;
     exa.enable = true;
+    bat.enable = true;
     autojump = {
       enable = true;
       enableFishIntegration = true;

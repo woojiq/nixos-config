@@ -1,11 +1,11 @@
-{ user, nixpkgs, hyprland, home-manager }:
+{ user, nixpkgs, home-manager, inputs }:
 
 let
   system = "x86_64-linux";
   pkgs = import nixpkgs {
     inherit system;
     config.allowUnfree = true;
-    overlays = [ (final: prev: { waybar = hyprland.packages.${system}.waybar-hyprland; }) ];
+    overlays = [ (final: prev: { waybar = inputs.hyprland.packages.${system}.waybar-hyprland; }) ];
   };
 in
 {
@@ -15,7 +15,7 @@ in
       inherit user pkgs;
     };
     modules = [
-      hyprland.nixosModules.default
+      inputs.hyprland.nixosModules.default
       ./configuration.nix
 
       home-manager.nixosModules.home-manager
@@ -29,6 +29,7 @@ in
           imports = [
             ./home.nix
           ];
+          programs.helix.package = inputs.helix.packages.${system}.helix-dev;
         };
       }
     ];

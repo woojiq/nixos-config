@@ -1,11 +1,12 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
     settings = {
-     character = {
+      command_timeout = 3000;
+      character = {
         success_symbol = "[](bold green) ";
         error_symbol = "[](bold red) ";
         vimcmd_symbol = "[](bold green) ";
