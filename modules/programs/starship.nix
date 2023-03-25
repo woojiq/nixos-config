@@ -81,7 +81,7 @@
       ruby.symbol = " ";
       rust.symbol = " ";
       scala.symbol = " ";
-      spack.symbol = "🅢 ";
+      spack.symbol = "SPACK SYMBOL ISN'T PRESENT :( ";
     };
   };
 }

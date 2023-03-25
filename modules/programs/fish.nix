@@ -17,7 +17,7 @@
       '';
       lst = ''
         	# add --no-user
-        	${pkgs.exa}/bin/exa -Tl --git --no-permissions --git-ignore --icons $argv
+        	${pkgs.exa}/bin/exa -Tl --git --no-permissions --git-ignore --icons -I=".git" $argv
       '';
       mkcd = ''
         	mkdir $argv[1]

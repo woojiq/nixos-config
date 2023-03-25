@@ -13,10 +13,10 @@
         "cpu"
         # "playerctl"
         "temperature"
-        "tray"
       ];
       modules-center = [
-        "hyprland/window"
+        "tray"
+        # "hyprland/window"
       ];
       modules-right = [
         "hyprland/language"

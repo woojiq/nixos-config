@@ -8,6 +8,7 @@ let
   bar = "${pkgs.waybar}/bin/waybar";
   wofi = "${pkgs.wofi}/bin/wofi";
   pamixer = "${pkgs.pamixer}/bin/pamixer";
+  playerctl = "${pkgs.playerctl}/bin/playerctl";
   light = "${pkgs.light}/bin/light";
   grim = "${pkgs.grim}/bin/grim";
   slurp = "${pkgs.slurp}/bin/slurp";
@@ -28,12 +29,14 @@ let
     hyprctl keyword windowrule "workspace unset, ${browser_pure}"
     hyprctl keyword windowrule "workspace unset, ${terminal_pure}"
   '';
+  # Pseudo Alt-Tab Definitely not Windows experience
+  # https://github.com/hyprwm/Hyprland/discussions/830#discussioncomment-3868467
   hyprlandConf = ''
     exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     exec-once = ${bar}
     # This issue may fix current problem: https://github.com/nix-community/home-manager/issues/2064
     exec-once = ${blueman-applet}
-    exec-once = ${hyprpaper}
+    # exec-once = ${hyprpaper} # Eats a lot of CPU
 
     # Workspace setup
     exec-once = hyprctl keyword windowrule "workspace 1 silent, ${browser_pure}"
@@ -88,11 +91,6 @@ let
     	rounding = 5
     }
 
-    bind = $mainMod, h, movefocus, l
-    bind = $mainMod, l, movefocus, r
-    bind = $mainMod, j, movefocus, d
-    bind = $mainMod, k, movefocus, u
-
     bind = $mainMod, q, killactive
     bind = $mainMod, m, fullscreen
     bind = $mainMod, f, togglefloating
@@ -116,9 +114,6 @@ let
     bind = $mainMod, 8, workspace, 8
     bind = $mainMod, 9, workspace, 9
 
-    bind = $mainMod, right, workspace, +1
-    bind = $mainMod, left, workspace, -1
-
     bind = $shiftMod, 1, movetoworkspace, 1 
     bind = $shiftMod, 2, movetoworkspace, 2 
     bind = $shiftMod, 3, movetoworkspace, 3 
@@ -131,6 +126,13 @@ let
     bind = $shiftMod, right, movetoworkspace, +1
     bind = $shiftMod, left, movetoworkspace, -1
 
+    bind = $mainMod, h, workspace, -1
+    bind = $mainMod, l, workspace, +1
+    bind = $shiftMod, h, movefocus, l
+    bind = $shiftMod, l, movefocus, r
+    bind = $shiftMod, k, movefocus, u
+    bind = $shiftMod, j, movefocus, d
+
     # 272 - LMB, 273 - RBM
     bindm = $mainMod, mouse:272, movewindow
     bindm = $mainMod, mouse:273, resizewindow
@@ -142,19 +144,24 @@ let
     bind = , XF86AudioMute, exec, ${pamixer} -t
     bind = , XF86MonBrightnessDown, exec, ${light} -U $brightness_pt
     bind = , XF86MonBrightnessUP, exec, ${light} -A $brightness_pt
+    bind = , XF86AudioNext, exec, ${playerctl} next
+    bind = , XF86AudioPrev, exec, ${playerctl} previous
+    bind = , XF86AudioPlay, exec, ${playerctl} play-pause
 
     bind = , Print, exec, ${grim} -g "$(${slurp})" - | ${swappy} -f - && ${notify-send} "Saved to ~/Pictures/Screenshots"
     bind = $altMod, Print, exec, ${grim} - | ${swappy} -f - && ${notify-send} "Saved to ~/Pictures/Screenshots"
   '';
 in
 {
-  xdg.configFile."hypr/hyprland.conf".text = hyprlandConf;
-  xdg.configFile."hypr/hyprpaper.conf".text = hyprpaperConf;
-  xdg.configFile."hypr/cleanup_after_start.sh" = {
-    executable = true;
-    text = cleanupScript;
-  };
+  xdg.configFile = {
+    "hypr/hyprland.conf".text = hyprlandConf;
+    "hypr/hyprpaper.conf".text = hyprpaperConf;
+    "hypr/cleanup_after_start.sh" = {
+      executable = true;
+      text = cleanupScript;
+    };
 
-  # services.swayidle.enable = true; Also need to setup commands like swaylock
+    # services.swayidle.enable = true; Also need to setup commands like swaylock
+  };
 }
 

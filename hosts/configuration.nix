@@ -52,20 +52,15 @@
     })
   ];
 
-  programs = {
-    light.enable = true;
-  };
-
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
   };
 
-  environment = {
-    systemPackages = with pkgs; [
-      pamixer
-    ];
-  };
+  # environment = {
+  #   systemPackages = with pkgs; [
+  #   ];
+  # };
 
   services = {
     pipewire = {
@@ -78,11 +73,22 @@
     };
     gvfs.enable = true; # https://nixos.wiki/wiki/Nautilus
     blueman.enable = true;
-    flatpak = {
+
+    # Chad moment: https://github.com/NixOS/nixpkgs/pull/221321
+    keyd = {
       enable = true;
-      # Setup (create script if more than one app is installed):
-      # flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-      # flatpak install flathub com.obsproject.Studio
+      settings = {
+        main = {
+          capslock = "overload(control, esc)";
+          rightalt = "layer(rightalt)";
+        };
+        rightalt = {
+          h = "left";
+          j = "down";
+          k = "up";
+          l = "right";
+        };
+      };
     };
   };
 

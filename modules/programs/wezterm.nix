@@ -10,7 +10,7 @@
         disable_default_key_bindings = true,
         keys = {
           -- TODO move tab
-          { key = 'q', mods = 'ALT', action = wezterm.action.CloseCurrentTab { confirm = false } },
+          { key = 'q', mods = 'ALT|SHIFT', action = wezterm.action.CloseCurrentTab { confirm = false } },
           { key = 't', mods = 'ALT', action = act.SpawnTab 'CurrentPaneDomain' },
           { key = 'Tab', mods = 'CTRL', action = act.ActivateTabRelative(1) },
           { key = 'Tab', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(-1) },
@@ -24,6 +24,8 @@
           { key = '6', mods = 'ALT', action = act.ActivateTab(5) },
           { key = '7', mods = 'ALT', action = act.ActivateTab(6) },
           { key = '8', mods = 'ALT', action = act.ActivateTab(7) },
+          { key = 'LeftArrow', mods = 'SHIFT|ALT', action = act.MoveTabRelative(-1) },
+          { key = 'RightArrow', mods = 'SHIFT|ALT', action = act.MoveTabRelative(1) },
         },
         color_scheme = "Sonokai (Gogh)",
         default_prog = { '${pkgs.fish}/bin/fish', '-l' },

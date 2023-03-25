@@ -18,8 +18,8 @@
       neofetch
       fd
       tokei # Code statistics
+      # thefuck
 
-      # Used by another apps
       xdg-user-dirs
       xdg-utils
 
@@ -28,11 +28,9 @@
       nil
       nixpkgs-fmt
       ## Rust
-      rustc
-      cargo
       rust-analyzer
-      rustfmt
-      clippy
+      rustup
+      gcc # Rustc needs `cc` linker
 
       # Desktop application
       mpv
@@ -51,9 +49,6 @@
     sessionVariables = {
       EDITOR = "hx";
       VISUAL = "${config.home.sessionVariables.EDITOR}";
-      # Zero Impact
-      # TERMINAL = "wezterm";
-      # TERM = "wezterm";
     };
 
     file.${config.home.sessionVariables.XDG_WALLPAPERS_DIR}.source = ../stuff/Wallpapers;
@@ -85,6 +80,7 @@
       enable = true;
       nix-direnv.enable = true;
     };
+    bottom.enable = true;
   };
 
   services = {

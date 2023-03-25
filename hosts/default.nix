@@ -29,7 +29,7 @@ in
           imports = [
             ./home.nix
           ];
-          programs.helix.package = inputs.helix.packages.${system}.helix-dev;
+          programs.helix.package = inputs.helix.packages.${system}.helix;
         };
       }
     ];

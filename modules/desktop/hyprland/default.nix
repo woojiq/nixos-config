@@ -14,13 +14,15 @@
       grim
       slurp
       wl-clipboard
-      hyprpaper
     ];
   };
 
-  programs.hyprland = {
-    enable = true;
-    # I don't see a difference. Probably because I use only an integrated gpu
-    # nvidiaPatches = true;
+  programs = {
+    hyprland = {
+      enable = true;
+      # I don't see a difference. Probably because I use only an integrated gpu
+      # nvidiaPatches = true;
+    };
+    light.enable = true;
   };
 }
