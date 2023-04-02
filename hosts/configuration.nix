@@ -4,6 +4,7 @@
   imports =
     [ (import ./hardware-configuration.nix) ] ++
     [ (import ../modules/desktop/hyprland/default.nix) ] ++
+    # [ (import ../modules/desktop/kde/default.nix) ] ++
     (import ../modules/services/system);
 
   networking.networkmanager.enable = true;

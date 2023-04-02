@@ -7,18 +7,17 @@
     (import ../modules/services/user);
 
   home = {
-    username = "${ user}";
-    homeDirectory = "/home/${ user}";
+    username = "${user}";
+    homeDirectory = "/home/${user}";
 
     packages = with pkgs; [
-      # Utilities
+      # CLI
       unzip
-      file
-      powerstat # WAT consumption
-      neofetch
-      fd
+      neofetch # System info
+      fd # `find` alternative
       tokei # Code statistics
-      # thefuck
+      taskell # Kanban board
+      tldr # Simplified `man`
 
       xdg-user-dirs
       xdg-utils
@@ -33,10 +32,11 @@
       gcc # Rustc needs `cc` linker
 
       # Desktop application
-      mpv
-      evince
-      cinnamon.nemo
+      mpv # Media player
+      evince # Pdf reader
+      cinnamon.nemo # File manager
       google-chrome
+      emote # Emoji picker
     ];
 
     pointerCursor = {
@@ -75,6 +75,10 @@
     autojump = {
       enable = true;
       enableFishIntegration = true;
+    };
+    # Testing [01.04; 07.04] (autojump is main currently)
+    zoxide = {
+      enable = true;
     };
     direnv = {
       enable = true;

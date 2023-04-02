@@ -23,11 +23,21 @@
         	mkdir $argv[1]
         	cd $argv[1]
       '';
+      # https://fishshell.com/docs/current/interactive.html#programmable-title
+      fish_title = ''
+        if test -z $argv[1]
+          prompt_pwd
+        else
+          echo $argv[1] 
+        end
+      '';
     };
 
     shellInit = ''
       fish_vi_key_bindings
       set -U fish_greeting ""
+      # Disable noise from direnv
+      set -x DIRENV_LOG_FORMAT ""
     '';
 
     # loginShellInit = ''

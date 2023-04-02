@@ -5,7 +5,7 @@
     enable = true;
 
     settings.mainBar = {
-      layer = "top";
+      layer = "bottom";
       position = "top";
       modules-left = [
         "custom/arch-pill"
@@ -38,14 +38,13 @@
         format-icons = {
           "1" = "";
           "2" = "";
-          # "3" = "";
-          #  "4"="";
-          #  "5"="";
-          #  "6"="";
-          #  "7"="";
-          #  "8"="";
-          #  "9"="";
-          #  "10"="";
+          # "3"="";
+          # "4"="";
+          # "5"="";
+          # "6"="";
+          # "7"="";
+          # "8"="";
+          # "9"="";
         };
         #all-outputs = true;
         active-only = false;

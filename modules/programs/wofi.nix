@@ -12,8 +12,7 @@ let
     insensitive  = true
     prompt       =
     allow_images = true
-    # TODO doesn't work
-    # terminal     = "wezterm"
+    term     = wezterm
   '';
   style = ''
     window {

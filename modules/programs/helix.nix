@@ -12,9 +12,9 @@
         color-modes = true;
         cursor-shape.insert = "underline";
         statusline = {
-          left = [ "mode" "spinner" ];
+          left = [ "mode" "spinner" "spacer" "version-control" ];
           center = [ "file-name" "file-modification-indicator" "spacer" "diagnostics" ];
-          right = [ "selections" "position" "file-encoding" "file-type" ];
+          right = [ "selections" "position-percentage" "position" "file-encoding" "file-type" ];
         };
         lsp = {
           display-signature-help-docs = false;
@@ -27,6 +27,12 @@
           character = "╎";
           skip-levels = 1;
         };
+        # whitespace.render.newline = "all"; # Enable temporarily: `set whitespace.render.newline all`
+        soft-wrap = {
+          enable = true;
+          # MB remove this because outside of the markdown I think I would need it
+          wrap-indicator = "";
+        };
       };
       keys = {
         normal = {
@@ -34,9 +40,15 @@
           "A-w" = ":buffer-close";
           "A-l" = ":buffer-next";
           "A-h" = ":buffer-previous";
+          space.c = {
+            "w" = {
+              "a" = ":set whitespace.render all";
+              "n" = ":set whitespace.render none";
+            };
+          };
         };
       };
-      theme = "sonokai-custom";
+      theme = "sonokai-transparent";
     };
     languages = [
       {
@@ -56,12 +68,23 @@
         formatter = { command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt"; args = [ ]; };
       }
     ];
-    themes.sonokai-custom = {
-      inherits = "sonokai";
-      # palette.bg2 = "#2c2e34"; # bg0
-
-      "ui.virtual.inlay-hint" = {
-        fg = "grey_dim";
+    themes = {
+      sonokai-custom = {
+        inherits = "sonokai";
+        "ui.virtual.inlay-hint" = {
+          fg = "grey_dim";
+        };
+        # "ui.statusline.normal" = { fg = "bg0"; bg = "bg_blue"; }; # Noisy when scrolling through code
+        "ui.statusline.insert" = { fg = "bg0"; bg = "bg_green"; };
+        "ui.statusline.select" = { fg = "bg0"; bg = "bg_red"; };
+      };
+      sonokai-transparent = {
+        inherits = "sonokai-custom";
+        "ui.background" = { };
+        "ui.statusline" = { };
+        "ui.statusline.inacative" = { };
+        "ui.bufferline" = { };
+        "ui.bufferline.active" = { bg = "bg1"; };
       };
     };
   };

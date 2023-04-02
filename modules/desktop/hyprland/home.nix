@@ -17,6 +17,7 @@ let
   blueman-applet = "${pkgs.blueman}/bin/blueman-applet";
   hyprpaper = "${pkgs.hyprpaper}/bin/hyprpaper";
   wallpapers = "${config.home.sessionVariables.XDG_WALLPAPERS_DIR}/1.png";
+  emote = "${pkgs.emote}/bin/emote";
 in
 let
   hyprpaperConf = ''
@@ -34,9 +35,10 @@ let
   hyprlandConf = ''
     exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     exec-once = ${bar}
-    # This issue may fix current problem: https://github.com/nix-community/home-manager/issues/2064
+    # INFO This issue may fix current problem: https://github.com/nix-community/home-manager/issues/2064
     exec-once = ${blueman-applet}
     # exec-once = ${hyprpaper} # Eats a lot of CPU
+    exec-once = ${emote}
 
     # Workspace setup
     exec-once = hyprctl keyword windowrule "workspace 1 silent, ${browser_pure}"
@@ -56,8 +58,9 @@ let
     }
 
     dwindle {
-      # I'm testing
+      # Does it really do smth?)
       pseudotile = true
+      force_split = 2
     }
 
     monitor = eDP-1, 1920x1080@60, 0x0, 1
@@ -101,6 +104,7 @@ let
     bind = $mainMod, b, exec, ${browser}
     bind = $mainMod, escape, exec, ~/.config/wofi/power-menu.sh
     bind = $shiftMod, escape, exit,
+    bind = $mainMod, code:60, exec, ${emote}
 
     bind = $altMod, Tab, focuscurrentorlast
 

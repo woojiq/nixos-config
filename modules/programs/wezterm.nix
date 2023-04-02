@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   programs.wezterm = {
@@ -9,8 +9,8 @@
       return {
         disable_default_key_bindings = true,
         keys = {
-          -- TODO move tab
-          { key = 'q', mods = 'ALT|SHIFT', action = wezterm.action.CloseCurrentTab { confirm = false } },
+          -- TODO move tab with mouse :)
+          { key = 'q', mods = 'ALT|SHIFT', action = act.CloseCurrentPane { confirm = false } },
           { key = 't', mods = 'ALT', action = act.SpawnTab 'CurrentPaneDomain' },
           { key = 'Tab', mods = 'CTRL', action = act.ActivateTabRelative(1) },
           { key = 'Tab', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(-1) },
@@ -26,10 +26,22 @@
           { key = '8', mods = 'ALT', action = act.ActivateTab(7) },
           { key = 'LeftArrow', mods = 'SHIFT|ALT', action = act.MoveTabRelative(-1) },
           { key = 'RightArrow', mods = 'SHIFT|ALT', action = act.MoveTabRelative(1) },
+          { key = '_', mods = 'SHIFT|ALT', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
+          { key = '|', mods = 'SHIFT|ALT', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+          { key = 'h', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Left' },
+          { key = 'j', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Down' },
+          { key = 'k', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Up' },
+          { key = 'l', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Right' },
         },
         color_scheme = "Sonokai (Gogh)",
         default_prog = { '${pkgs.fish}/bin/fish', '-l' },
         cursor_blink_rate = 0,
+        default_cursor_style = 'BlinkingBlock',
+        hide_mouse_cursor_when_typing = false,
+        force_reverse_video_cursor = true,
+        inactive_pane_hsb = { brightness = 0.75 },
+        window_background_image = '${config.home.sessionVariables.XDG_WALLPAPERS_DIR}/2.png',
+        window_background_image_hsb = { brightness = 0.08 },
       }
     '';
   };
