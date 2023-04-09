@@ -1,16 +1,10 @@
-_Heavily inspired from: https://github.com/MatthiasBenaets/nixos-config_  
-
-### TRY
-* KDE
-* Modern unix
+_Heavily inspired from: https://github.com/MatthiasBenaets/nixos-config_
 
 ### TODO
-* Sway{idle + lock}
 * Alt-tab
 * Sound/brightness inc/dec dunst notification (wob)
-* Autosuspend
-* Dunst smaller timeout
 * Take advantage of cachix (helix + hyprland)
+* Conventional commit
 
 ### FIX
 * Keyd: Keyboard stops working after `nixos-rebuild` with `nix-collect-garbage -d`

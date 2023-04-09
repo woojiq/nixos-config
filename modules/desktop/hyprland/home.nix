@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, waybar-hyprland, ... }:
 
 let
   browser = "${pkgs.google-chrome}/bin/google-chrome-stable";
@@ -14,10 +14,11 @@ let
   slurp = "${pkgs.slurp}/bin/slurp";
   swappy = "${pkgs.swappy}/bin/swappy";
   notify-send = "${pkgs.libnotify}/bin/notify-send";
-  blueman-applet = "${pkgs.blueman}/bin/blueman-applet";
   hyprpaper = "${pkgs.hyprpaper}/bin/hyprpaper";
   wallpapers = "${config.home.sessionVariables.XDG_WALLPAPERS_DIR}/1.png";
   emote = "${pkgs.emote}/bin/emote";
+  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+  sleep = "${pkgs.coreutils}/bin/sleep";
 in
 let
   hyprpaperConf = ''
@@ -25,18 +26,15 @@ let
     wallpaper = eDP-1,${wallpapers}
     # ipc = off
   '';
-  cleanupScript = ''
-    sleep 4
-    hyprctl keyword windowrule "workspace unset, ${browser_pure}"
-    hyprctl keyword windowrule "workspace unset, ${terminal_pure}"
+  cleanupScript = pkgs.writeShellScript "cleanup-script" ''
+    ${sleep} 4
+    ${hyprctl} keyword windowrule "workspace unset, ${browser_pure}"
+    ${hyprctl} keyword windowrule "workspace unset, ${terminal_pure}"
   '';
   # Pseudo Alt-Tab Definitely not Windows experience
   # https://github.com/hyprwm/Hyprland/discussions/830#discussioncomment-3868467
   hyprlandConf = ''
-    exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
     exec-once = ${bar}
-    # INFO This issue may fix current problem: https://github.com/nix-community/home-manager/issues/2064
-    exec-once = ${blueman-applet}
     # exec-once = ${hyprpaper} # Eats a lot of CPU
     exec-once = ${emote}
 
@@ -45,7 +43,7 @@ let
     exec-once = hyprctl keyword windowrule "workspace 2 silent, ${terminal_pure}"
     exec-once = ${browser}
     exec-once = ${terminal}
-    exec-once = ~/.config/hypr/cleanup_after_start.sh
+    exec-once = ${cleanupScript.outPath}
 
     $mainMod = SUPER
     $shiftMod = SUPER + SHIFT
@@ -95,7 +93,7 @@ let
     }
 
     bind = $mainMod, q, killactive
-    bind = $mainMod, m, fullscreen
+    bind = $mainMod, m, fullscreen, 1
     bind = $mainMod, f, togglefloating
     bind = $mainMod, p, pseudo
     bind = $mainMod, d, exec, ${wofi} --show drun
@@ -157,15 +155,24 @@ let
   '';
 in
 {
+  imports = [ (import ../../programs/waybar.nix) { programs.waybar.package = waybar-hyprland; } ];
+
   xdg.configFile = {
     "hypr/hyprland.conf".text = hyprlandConf;
     "hypr/hyprpaper.conf".text = hyprpaperConf;
-    "hypr/cleanup_after_start.sh" = {
-      executable = true;
-      text = cleanupScript;
-    };
+  };
 
-    # services.swayidle.enable = true; Also need to setup commands like swaylock
+  services = {
+    swayidle = {
+      enable = true;
+      timeouts = [
+        { timeout = 600; command = "${pkgs.systemd}/bin/systemctl suspend"; }
+      ];
+      systemdTarget = "hyprland-session.target";
+    };
+  };
+
+  wayland.windowManager.hyprland = {
+    enable = true;
   };
 }
-

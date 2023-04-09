@@ -24,10 +24,12 @@ in
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
           inherit user pkgs;
+          waybar-hyprland = inputs.hyprland.packages.${system}.waybar-hyprland;
         };
         home-manager.users.${user} = {
           imports = [
             ./home.nix
+            inputs.hyprland.homeManagerModules.default
           ];
           programs.helix.package = inputs.helix.packages.${system}.helix;
         };

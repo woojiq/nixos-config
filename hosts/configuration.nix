@@ -94,14 +94,15 @@
   };
 
   hardware = {
-    bluetooth.enable = true;
+    bluetooth = {
+      enable = true;
+      settings.General.Experimental = true; # Device battery status: https://askubuntu.com/a/1420501
+    };
   };
 
   virtualisation.docker.rootless = {
     enable = true;
     setSocketVariable = true;
-    # Setup:
-    # mongo
   };
 
   nix = {

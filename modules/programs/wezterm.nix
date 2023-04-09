@@ -32,6 +32,7 @@
           { key = 'j', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Down' },
           { key = 'k', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Up' },
           { key = 'l', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Right' },
+          { key = 'f', mods = 'SHIFT|ALT', action = act.TogglePaneZoomState },
         },
         color_scheme = "Sonokai (Gogh)",
         default_prog = { '${pkgs.fish}/bin/fish', '-l' },
@@ -39,9 +40,9 @@
         default_cursor_style = 'BlinkingBlock',
         hide_mouse_cursor_when_typing = false,
         force_reverse_video_cursor = true,
-        inactive_pane_hsb = { brightness = 0.75 },
+        inactive_pane_hsb = { brightness = 0.7 },
         window_background_image = '${config.home.sessionVariables.XDG_WALLPAPERS_DIR}/2.png',
-        window_background_image_hsb = { brightness = 0.08 },
+        window_background_image_hsb = { brightness = 0.07 },
       }
     '';
   };

@@ -16,13 +16,12 @@
       neofetch # System info
       fd # `find` alternative
       tokei # Code statistics
-      taskell # Kanban board
       tldr # Simplified `man`
 
       xdg-user-dirs
       xdg-utils
 
-      # Programming
+      # Developing
       ## Nix
       nil
       nixpkgs-fmt
@@ -30,6 +29,8 @@
       rust-analyzer
       rustup
       gcc # Rustc needs `cc` linker
+      openssl # Rust web crates need this (and pkg-config)
+      pkg-config
 
       # Desktop application
       mpv # Media player
@@ -49,6 +50,7 @@
     sessionVariables = {
       EDITOR = "hx";
       VISUAL = "${config.home.sessionVariables.EDITOR}";
+      PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig"; # Rust development
     };
 
     file.${config.home.sessionVariables.XDG_WALLPAPERS_DIR}.source = ../stuff/Wallpapers;
@@ -71,14 +73,26 @@
   programs = {
     home-manager.enable = true;
     exa.enable = true;
-    bat.enable = true;
-    autojump = {
+    bat = {
       enable = true;
-      enableFishIntegration = true;
+      config = {
+        color = "always";
+      };
     };
-    # Testing [01.04; 07.04] (autojump is main currently)
     zoxide = {
       enable = true;
+    };
+    fzf = {
+      enable = true;
+      defaultOptions = [
+        "--height 40%"
+        "--reverse"
+        "--preview '${pkgs.bat}/bin/bat {} 2>/dev/null || ${pkgs.exa}/bin/exa -a {}'"
+        "-m"
+      ];
+      # TODO smart hidding. Some hidden files/dirs I need (.config, .gitignore), some - don't  (.cache, .cargo)
+      defaultCommand = "${pkgs.fd}/bin/fd . \\$dir | sed 's@^\./@@'";
+      fileWidgetCommand = "${config.programs.fzf.defaultCommand}";
     };
     direnv = {
       enable = true;

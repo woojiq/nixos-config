@@ -53,6 +53,10 @@
     languages = [
       {
         name = "rust";
+        config = {
+          check.command = "clippy";
+          inlayHints.lifetimeElisionHints.enable = "always";
+        };
       }
       {
         name = "python";
@@ -65,7 +69,7 @@
       {
         name = "nix";
         auto-format = true;
-        formatter = { command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt"; args = [ ]; };
+        formatter = { command = "nixpkgs-fmt"; args = [ ]; };
       }
     ];
     themes = {

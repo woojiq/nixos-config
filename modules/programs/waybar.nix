@@ -1,7 +1,7 @@
-{ pkgs, user, ... }:
+{ pkgs, ... }:
 
 {
-  home-manager.users.${user}.programs.waybar = {
+  programs.waybar = {
     enable = true;
 
     settings.mainBar = {
@@ -311,5 +311,3 @@
     '';
   };
 }
-
-
