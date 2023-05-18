@@ -5,7 +5,7 @@ let
   browser_pure = "Google Chrome";
   terminal = "${pkgs.wezterm}/bin/wezterm";
   terminal_pure = "wezterm";
-  bar = "${pkgs.waybar}/bin/waybar";
+  bar = "${config.programs.waybar.package}/bin/waybar";
   wofi = "${pkgs.wofi}/bin/wofi";
   pamixer = "${pkgs.pamixer}/bin/pamixer";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
@@ -17,8 +17,9 @@ let
   hyprpaper = "${pkgs.hyprpaper}/bin/hyprpaper";
   wallpapers = "${config.home.sessionVariables.XDG_WALLPAPERS_DIR}/1.png";
   emote = "${pkgs.emote}/bin/emote";
-  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   sleep = "${pkgs.coreutils}/bin/sleep";
+  hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+  systemctl = "${pkgs.systemd}/bin/systemctl";
 in
 let
   hyprpaperConf = ''
@@ -39,8 +40,8 @@ let
     exec-once = ${emote}
 
     # Workspace setup
-    exec-once = hyprctl keyword windowrule "workspace 1 silent, ${browser_pure}"
-    exec-once = hyprctl keyword windowrule "workspace 2 silent, ${terminal_pure}"
+    exec-once = ${hyprctl} keyword windowrule "workspace 1 silent, ${browser_pure}"
+    exec-once = ${hyprctl} keyword windowrule "workspace 2 silent, ${terminal_pure}"
     exec-once = ${browser}
     exec-once = ${terminal}
     exec-once = ${cleanupScript.outPath}
@@ -166,7 +167,8 @@ in
     swayidle = {
       enable = true;
       timeouts = [
-        { timeout = 600; command = "${pkgs.systemd}/bin/systemctl suspend"; }
+        { timeout = 600; command = "${hyprctl} dispatch dpms off"; resumeCommand = "${hyprctl} dispatch dpms on"; }
+        { timeout = 1800; command = "${systemctl} poweroff"; }
       ];
       systemdTarget = "hyprland-session.target";
     };

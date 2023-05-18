@@ -41,7 +41,9 @@
         hide_mouse_cursor_when_typing = false,
         force_reverse_video_cursor = true,
         inactive_pane_hsb = { brightness = 0.7 },
-        window_background_image = '${config.home.sessionVariables.XDG_WALLPAPERS_DIR}/2.png',
+        window_background_image = '${config.home.sessionVariables.XDG_WALLPAPERS_DIR}/3.png',
+        -- window_background_image = '/home/woojiq/Pictures/Test/cat.png',
+        -- wezterm.add_to_config_reload_watch_list('/home/woojiq/Pictures/Test/cat.png'),
         window_background_image_hsb = { brightness = 0.07 },
       }
     '';

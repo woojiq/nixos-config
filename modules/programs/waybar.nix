@@ -1,5 +1,9 @@
 { pkgs, ... }:
 
+let
+  light = "${pkgs.light}/bin/light";
+  pamixer = "${pkgs.pamixer}/bin/pamixer";
+in
 {
   programs.waybar = {
     enable = true;
@@ -13,6 +17,7 @@
         "cpu"
         # "playerctl"
         "temperature"
+        "backlight"
       ];
       modules-center = [
         "tray"
@@ -77,6 +82,7 @@
         icon-size = 20;
         reverse-direction = true;
         spacing = 6;
+        show-passive-items = true;
       };
       "hyprland/window" = {
         format = "{}";
@@ -86,7 +92,7 @@
       "hyprland/language" = {
         format-en = "🇺🇸";
         format-uk = "🇺🇦";
-        on-click = "${pkgs.hyprland}/bin/hyprctl switchxkblayout keyd-virtual-device next";
+        on-click = "hyprctl switchxkblayout keyd-virtual-device next";
       };
       "network" = {
         # interface = "wlan0",
@@ -117,9 +123,9 @@
         format-charging = " <span foreground='#a6e3a1'>{icon}</span>  {capacity}%";
       };
       "pulseaudio" = {
-        on-click = "${pkgs.pamixer}/bin/pamixer set-sink-mute -t";
-        on-scroll-down = "${pkgs.pamixer}/bin/pamixer -i 1";
-        on-scroll-up = "${pkgs.pamixer}/bin/pamixer -d 1";
+        on-click = "${pamixer} set-sink-mute -t";
+        on-scroll-down = "${pamixer} -i 1";
+        on-scroll-up = "${pamixer} -d 1";
         format = "<span size='13000' foreground='#fab387'></span>  {volume}%";
         format-muted = "<span size='14000'>ﱝ</span>";
       };
@@ -130,6 +136,20 @@
       #   format = "<span size='13000' foreground='#fab387'></span>  {volume}%";
       #   format-muted = "<span size='14000'>ﱝ</span>";
       # };
+      "backlight" = {
+        "device" = "intel_backlight";
+        "format" = "<span foreground='#f9e2af'>{icon}</span>  {percent}%";
+        "states" = [
+          0
+          50
+        ];
+        "format-icons" = [
+          ""
+          ""
+        ];
+        "on-scroll-up" = "${light} -N 10 && ${light} -U 5";
+        "on-scroll-down" = "${light} -A 5";
+      };
       "clock" = {
         interval = 5;
         format = "<span foreground='#89dceb'> </span><span>{:%H:%M %d.%m}</span>";

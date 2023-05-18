@@ -4,7 +4,6 @@
   imports =
     [ (import ./hardware-configuration.nix) ] ++
     [ (import ../modules/desktop/hyprland/default.nix) ] ++
-    # [ (import ../modules/desktop/kde/default.nix) ] ++
     (import ../modules/services/system);
 
   networking.networkmanager.enable = true;
@@ -14,7 +13,6 @@
   users.users.${user} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "video" "audio" "docker" ];
-    # shell = pkgs.fish; # Fish doesn't take env vars when using rootless-docker
   };
 
   boot = {
@@ -74,6 +72,9 @@
     };
     gvfs.enable = true; # https://nixos.wiki/wiki/Nautilus
     blueman.enable = true;
+    # xserver = {
+    #   videoDrivers = [ "nvidia" ];
+    # };
 
     # Chad moment: https://github.com/NixOS/nixpkgs/pull/221321
     keyd = {
@@ -93,11 +94,15 @@
     };
   };
 
+  # programs.steam.enable = true;
+
   hardware = {
     bluetooth = {
       enable = true;
       settings.General.Experimental = true; # Device battery status: https://askubuntu.com/a/1420501
     };
+    # opengl.enable = true;
+    # nvidia.modesetting.enable = true;
   };
 
   virtualisation.docker.rootless = {

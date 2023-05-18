@@ -1,8 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, helix-flake, ... }:
 
 {
   programs.helix = {
     enable = true;
+    package = helix-flake;
+
     settings = {
       editor = {
         line-number = "relative";

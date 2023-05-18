@@ -17,6 +17,7 @@
       fd # `find` alternative
       tokei # Code statistics
       tldr # Simplified `man`
+      commitizen # Conventional commit messages
 
       xdg-user-dirs
       xdg-utils
@@ -26,7 +27,7 @@
       nil
       nixpkgs-fmt
       ## Rust
-      rust-analyzer
+      # rust-analyzer
       rustup
       gcc # Rustc needs `cc` linker
       openssl # Rust web crates need this (and pkg-config)
@@ -91,7 +92,7 @@
         "-m"
       ];
       # TODO smart hidding. Some hidden files/dirs I need (.config, .gitignore), some - don't  (.cache, .cargo)
-      defaultCommand = "${pkgs.fd}/bin/fd . \\$dir | sed 's@^\./@@'";
+      defaultCommand = "${pkgs.fd}/bin/fd --type f . \\$dir | sed 's@^\./@@'";
       fileWidgetCommand = "${config.programs.fzf.defaultCommand}";
     };
     direnv = {
@@ -104,6 +105,13 @@
   services = {
     blueman-applet.enable = true;
   };
+
+  xdg.configFile."nixpkgs/config.nix".text = ''
+    {
+      # Enable searching for and installing unfree packages
+      allowUnfree = true;
+    }
+  '';
 
   xdg.userDirs = {
     enable = true;

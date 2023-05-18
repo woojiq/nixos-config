@@ -4,7 +4,7 @@
   environment = {
     loginShellInit = ''
       if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-        exec ${pkgs.hyprland}/bin/Hyprland
+        exec Hyprland
       fi
     '';
 
@@ -19,7 +19,7 @@
     hyprland = {
       enable = true;
       # I don't see a difference. Probably because I use only an integrated gpu
-      # nvidiaPatches = true;
+      nvidiaPatches = true;
     };
     light.enable = true;
   };

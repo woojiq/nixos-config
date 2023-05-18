@@ -3,16 +3,14 @@ _Heavily inspired from: https://github.com/MatthiasBenaets/nixos-config_
 ### TODO
 * Alt-tab
 * Sound/brightness inc/dec dunst notification (wob)
-* Take advantage of cachix (helix + hyprland)
-* Conventional commit
 
 ### FIX
 * Keyd: Keyboard stops working after `nixos-rebuild` with `nix-collect-garbage -d`
+* Take advantage of cachix (helix + hyprland)
 
 ### Might be fixed/broken in the next app release
 * Waybar: crashes when using wireplumber module #1852. Use `wireplumber` module instead of `pulseaudio`
 * Tokei: colored output
-* Keyd: Keyd neuters libinput's "disable while typing" for touchpads
 * [Helix](https://github.com/helix-editor/helix/pull/5379): I'll probably want to use the old version after this merge
 
 # License

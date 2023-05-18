@@ -5,7 +5,6 @@ let
   pkgs = import nixpkgs {
     inherit system;
     config.allowUnfree = true;
-    overlays = [ (final: prev: { waybar = inputs.hyprland.packages.${system}.waybar-hyprland; }) ];
   };
 in
 {
@@ -25,13 +24,13 @@ in
         home-manager.extraSpecialArgs = {
           inherit user pkgs;
           waybar-hyprland = inputs.hyprland.packages.${system}.waybar-hyprland;
+          helix-flake = inputs.helix.packages.${system}.default;
         };
         home-manager.users.${user} = {
           imports = [
             ./home.nix
             inputs.hyprland.homeManagerModules.default
           ];
-          programs.helix.package = inputs.helix.packages.${system}.helix;
         };
       }
     ];
