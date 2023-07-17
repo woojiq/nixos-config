@@ -18,7 +18,7 @@
   programs = {
     hyprland = {
       enable = true;
-      # I don't see a difference. Probably because I use only an integrated gpu
+      # I don't see a difference.
       nvidiaPatches = true;
     };
     light.enable = true;

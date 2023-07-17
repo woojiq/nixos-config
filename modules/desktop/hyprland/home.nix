@@ -82,7 +82,7 @@ let
     gestures {
     	workspace_swipe = true
     	workspace_swipe_fingers = 4
-    	workspace_swipe_distance = 150
+    	workspace_swipe_distance = 130
     }
 
     animations {

@@ -9,7 +9,7 @@ in
     enable = true;
 
     settings.mainBar = {
-      layer = "bottom";
+      layer = "top";
       position = "top";
       modules-left = [
         "custom/arch-pill"
@@ -127,14 +127,14 @@ in
         on-scroll-down = "${pamixer} -i 1";
         on-scroll-up = "${pamixer} -d 1";
         format = "<span size='13000' foreground='#fab387'></span>  {volume}%";
-        format-muted = "<span size='14000'>ﱝ</span>";
+        format-muted = "<span size='13000' foreground='#fab387'> </span>";
       };
       # "wireplumber" = {
-      #   on-click = "pamixer set-sink-mute -t";
-      #   on-scroll-down = "pamixer -i 1";
-      #   on-scroll-up = "pamixer -d 1";
+      #   on-click = "${pamixer} set-sink-mute -t";
+      #   on-scroll-down = "${pamixer} -i 1";
+      #   on-scroll-up = "${pamixer} -d 1";
       #   format = "<span size='13000' foreground='#fab387'></span>  {volume}%";
-      #   format-muted = "<span size='14000'>ﱝ</span>";
+      #   format-muted = "<span size='13000' foreground='#fab387'> </span>";
       # };
       "backlight" = {
         "device" = "intel_backlight";
@@ -188,7 +188,6 @@ in
       @define-color maroon #EBA0AC;
 
       * {
-        min-height: 0;
         margin: 0;
         padding: 0;
         border-radius: 0;
@@ -282,6 +281,7 @@ in
         background-color: @rosewater;
       }
 
+      #wireplumber,
       #pulseaudio,
       #cpu,
       #memory,

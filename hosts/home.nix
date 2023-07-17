@@ -18,6 +18,7 @@
       tokei # Code statistics
       tldr # Simplified `man`
       commitizen # Conventional commit messages
+      asciinema # Terminal session recorder
 
       xdg-user-dirs
       xdg-utils
@@ -27,7 +28,7 @@
       nil
       nixpkgs-fmt
       ## Rust
-      # rust-analyzer
+      # rust-analyzer # Install via rustup
       rustup
       gcc # Rustc needs `cc` linker
       openssl # Rust web crates need this (and pkg-config)
@@ -100,6 +101,9 @@
       nix-direnv.enable = true;
     };
     bottom.enable = true;
+    gh = {
+      enable = true;
+    };
   };
 
   services = {

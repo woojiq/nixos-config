@@ -16,8 +16,15 @@
         	ls
       '';
       lst = ''
-        	# add --no-user
         	${pkgs.exa}/bin/exa -Tl --git --no-permissions --git-ignore --icons -I=".git" $argv
+      '';
+      # ls + deep
+      lsd = ''
+        if test -z $argv[1]
+          lst -L 2
+        else
+          lst -L $argv[1]
+        end
       '';
       mkcd = ''
         	mkdir $argv[1]

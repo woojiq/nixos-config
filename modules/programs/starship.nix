@@ -19,8 +19,9 @@
       c.symbol = " ";
       conda.symbol = " ";
       dart.symbol = " ";
-      directory.read_only = " ";
+      directory.read_only = " 󰌾";
       docker_context.symbol = " ";
+      docker_context.format = "via [$symbol]($style)[docker]($style) ";
       elixir.symbol = " ";
       elm.symbol = " ";
       git_branch.symbol = " ";
@@ -33,9 +34,10 @@
       julia.symbol = " ";
       lua.symbol = " ";
       memory_usage.symbol = " ";
-      meson.symbol = "喝 ";
-      nim.symbol = " ";
+      meson.symbol = "󰔷 ";
+      nim.symbol = "󰆥 ";
       nix_shell.symbol = " ";
+      nix_shell.format = "via [$symbol$state]($style) ";
       nodejs.symbol = " ";
 
       os.symbols.Alpine = " ";
@@ -63,7 +65,7 @@
       os.symbols.NixOS = " ";
       os.symbols.OpenBSD = " ";
       os.symbols.openSUSE = " ";
-      os.symbols.OracleLinux = " ";
+      os.symbols.OracleLinux = "󰌷 ";
       os.symbols.Pop = " ";
       os.symbols.Raspbian = " ";
       os.symbols.Redhat = " ";
@@ -73,9 +75,9 @@
       os.symbols.SUSE = " ";
       os.symbols.Ubuntu = " ";
       os.symbols.Unknown = " ";
-      os.symbols.Windows = " ";
+      os.symbols.Windows = "󰍲 ";
 
-      package.symbol = " ";
+      package.symbol = "󰏗 ";
       python.symbol = " ";
       rlang.symbol = "ﳒ ";
       ruby.symbol = " ";

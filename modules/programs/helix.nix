@@ -52,28 +52,35 @@
       };
       theme = "sonokai-transparent";
     };
-    languages = [
-      {
-        name = "rust";
-        config = {
-          check.command = "clippy";
-          inlayHints.lifetimeElisionHints.enable = "always";
+    languages = {
+      language-server = {
+        rust-analyzer = {
+          config = {
+            check.command = "clippy";
+            inlayHints.lifetimeElisionHints.enable = "always";
+          };
         };
-      }
-      {
-        name = "python";
-        roots = [ "pyproject.toml" ];
-        language-server = { command = "pyright-langserver"; args = [ "--stdio" ]; };
-        config = { }; # <- this is the important line;
-        formatter = { command = "black"; args = [ "--quiet" "-" ]; };
-        auto-format = true;
-      }
-      {
-        name = "nix";
-        auto-format = true;
-        formatter = { command = "nixpkgs-fmt"; args = [ ]; };
-      }
-    ];
+        pyright-langserver = {
+          command = "pyright-langserver";
+          args = [ "--stdio" ];
+          config = { };
+        };
+      };
+      language = [
+        {
+          name = "python";
+          roots = [ "pyproject.toml" ];
+          language-servers = [ "pyright-langserver" ];
+          formatter = { command = "black"; args = [ "--quiet" "-" ]; };
+          auto-format = true;
+        }
+        {
+          name = "nix";
+          auto-format = true;
+          formatter = { command = "nixpkgs-fmt"; args = [ ]; };
+        }
+      ];
+    };
     themes = {
       sonokai-custom = {
         inherits = "sonokai";

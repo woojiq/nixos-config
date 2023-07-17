@@ -72,37 +72,34 @@
     };
     gvfs.enable = true; # https://nixos.wiki/wiki/Nautilus
     blueman.enable = true;
-    # xserver = {
-    #   videoDrivers = [ "nvidia" ];
-    # };
 
     # Chad moment: https://github.com/NixOS/nixpkgs/pull/221321
     keyd = {
       enable = true;
-      settings = {
-        main = {
-          capslock = "overload(control, esc)";
-          rightalt = "layer(rightalt)";
-        };
-        rightalt = {
-          h = "left";
-          j = "down";
-          k = "up";
-          l = "right";
+      keyboards = {
+        default = {
+          settings = {
+            main = {
+              capslock = "overload(control, esc)";
+              rightalt = "layer(rightalt)";
+            };
+            rightalt = {
+              h = "left";
+              j = "down";
+              k = "up";
+              l = "right";
+            };
+          };
         };
       };
     };
   };
-
-  # programs.steam.enable = true;
 
   hardware = {
     bluetooth = {
       enable = true;
       settings.General.Experimental = true; # Device battery status: https://askubuntu.com/a/1420501
     };
-    # opengl.enable = true;
-    # nvidia.modesetting.enable = true;
   };
 
   virtualisation.docker.rootless = {
@@ -113,6 +110,14 @@
   nix = {
     settings = {
       auto-optimise-store = true;
+      substituters = [
+        "https://hyprland.cachix.org"
+        "https://helix.cachix.org"
+      ];
+      trusted-public-keys = [
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+        "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
+      ];
     };
     gc = {
       automatic = true;

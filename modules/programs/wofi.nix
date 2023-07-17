@@ -81,7 +81,7 @@ in
       executable = true;
       text = ''
         # https://github.com/MatthiasBenaets/nixos-config/blob/9e799904e74d43a2c0ad1a8b6ac4db86993bf2dd/modules/programs/wofi.nix#L18
-        entries="⏾ Suspend\n⭮ Reboot\n⏻ Shutdown"
+        entries="⏾  Suspend\n⭮  Reboot\n⏻  Shutdown"
         selected=$(echo -e $entries|${pkgs.wofi}/bin/wofi --dmenu --cache-file /dev/null | awk '{print tolower($2)}')
 
         case $selected in
