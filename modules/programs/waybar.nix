@@ -2,7 +2,7 @@
 
 let
   light = "${pkgs.light}/bin/light";
-  pamixer = "${pkgs.pamixer}/bin/pamixer";
+  wpctl = "${pkgs.wireplumber}/bin/wpctl";
 in
 {
   programs.waybar = {
@@ -18,6 +18,7 @@ in
         # "playerctl"
         "temperature"
         "backlight"
+        # "idle_inhibitor"
       ];
       modules-center = [
         "tray"
@@ -27,8 +28,8 @@ in
         "hyprland/language"
         "network"
         "battery"
-        # "wireplumber"
-        "pulseaudio"
+        "wireplumber"
+        # "pulseaudio"
         "clock"
         "custom/power"
       ];
@@ -100,8 +101,8 @@ in
         format-wifi = " ";
         format-ethernet = "{ipaddr}/{cidr}  ";
         format-disconnected = "󰖪 ";
-        tooltip-format = "{ifname} via {gwaddr}  ";
-        tooltip-format-wifi = "{essid}({signalStrength}%)\n{gwaddr}  ";
+        tooltip-format = "{ifname} via {gwaddr} 󰩟 ";
+        tooltip-format-wifi = "{essid}({signalStrength}%)\n{gwaddr} 󰩟 ";
         tooltip-format-ethernet = "{ifname}  ";
         tooltip-format-disconnected = "Disconnected";
         on-click = "sudo systemctl restart NetworkManager";
@@ -122,20 +123,21 @@ in
         ];
         format-charging = " <span foreground='#a6e3a1'>{icon}</span>  {capacity}%";
       };
-      "pulseaudio" = {
-        on-click = "${pamixer} set-sink-mute -t";
-        on-scroll-down = "${pamixer} -i 1";
-        on-scroll-up = "${pamixer} -d 1";
-        format = "<span size='13000' foreground='#fab387'></span>  {volume}%";
-        format-muted = "<span size='13000' foreground='#fab387'> </span>";
-      };
-      # "wireplumber" = {
+      # "pulseaudio" = {
       #   on-click = "${pamixer} set-sink-mute -t";
       #   on-scroll-down = "${pamixer} -i 1";
       #   on-scroll-up = "${pamixer} -d 1";
       #   format = "<span size='13000' foreground='#fab387'></span>  {volume}%";
       #   format-muted = "<span size='13000' foreground='#fab387'> </span>";
       # };
+      "wireplumber" = {
+        on-click = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+        on-scroll-down = "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04+";
+        on-scroll-up = "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04-";
+        format = "{icon}  {volume}%";
+        format-muted = "<span size='13000' foreground='#fab387'> </span>";
+        format-icons = [ "<span size='13000' foreground='#fab387'></span>" ];
+      };
       "backlight" = {
         "device" = "intel_backlight";
         "format" = "<span foreground='#f9e2af'>{icon}</span>  {percent}%";
@@ -150,10 +152,17 @@ in
         "on-scroll-up" = "${light} -N 10 && ${light} -U 5";
         "on-scroll-down" = "${light} -A 5";
       };
+      "idle_inhibitor" = {
+        "format" = "<span foreground='#a2e8a2'>{icon}</span>";
+        "format-icons" = {
+          "activated" = " ";
+          "deactivated" = " ";
+        };
+      };
       "clock" = {
         interval = 5;
         format = "<span foreground='#89dceb'> </span><span>{:%H:%M %d.%m}</span>";
-        format-alt = "<span foreground='#cba6f7'> </span><span>{:%I:%M:%S %p %a %d %Y}</span>";
+        format-alt = "<span foreground='#cba6f7'> </span><span>{:%I:%M:%S %p %a %d %Y}</span>";
         tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
         today-format = "<span color='#ff6699'><b><u>{}</u></b></span>";
         format-calendar = "<span color='#ecc6d9'><b>{}</b></span>";
@@ -287,6 +296,7 @@ in
       #memory,
       #temperature,
       #backlight,
+      #idle_inhibitor,
       #battery {
         margin: 5px;
         padding-left: 10px;
@@ -306,6 +316,7 @@ in
         background-color: @bg;
       }
 
+      #wireplumber.muted,
       #pulseaudio.muted {
         background-color: @red;
         color: @dark-fg;

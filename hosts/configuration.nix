@@ -56,18 +56,13 @@
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
   };
 
-  # environment = {
-  #   systemPackages = with pkgs; [
-  #   ];
-  # };
-
   services = {
     pipewire = {
       enable = true;
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
-      # If you want to use JACK applications, uncomment this
+      # If you want to use JACK applications, uncomment this (what is Jack? xd)
       # jack.enable = true;
     };
     gvfs.enable = true; # https://nixos.wiki/wiki/Nautilus
@@ -132,6 +127,6 @@
     '';
   };
 
-  system.stateVersion = "22.11";
+  system.stateVersion = "23.05";
 }
 

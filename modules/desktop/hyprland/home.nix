@@ -7,7 +7,8 @@ let
   terminal_pure = "wezterm";
   bar = "${config.programs.waybar.package}/bin/waybar";
   wofi = "${pkgs.wofi}/bin/wofi";
-  pamixer = "${pkgs.pamixer}/bin/pamixer";
+  wob = "${pkgs.wob}/bin/wob";
+  wpctl = "${pkgs.wireplumber}/bin/wpctl";
   playerctl = "${pkgs.playerctl}/bin/playerctl";
   light = "${pkgs.light}/bin/light";
   grim = "${pkgs.grim}/bin/grim";
@@ -20,6 +21,7 @@ let
   sleep = "${pkgs.coreutils}/bin/sleep";
   hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
   systemctl = "${pkgs.systemd}/bin/systemctl";
+  awk = "${pkgs.gawk}/bin/awk";
 in
 let
   hyprpaperConf = ''
@@ -32,6 +34,16 @@ let
     ${hyprctl} keyword windowrule "workspace unset, ${browser_pure}"
     ${hyprctl} keyword windowrule "workspace unset, ${terminal_pure}"
   '';
+  getVolumeScript = pkgs.writeShellScript "get-volume-script" ''
+    ans=$(${wpctl} get-volume @DEFAULT_AUDIO_SINK@)
+    if echo "$ans" | grep -q MUTED; then
+      echo 0
+    else
+      echo "$ans" | ${awk} -F': ' '{printf "%.0f\n", $2*100}'
+    fi
+  '';
+in
+let
   # Pseudo Alt-Tab Definitely not Windows experience
   # https://github.com/hyprwm/Hyprland/discussions/830#discussioncomment-3868467
   hyprlandConf = ''
@@ -45,6 +57,10 @@ let
     exec-once = ${browser}
     exec-once = ${terminal}
     exec-once = ${cleanupScript.outPath}
+
+    # Wob setup
+    env = WOBSOCK, $XDG_RUNTIME_DIR/wob.sock
+    exec-once = rm -f $WOBSOCK && mkfifo $WOBSOCK && tail -f $WOBSOCK | ${wob}
 
     $mainMod = SUPER
     $shiftMod = SUPER + SHIFT
@@ -140,13 +156,14 @@ let
     bindm = $mainMod, mouse:272, movewindow
     bindm = $mainMod, mouse:273, resizewindow
 
-    $volume_pt = 4
+    # https://github.com/francma/wob
+    $volume_pt = 0.04
     $brightness_pt = 5
-    bind = , XF86AudioLowerVolume, exec, ${pamixer} -d $volume_pt
-    bind = , XF86AudioRaiseVolume, exec, ${pamixer} -i $volume_pt
-    bind = , XF86AudioMute, exec, ${pamixer} -t
-    bind = , XF86MonBrightnessDown, exec, ${light} -U $brightness_pt
-    bind = , XF86MonBrightnessUP, exec, ${light} -A $brightness_pt
+    binde = , XF86AudioLowerVolume, exec, ${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ $volume_pt- && ${getVolumeScript} > $WOBSOCK
+    binde = , XF86AudioRaiseVolume, exec, ${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ $volume_pt+ && ${getVolumeScript} > $WOBSOCK
+    bind = , XF86AudioMute, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle && ${getVolumeScript} > $WOBSOCK
+    bind = , XF86MonBrightnessDown, exec, ${light} -U $brightness_pt && light -G | cut -d'.' -f1 > $WOBSOCK
+    bind = , XF86MonBrightnessUP, exec, ${light} -A $brightness_pt && light -G | cut -d'.' -f1 > $WOBSOCK
     bind = , XF86AudioNext, exec, ${playerctl} next
     bind = , XF86AudioPrev, exec, ${playerctl} previous
     bind = , XF86AudioPlay, exec, ${playerctl} play-pause
@@ -156,7 +173,9 @@ let
   '';
 in
 {
-  imports = [ (import ../../programs/waybar.nix) { programs.waybar.package = waybar-hyprland; } ];
+  imports =
+    [ (import ../../programs/waybar.nix) { programs.waybar.package = waybar-hyprland; } ] ++
+    [ (import ../../programs/wob.nix) ];
 
   xdg.configFile = {
     "hypr/hyprland.conf".text = hyprlandConf;

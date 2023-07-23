@@ -38,6 +38,11 @@
           echo $argv[1] 
         end
       '';
+      fish_user_key_bindings = ''
+        bind --erase --mode insert --preset \cd
+        bind --erase --mode visual --preset \cd
+        bind --erase --preset \cd
+      '';
     };
 
     shellInit = ''

@@ -104,6 +104,11 @@
     gh = {
       enable = true;
     };
+    command-not-found.enable = false;
+    nix-index = {
+      enable = true;
+      enableFishIntegration = true;
+    };
   };
 
   services = {

@@ -7,5 +7,6 @@
   ./swappy.nix
   ./fish.nix
   ./wezterm.nix
-  # ./waybar.nix # Pulled from desktop
+  # ./wob.nix # Imported in a desktop config
+  # ./waybar.nix # Imported in a desktop config
 ]

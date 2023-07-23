@@ -43,6 +43,7 @@
         inactive_pane_hsb = { brightness = 0.7 },
         window_background_image = '${config.home.sessionVariables.XDG_WALLPAPERS_DIR}/1.png',
         window_background_image_hsb = { brightness = 0.07 },
+        -- warn_about_missing_glyphs = false,
       }
     '';
   };
