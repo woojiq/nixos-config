@@ -5,6 +5,7 @@
     enable = true;
     enableFishIntegration = true;
     settings = {
+      # time.disabled = false;
       command_timeout = 3000;
       character = {
         success_symbol = "[](bold green) ";
@@ -33,7 +34,7 @@
       java.symbol = " ";
       julia.symbol = " ";
       lua.symbol = " ";
-      memory_usage.symbol = " ";
+      memory_usage.symbol = "󰍛 ";
       meson.symbol = "󰔷 ";
       nim.symbol = "󰆥 ";
       nix_shell.symbol = " ";

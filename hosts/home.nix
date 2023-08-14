@@ -27,12 +27,6 @@
       ## Nix
       nil
       nixpkgs-fmt
-      ## Rust
-      # rust-analyzer # Install via rustup
-      rustup
-      gcc # Rustc needs `cc` linker
-      openssl # Rust web crates need this (and pkg-config)
-      pkg-config
 
       # Desktop application
       mpv # Media player
@@ -55,7 +49,7 @@
       PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig"; # Rust development
     };
 
-    file.${config.home.sessionVariables.XDG_WALLPAPERS_DIR}.source = ../stuff/Wallpapers;
+    file.${config.home.sessionVariables.WALLPAPERS_DIR}.source = ../stuff/Wallpapers;
 
     stateVersion = "22.11";
   };
@@ -113,6 +107,13 @@
 
   services = {
     blueman-applet.enable = true;
+    gammastep = {
+      enable = true;
+      dawnTime = "7:00-8:00";
+      duskTime = "22:00-23:00";
+      temperature.day = 6500;
+      tray = true;
+    };
   };
 
   xdg.configFile."nixpkgs/config.nix".text = ''
@@ -125,14 +126,15 @@
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
-    desktop = null; # Idk how, btw this dir was created. Probably, `nemo` has created this folder
+    desktop = null; # `nemo` will anyway create this folder.
     music = null;
     publicShare = null;
     templates = null;
     videos = null;
     extraConfig = {
-      XDG_SCREENSHOTS_DIR = "${config.home.homeDirectory}/Pictures/Screenshots";
-      XDG_WALLPAPERS_DIR = "${config.home.homeDirectory}/Pictures/Wallpapers";
+      SCREENSHOTS_DIR = "${config.home.homeDirectory}/Pictures/Screenshots";
+      WALLPAPERS_DIR = "${config.home.homeDirectory}/Pictures/Wallpapers";
+      HACKS_DIR = "${config.home.homeDirectory}/Hacks";
     };
   };
 }

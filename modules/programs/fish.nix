@@ -11,20 +11,18 @@
         	cd (printf "%.s../" (seq $argv[1]));
         	ls
       '';
-      cdl = ''
-        	cd $argv[1]
-        	ls
-      '';
       lst = ''
-        	${pkgs.exa}/bin/exa -Tl --git --no-permissions --git-ignore --icons -I=".git" $argv
-      '';
-      # ls + deep
-      lsd = ''
-        if test -z $argv[1]
-          lst -L 2
-        else
-          lst -L $argv[1]
-        end
+          if test (count $argv) -gt 2
+            echo "Error: arg1: path (defaut - '.'), arg2: Level (default - 100)"
+            return 1
+          end
+          if not set -q argv[1]
+            set argv[1] .
+          end
+          if not set -q argv[2]
+            set argv[2] 100
+          end
+        	${pkgs.exa}/bin/exa -Tl --git --no-permissions --git-ignore --icons -I=".git" $argv[1] -L $argv[2]
       '';
       mkcd = ''
         	mkdir $argv[1]

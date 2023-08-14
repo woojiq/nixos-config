@@ -7,6 +7,7 @@ in
 {
   programs.waybar = {
     enable = true;
+    package = pkgs.waybar-hyprland;
 
     settings.mainBar = {
       layer = "top";
@@ -132,8 +133,8 @@ in
       # };
       "wireplumber" = {
         on-click = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
-        on-scroll-down = "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04+";
-        on-scroll-up = "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.04-";
+        on-scroll-down = "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.01+";
+        on-scroll-up = "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.01-";
         format = "{icon}  {volume}%";
         format-muted = "<span size='13000' foreground='#fab387'> </span>";
         format-icons = [ "<span size='13000' foreground='#fab387'></span>" ];
@@ -149,8 +150,8 @@ in
           ""
           ""
         ];
-        "on-scroll-up" = "${light} -N 10 && ${light} -U 5";
-        "on-scroll-down" = "${light} -A 5";
+        "on-scroll-up" = "${light} -U 1";
+        "on-scroll-down" = "${light} -A 1";
       };
       "idle_inhibitor" = {
         "format" = "<span foreground='#a2e8a2'>{icon}</span>";
@@ -160,14 +161,29 @@ in
         };
       };
       "clock" = {
+        # https://github.com/Alexays/Waybar/wiki/Module:-Clock#example
         interval = 5;
         format = "<span foreground='#89dceb'> </span><span>{:%H:%M %d.%m}</span>";
         format-alt = "<span foreground='#cba6f7'> </span><span>{:%I:%M:%S %p %a %d %Y}</span>";
-        tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-        today-format = "<span color='#ff6699'><b><u>{}</u></b></span>";
-        format-calendar = "<span color='#ecc6d9'><b>{}</b></span>";
-        format-calendar-weeks = "<span color='#99ffdd'><b>W{:%U}</b></span>";
-        format-calendar-weekdays = "<span color='#ffcc66'><b>{}</b></span>";
+        tooltip-format = "<tt><small>{calendar}</small></tt>";
+        calendar = {
+          mode = "year";
+          mode-mon-col = 3;
+          weeks-pos = "right";
+          format = {
+            months = "<span color='#ffead3'><b>{}</b></span>";
+            days = "<span color='#ecc6d9'><b>{}</b></span>";
+            weeks = "<span color='#99ffdd'><b>W{}</b></span>";
+            weekdays = "<span color='#ffcc66'><b>{}</b></span>";
+            today = "<span color='#ff6699'><b><u>{}</u></b></span>";
+          };
+          # Old calendar
+          # tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+          # today-format = "<span color = '#ff6699'><b><u>{}</u></b></span>";
+          # format-calendar = "<span color='#ecc6d9'><b>{}</b></span>";
+          # format-calendar-weeks = "<span color='#99ffdd'><b>W{:%U}</b></span>";
+          # format-calendar-weekdays = "<span color='#ffcc66'><b>{}</b></span>";
+        };
       };
       "custom/power" = {
         format = "⏻";

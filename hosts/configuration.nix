@@ -38,7 +38,7 @@
     rtkit.enable = true;
   };
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     (nerdfonts.override {
       fonts = [
         "FiraCode"
@@ -117,8 +117,9 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 4d";
+      options = "--delete-older-than 10d";
     };
+    nixPath = [ "nixpkgs=${pkgs.path}" ];
     extraOptions = ''
       experimental-features = nix-command flakes
       # To protect your nix-shell against garbage collection
@@ -127,6 +128,6 @@
     '';
   };
 
-  system.stateVersion = "23.05";
+  system.stateVersion = "23.11";
 }
 

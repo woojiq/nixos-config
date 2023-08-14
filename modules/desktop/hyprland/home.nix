@@ -1,4 +1,4 @@
-{ pkgs, config, waybar-hyprland, ... }:
+{ pkgs, config, ... }:
 
 let
   browser = "${pkgs.google-chrome}/bin/google-chrome-stable";
@@ -15,8 +15,6 @@ let
   slurp = "${pkgs.slurp}/bin/slurp";
   swappy = "${pkgs.swappy}/bin/swappy";
   notify-send = "${pkgs.libnotify}/bin/notify-send";
-  hyprpaper = "${pkgs.hyprpaper}/bin/hyprpaper";
-  wallpapers = "${config.home.sessionVariables.XDG_WALLPAPERS_DIR}/1.png";
   emote = "${pkgs.emote}/bin/emote";
   sleep = "${pkgs.coreutils}/bin/sleep";
   hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
@@ -24,11 +22,6 @@ let
   awk = "${pkgs.gawk}/bin/awk";
 in
 let
-  hyprpaperConf = ''
-    preload = ${wallpapers}
-    wallpaper = eDP-1,${wallpapers}
-    # ipc = off
-  '';
   cleanupScript = pkgs.writeShellScript "cleanup-script" ''
     ${sleep} 4
     ${hyprctl} keyword windowrule "workspace unset, ${browser_pure}"
@@ -48,7 +41,6 @@ let
   # https://github.com/hyprwm/Hyprland/discussions/830#discussioncomment-3868467
   hyprlandConf = ''
     exec-once = ${bar}
-    # exec-once = ${hyprpaper} # Eats a lot of CPU
     exec-once = ${emote}
 
     # Workspace setup
@@ -80,6 +72,10 @@ let
 
     monitor = eDP-1, 1920x1080@60, 0x0, 1
 
+    xwayland {
+      force_zero_scaling = true
+    }
+
     input {
     	kb_layout = us,ua
     	kb_options = grp:win_space_toggle
@@ -109,10 +105,14 @@ let
     	rounding = 5
     }
 
+    # misc {
+    #   force_hypr_chan = true
+    # }
+
     bind = $mainMod, q, killactive
     bind = $mainMod, m, fullscreen, 1
     bind = $mainMod, f, togglefloating
-    bind = $mainMod, p, pseudo
+    bind = $mainMod, p, pin
     bind = $mainMod, d, exec, ${wofi} --show drun
     bind = $shiftMod, d, exec, ${wofi} --show run
     bind = $mainMod, t, exec, ${terminal}
@@ -174,12 +174,14 @@ let
 in
 {
   imports =
-    [ (import ../../programs/waybar.nix) { programs.waybar.package = waybar-hyprland; } ] ++
+    [ (import ../../programs/waybar.nix) ] ++
     [ (import ../../programs/wob.nix) ];
 
-  xdg.configFile = {
-    "hypr/hyprland.conf".text = hyprlandConf;
-    "hypr/hyprpaper.conf".text = hyprpaperConf;
+  wayland.windowManager.hyprland = {
+    enable = true;
+    # TODO support nvidiaPatches here and in the nvidia.nix
+    # TODO use settings instead of extraConfig
+    extraConfig = hyprlandConf;
   };
 
   services = {
@@ -191,9 +193,5 @@ in
       ];
       systemdTarget = "hyprland-session.target";
     };
-  };
-
-  wayland.windowManager.hyprland = {
-    enable = true;
   };
 }

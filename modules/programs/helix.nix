@@ -14,7 +14,7 @@
         color-modes = true;
         cursor-shape.insert = "underline";
         statusline = {
-          left = [ "mode" "spinner" "spacer" "version-control" ];
+          left = [ "mode" "spinner" "spacer" "version-control" "read-only-indicator" ];
           center = [ "file-name" "file-modification-indicator" "spacer" "diagnostics" ];
           right = [ "selections" "position-percentage" "position" "file-encoding" "file-type" ];
         };
@@ -48,9 +48,25 @@
               "n" = ":set whitespace.render none";
             };
           };
+          # Ukrainian basic movement
+          "р" = "move_char_left";
+          "о" = "move_visual_line_down";
+          "л" = "move_visual_line_up";
+          "д" = "move_char_right";
+          "ш" = "insert_mode";
+          "Ш" = "insert_at_line_start";
+          "ф" = "append_mode";
+          "Ф" = "insert_at_line_end";
+          "щ" = "open_below";
+          "Щ" = "open_above";
+          "и" = "move_prev_word_start";
+          "у" = "move_next_word_end";
+          "к" = "replace";
         };
       };
-      theme = "sonokai-transparent";
+      # theme = "sonokai-transparent";
+      # theme = "ayu_dark";
+      theme = "github_dark_dimmed_custom";
     };
     languages = {
       language-server = {
@@ -82,6 +98,10 @@
       ];
     };
     themes = {
+      github_dark_dimmed_custom = {
+        inherits = "github_dark_dimmed";
+        "ui.virtual.ruler" = { bg = "scale.gray.8"; };
+      };
       sonokai-custom = {
         inherits = "sonokai";
         "ui.virtual.inlay-hint" = {

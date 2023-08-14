@@ -1,11 +1,16 @@
 { pkgs, ... }:
 
+let
+  light = "${pkgs.light}/bin/light";
+in
 {
   environment = {
     loginShellInit = ''
       if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
         exec Hyprland
       fi
+      # Set minimum brightness value
+      ${light} -N 5
     '';
 
     systemPackages = with pkgs; [
@@ -18,8 +23,6 @@
   programs = {
     hyprland = {
       enable = true;
-      # I don't see a difference.
-      nvidiaPatches = true;
     };
     light.enable = true;
   };
