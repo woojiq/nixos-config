@@ -1,10 +1,22 @@
 { user, nixpkgs, home-manager, inputs }:
 
 let
+  swappyPatched = final: prev: {
+    swappy = prev.swappy.overrideAttrs (old: {
+      patches = (old.patches or [ ]) ++ [
+        ../patches/swappy-multi-layout.patch
+      ];
+    });
+  };
+in
+let
   system = "x86_64-linux";
   pkgs = import nixpkgs {
     inherit system;
     config.allowUnfree = true;
+    overlays = [
+      swappyPatched
+    ];
   };
 in
 {

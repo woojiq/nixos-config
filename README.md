@@ -6,6 +6,9 @@
 ### Might be fixed/broken in the next app release
 * Tokei: colored output
 
+# Gallery
+![Desktop image](./misc/preview.png)
+
 # Credits
 * @<!-- -->MatthiasBenaets for his [YT](https://github.com/MatthiasBenaets/nixos-config) tutorials.
 * @<!-- -->pennae for reviewing my first [PR](https://github.com/NixOS/nixpkgs/pull/221321) to `nixpkgs`.

@@ -49,7 +49,7 @@
       PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig"; # Rust development
     };
 
-    file.${config.home.sessionVariables.WALLPAPERS_DIR}.source = ../stuff/Wallpapers;
+    file.${config.home.sessionVariables.WALLPAPERS_DIR}.source = ../misc/Wallpapers;
 
     stateVersion = "22.11";
   };

@@ -1,0 +1,218 @@
+feat: use hardware keycodes intead of English
+
+This allows hotkeys to be pressed on any language, but will have side effects if you're using a non-qwerty layout.
+
+diff --git a/src/application.c b/src/application.c
+index 57d652f..6f54970 100644
+--- a/src/application.c
++++ b/src/application.c
+@@ -345,100 +345,118 @@ void window_keypress_handler(GtkWidget *widget, GdkEventKey *event,
+     render_state(state);
+     return;
+   }
++  // g_print("Keycode: %u\nCTRL: %u\n", event->hardware_keycode, event->state);
+   if (event->state & GDK_CONTROL_MASK) {
+-    switch (event->keyval) {
+-      case GDK_KEY_c:
+-        clipboard_copy_drawing_area_to_selection(state);
+-        break;
+-      case GDK_KEY_s:
+-        save_state_to_file_or_folder(state, NULL);
+-        break;
+-      case GDK_KEY_b:
+-        action_toggle_painting_panel(state, NULL);
+-        break;
+-      case GDK_KEY_w:
+-        gtk_main_quit();
+-        break;
+-      case GDK_KEY_z:
+-        action_undo(state);
+-        break;
+-      case GDK_KEY_Z:
+-      case GDK_KEY_y:
+-        action_redo(state);
+-        break;
+-      default:
+-        break;
++    if (event->state & GDK_SHIFT_MASK) {
++      switch (event->hardware_keycode) {
++        case 52: // Z
++          action_redo(state);
++          break;
++        case 46: // L // What does it actually do??
++          control_modifier_changed(true, state);
++          break;
++        default:
++          break;
++      }
++    } else {
++      switch (event->hardware_keycode) {
++        case 54: // c
++        g_print("saved");
++          clipboard_copy_drawing_area_to_selection(state);
++          break;
++        case 39: // s
++          save_state_to_file_or_folder(state, NULL);
++          break;
++        case 56: // b
++          action_toggle_painting_panel(state, NULL);
++          break;
++        case 25: // w
++          gtk_main_quit();
++          break;
++        case 52: // z
++          action_undo(state);
++          break;
++        case 29: // y
++          action_redo(state);
++          break;
++        default:
++          break;
++      }
+     }
+   } else {
+-    switch (event->keyval) {
+-      case GDK_KEY_Escape:
+-      case GDK_KEY_q:
+-        maybe_save_output_file(state);
+-        gtk_main_quit();
+-        break;
+-      case GDK_KEY_b:
+-        switch_mode_to_brush(state);
+-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->brush), true);
+-        break;
+-      case GDK_KEY_t:
+-        switch_mode_to_text(state);
+-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->text), true);
+-        break;
+-      case GDK_KEY_r:
+-        switch_mode_to_rectangle(state);
+-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->rectangle),
+-                                     true);
+-        break;
+-      case GDK_KEY_o:
+-        switch_mode_to_ellipse(state);
+-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->ellipse),
+-                                     true);
+-        break;
+-      case GDK_KEY_a:
+-        switch_mode_to_arrow(state);
+-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->arrow), true);
+-        break;
+-      case GDK_KEY_d:
+-        switch_mode_to_blur(state);
+-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->blur), true);
+-        break;
+-      case GDK_KEY_k:
+-        action_clear(state);
+-        break;
+-      case GDK_KEY_R:
+-        action_update_color_state(state, 1, 0, 0, 1, false);
+-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->red), true);
+-        break;
+-      case GDK_KEY_G:
+-        action_update_color_state(state, 0, 1, 0, 1, false);
+-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->green), true);
+-        break;
+-      case GDK_KEY_B:
+-        action_update_color_state(state, 0, 0, 1, 1, false);
+-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->blue), true);
+-        break;
+-      case GDK_KEY_C:
+-        action_set_color_from_custom(state);
+-        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->custom),
+-                                     true);
+-        break;
+-      case GDK_KEY_minus:
+-        action_stroke_size_decrease(state);
+-        break;
+-      case GDK_KEY_equal:
+-        action_stroke_size_reset(state);
+-        break;
+-      case GDK_KEY_plus:
+-        action_stroke_size_increase(state);
+-        break;
+-      case GDK_KEY_Control_L:
+-        control_modifier_changed(true, state);
+-        break;
+-      case GDK_KEY_f:
+-        action_fill_shape_toggle(state, NULL);
+-        break;
+-      default:
+-        break;
++    if (event->state & GDK_SHIFT_MASK) {
++      switch (event->hardware_keycode) {
++        case 27: // R
++          action_update_color_state(state, 1, 0, 0, 1, false);
++          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->red), true);
++          break;
++        case 42: // G
++          action_update_color_state(state, 0, 1, 0, 1, false);
++          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->green), true);
++          break;
++        case 56: // B
++          action_update_color_state(state, 0, 0, 1, 1, false);
++          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->blue), true);
++          break;
++        case 54: // C
++          action_set_color_from_custom(state);
++          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->custom),
++                                       true);
++          break;
++        case 21: // +
++          action_stroke_size_increase(state);
++          break;
++        default:
++          break;
++      }
++    } else {
++      switch (event->hardware_keycode) {
++        case 9: // esc
++        case 24: // q
++          maybe_save_output_file(state);
++          gtk_main_quit();
++          break;
++        case 56: // b
++          switch_mode_to_brush(state);
++          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->brush), true);
++          break;
++        case 28: // t
++          switch_mode_to_text(state);
++          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->text), true);
++          break;
++        case 27: // r
++          switch_mode_to_rectangle(state);
++          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->rectangle),
++                                       true);
++          break;
++        case 32: // o
++          switch_mode_to_ellipse(state);
++          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->ellipse),
++                                       true);
++          break;
++        case 38: // a
++          switch_mode_to_arrow(state);
++          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->arrow), true);
++          break;
++        case 40: // d
++          switch_mode_to_blur(state);
++          gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->blur), true);
++          break;
++        case 45: // k
++          action_clear(state);
++          break;
++        case 41: // f
++          action_fill_shape_toggle(state, NULL);
++          break;
++        case 20: // -
++          action_stroke_size_decrease(state);
++          break;
++        case 21: // =
++          action_stroke_size_reset(state);
++          break;
++        default:
++          break;
++      }
+     }
+   }
+ }

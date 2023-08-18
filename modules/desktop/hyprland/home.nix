@@ -37,8 +37,7 @@ let
   '';
 in
 let
-  # Pseudo Alt-Tab Definitely not Windows experience
-  # https://github.com/hyprwm/Hyprland/discussions/830#discussioncomment-3868467
+  # Pseudo Alt-Tab with dmenu: https://github.com/hyprwm/Hyprland/discussions/830#discussioncomment-3868467
   hyprlandConf = ''
     exec-once = ${bar}
     exec-once = ${emote}

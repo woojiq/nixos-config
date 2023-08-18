@@ -80,6 +80,7 @@ in
           { key = 'k', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Up' },
           { key = 'l', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Right' },
           { key = 'f', mods = 'SHIFT|ALT', action = act.TogglePaneZoomState },
+          -- { key = 'l', mods = 'SHIFT|ALT', action = wezterm.action.ShowDebugOverlay }, -- Conflicts with `ActivatePaneDirection 'Right'`
         },
         -- color_scheme = "Sonokai (Gogh)",
         -- color_scheme = "Aura (Gogh)",

@@ -1,4 +1,4 @@
-{ pkgs, user, ... }:
+{ pkgs, user, options, ... }:
 
 {
   imports =
@@ -100,6 +100,11 @@
   virtualisation.docker.rootless = {
     enable = true;
     setSocketVariable = true;
+  };
+
+  i18n = {
+    supportedLocales = options.i18n.supportedLocales.default ++ [ "uk_UA.UTF-8/UTF-8" ];
+    extraLocaleSettings.LC_TIME = "en_GB.UTF-8";
   };
 
   nix = {

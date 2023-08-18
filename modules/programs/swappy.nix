@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 let
-  config = ''
+  configIni = ''
     [Default]
-    save_dir=$(${pkgs.xdg-user-dirs}/bin/xdg-user-dir SCREENSHOTS)
+    save_dir=${config.home.sessionVariables.SCREENSHOTS_DIR}
     early_exit=true
   '';
 in
@@ -11,5 +11,5 @@ in
   home.packages = with pkgs; [
     swappy
   ];
-  xdg.configFile."swappy/config".text = config;
+  xdg.configFile."swappy/config".text = configIni;
 }

@@ -13,6 +13,7 @@
         idle-timeout = 50;
         color-modes = true;
         cursor-shape.insert = "underline";
+        scrolloff = 3;
         statusline = {
           left = [ "mode" "spinner" "spacer" "version-control" "read-only-indicator" ];
           center = [ "file-name" "file-modification-indicator" "spacer" "diagnostics" ];
@@ -43,25 +44,33 @@
           "A-l" = ":buffer-next";
           "A-h" = ":buffer-previous";
           space.c = {
+            "r" = ":reset-diff-change";
             "w" = {
               "a" = ":set whitespace.render all";
               "n" = ":set whitespace.render none";
             };
           };
-          # Ukrainian basic movement
+          # Ukrainian basic movement (https://docs.helix-editor.com/master/keymap.html)
+          ## Movement
           "р" = "move_char_left";
           "о" = "move_visual_line_down";
           "л" = "move_visual_line_up";
           "д" = "move_char_right";
+          "и" = "move_prev_word_start";
+          "у" = "move_next_word_end";
+          ## Changes
+          "щ" = "open_below";
+          "Щ" = "open_above";
           "ш" = "insert_mode";
           "Ш" = "insert_at_line_start";
           "ф" = "append_mode";
           "Ф" = "insert_at_line_end";
-          "щ" = "open_below";
-          "Щ" = "open_above";
-          "и" = "move_prev_word_start";
-          "у" = "move_next_word_end";
           "к" = "replace";
+          "с" = "change_selection";
+          "в" = "delete_selection";
+          "ʼ" = "switch_case";
+          ## Search
+          "." = "search";
         };
       };
       # theme = "sonokai-transparent";
