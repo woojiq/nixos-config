@@ -4,6 +4,7 @@
   programs.fish = {
     enable = true;
     functions = {
+      # `cd ..` multiple times
       up = ''
         	if not set -q argv[1]
         		set argv[1] 1
@@ -11,19 +12,22 @@
         	cd (printf "%.s../" (seq $argv[1]));
         	ls
       '';
-      lst = ''
-          if test (count $argv) -gt 2
-            echo "Error: arg1: path (defaut - '.'), arg2: Level (default - 100)"
-            return 1
+      # `exa` with tree-like output
+      lst =
+        let
+          base = "${pkgs.exa}/bin/exa -Tl --git --no-permissions --git-ignore --icons -I=\".git\"";
+        in
+        ''
+          # Check if last argument is number (for -L argument)
+          # https://stackoverflow.com/a/56615368/17903686
+          math "0+$argv[-1]" 2>/dev/null
+          if test $status -ne 0
+            ${base} $argv
+          else
+            ${base} $argv[1..-2] -L $argv[-1]
           end
-          if not set -q argv[1]
-            set argv[1] .
-          end
-          if not set -q argv[2]
-            set argv[2] 100
-          end
-        	${pkgs.exa}/bin/exa -Tl --git --no-permissions --git-ignore --icons -I=".git" $argv[1] -L $argv[2]
-      '';
+        '';
+      # `mkdir` + `cd`
       mkcd = ''
         	mkdir $argv[1]
         	cd $argv[1]
@@ -46,8 +50,6 @@
     shellInit = ''
       fish_vi_key_bindings
       set -U fish_greeting ""
-      # Disable noise from direnv
-      set -x DIRENV_LOG_FORMAT ""
     '';
   };
 }

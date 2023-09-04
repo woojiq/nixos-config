@@ -1,5 +1,6 @@
 ### TODO
-* Alt-tab
+* Alt-tab (like on Windows)
+* Use nix-colors module
 
 ### FIX
 

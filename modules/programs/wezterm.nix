@@ -1,52 +1,5 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
-let
-  # Correctly handle markdown hyperlinks
-  # https://github.com/wez/wezterm/issues/3803#issuecomment-1608954312
-  hyperlink_rules = ''
-    {
-      -- Matches: a URL in parens: (URL)
-      {
-        regex = '\\((\\w+://\\S+)\\)',
-        format = '$1',
-        highlight = 1,
-      },
-      -- Matches: a URL in brackets: [URL]
-      {
-        regex = '\\[(\\w+://\\S+)\\]',
-        format = '$1',
-        highlight = 1,
-      },
-      -- Matches: a URL in curly braces: {URL}
-      {
-        regex = '\\{(\\w+://\\S+)\\}',
-        format = '$1',
-        highlight = 1,
-      },
-      -- Matches: a URL in angle brackets: <URL>
-      {
-        regex = '<(\\w+://\\S+)>',
-        format = '$1',
-        highlight = 1,
-      },
-      -- Then handle URLs not wrapped in brackets
-      {
-        -- Before
-        --regex = '\\b\\w+://\\S+[)/a-zA-Z0-9-]+',
-        --format = '$0',
-        -- After
-        regex = '[^(]\\b(\\w+://\\S+[)/a-zA-Z0-9-]+)',
-        format = '$1',
-        highlight = 1,
-      },
-      -- implicit mailto link
-      {
-        regex = '\\b\\w+@[\\w-]+(\\.[\\w-]+)+\\b',
-        format = 'mailto:$0',
-      },
-    }
-  '';
-in
 {
   programs.wezterm = {
     enable = true;
@@ -80,12 +33,12 @@ in
           { key = 'k', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Up' },
           { key = 'l', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Right' },
           { key = 'f', mods = 'SHIFT|ALT', action = act.TogglePaneZoomState },
-          -- { key = 'l', mods = 'SHIFT|ALT', action = wezterm.action.ShowDebugOverlay }, -- Conflicts with `ActivatePaneDirection 'Right'`
+          -- { key = 'd', mods = 'SHIFT|ALT', action = wezterm.action.ShowDebugOverlay },
         },
         -- color_scheme = "Sonokai (Gogh)",
         -- color_scheme = "Aura (Gogh)",
         color_scheme = "github_dark_dimmed",
-        default_prog = { '${pkgs.fish}/bin/fish', '-l' },
+        default_prog = { '${config.home.sessionVariables.SHELL}', '-l' },
         cursor_blink_rate = 0,
         default_cursor_style = 'BlinkingBlock',
         hide_mouse_cursor_when_typing = false,
@@ -94,7 +47,7 @@ in
         -- window_background_image = '${config.home.sessionVariables.WALLPAPERS_DIR}/1.png',
         -- window_background_image_hsb = { brightness = 0.07 },
         -- warn_about_missing_glyphs = false,
-        hyperlink_rules = ${hyperlink_rules},
+        -- enable_kitty_keyboard = true,
       }
     '';
 

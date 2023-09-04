@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 
 {
   programs.git = {
@@ -11,6 +11,7 @@
     extraConfig = {
       credential.helper = "store";
       init.defaultBranch = "main";
+      pull.rebase = true;
     };
     delta.enable = true;
   };

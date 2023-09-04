@@ -1,19 +1,26 @@
-{ pkgs, ... }:
+# https://github.com/nrdxp/nrdos/blob/f4160da8e16b71b3e92abd7ce038341a1946724a/src/hardware/profiles/optimus.nix
+{ ... }:
 {
-  services.xserver = {
-    videoDrivers = [ "nvidia" ];
-  };
+  services.xserver.videoDrivers = [ "nvidia" ];
+
   hardware = {
-    opengl.enable = true;
-    nvidia.modesetting.enable = true;
+    nvidia = {
+      modesetting.enable = true;
+      powerManagement = {
+        enable = true;
+        finegrained = true;
+      };
+      prime = {
+        offload.enable = true;
+        intelBusId = "PCI:0:2:0";
+        nvidiaBusId = "PCI:1:0:0";
+      };
+    };
   };
+
   programs = {
     steam = {
-      enable = true;
-      # https://github.com/NixOS/nixpkgs/issues/236561#issuecomment-1581879353
-      package = with pkgs; steam.override { extraPkgs = pkgs: [ attr ]; };
+      enable = false;
     };
-    # I don't see a difference.
-    # hyprland.enableNvidiaPatches = true;
   };
 }

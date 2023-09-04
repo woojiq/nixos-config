@@ -1,20 +1,25 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 let
-  config = ''
-    stylesheet   = style.css
-    xoffset      = 710
-    yoffset      = 275
-    show         = drun
-    width        = 500
-    height       = 500
-    layer        = overlay
-    insensitive  = true
-    prompt       =
-    allow_images = true
-    term     = wezterm
-  '';
-  style = ''
+  wofiSettings = {
+    xoffset = 710;
+    yoffset = 275;
+    show = "drun";
+    width = 500;
+    height = 500;
+    layer = "overlay";
+    insensitive = true;
+    prompt = "";
+    allow_images = true;
+    term = "${config.home.sessionVariables.TERMINAL}";
+
+    key_down = "Tab";
+    key_up = "ISO_LEFT_TAB";
+    key_forward = "";
+    key_backward = "";
+  };
+
+  wofiStyle = ''
     window {
     margin: 0px;
     border: 2px solid #414868;
@@ -70,19 +75,19 @@ let
   '';
 in
 {
-  home.packages = with pkgs; [
-    wofi
-  ];
+  programs.wofi = {
+    enable = true;
+    settings = wofiSettings;
+    style = wofiStyle;
+  };
 
   xdg.configFile = {
-    "wofi/config".text = config;
-    "wofi/style.css".text = style;
     "wofi/power-menu.sh" = {
       executable = true;
       text = ''
         # https://github.com/MatthiasBenaets/nixos-config/blob/9e799904e74d43a2c0ad1a8b6ac4db86993bf2dd/modules/programs/wofi.nix#L18
         entries="⏾  Suspend\n⭮  Reboot\n⏻  Shutdown"
-        selected=$(echo -e $entries|${pkgs.wofi}/bin/wofi --dmenu --cache-file /dev/null | awk '{print tolower($2)}')
+        selected=$(echo -e $entries|${pkgs.wofi}/bin/wofi --dmenu --cache-file /dev/null --height 20% | awk '{print tolower($2)}')
 
         case $selected in
           suspend)

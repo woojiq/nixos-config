@@ -41,6 +41,9 @@
       nix_shell.format = "via [$symbol$state]($style) ";
       nodejs.symbol = " ";
 
+      kotlin.symbol = " ";
+      gradle.symbol = " ";
+
       os.symbols.Alpine = " ";
       os.symbols.Amazon = " ";
       os.symbols.Android = " ";

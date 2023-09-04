@@ -7,7 +7,6 @@ in
 {
   programs.waybar = {
     enable = true;
-    package = pkgs.waybar-hyprland;
 
     settings.mainBar = {
       layer = "top";
@@ -19,7 +18,7 @@ in
         # "playerctl"
         "temperature"
         "backlight"
-        # "idle_inhibitor"
+        "idle_inhibitor"
       ];
       modules-center = [
         "tray"

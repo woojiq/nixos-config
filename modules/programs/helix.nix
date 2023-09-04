@@ -1,4 +1,4 @@
-{ pkgs, helix-flake, ... }:
+{ config, helix-flake, ... }:
 
 {
   programs.helix = {
@@ -8,7 +8,7 @@
     settings = {
       editor = {
         line-number = "relative";
-        shell = [ "${pkgs.fish}/bin/fish" "-c" ];
+        shell = [ "${config.home.sessionVariables.SHELL}" "-c" ];
         bufferline = "multiple";
         idle-timeout = 50;
         color-modes = true;
@@ -30,7 +30,6 @@
           character = "╎";
           skip-levels = 1;
         };
-        # whitespace.render.newline = "all"; # Enable temporarily: `set whitespace.render.newline all`
         soft-wrap = {
           enable = true;
           # MB remove this because outside of the markdown I think I would need it
@@ -103,6 +102,20 @@
           name = "nix";
           auto-format = true;
           formatter = { command = "nixpkgs-fmt"; args = [ ]; };
+        }
+        {
+          name = "javascript";
+          formatter = { command = "prettier"; args = [ "--parser" "typescript" ]; };
+          auto-format = true;
+        }
+        {
+          name = "typescript";
+          formatter = { command = "prettier"; args = [ "--parser" "typescript" ]; };
+          auto-format = true;
+        }
+        {
+          name = "html";
+          formatter = { command = "prettier"; args = [ "--parser" "html" ]; };
         }
       ];
     };

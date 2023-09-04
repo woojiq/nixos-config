@@ -1,4 +1,4 @@
-{ config, user, pkgs, ... }:
+{ config, user, pkgs, helix-flake, ... }:
 
 {
   imports =
@@ -19,6 +19,7 @@
       tldr # Simplified `man`
       commitizen # Conventional commit messages
       asciinema # Terminal session recorder
+      curlie # Nicer cli for `curl`
 
       xdg-user-dirs
       xdg-utils
@@ -34,6 +35,7 @@
       cinnamon.nemo # File manager
       google-chrome
       emote # Emoji picker
+      virt-manager # Gui for managing virtual machines
     ];
 
     pointerCursor = {
@@ -44,9 +46,14 @@
     };
 
     sessionVariables = {
-      EDITOR = "hx";
+      # Real value of `SHELL` is set in the nixos config. This value is used only inside home-manager
+      SHELL = "${pkgs.fish}/bin/fish";
+      TERMINAL = "${pkgs.wezterm}/bin/wezterm";
+      EDITOR = "${helix-flake}/bin/hx";
       VISUAL = "${config.home.sessionVariables.EDITOR}";
-      PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig"; # Rust development
+
+      # tldr
+      TLDR_AUTO_UPDATE_DISABLED = "true";
     };
 
     file.${config.home.sessionVariables.WALLPAPERS_DIR}.source = ../misc/Wallpapers;
@@ -64,6 +71,11 @@
       name = "Papirus-Dark";
       package = pkgs.papirus-icon-theme;
     };
+    gtk2.extraConfig = ''
+      gtk-application-prefer-dark-theme = 1;
+    '';
+    gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
+    gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
   };
 
   programs = {
@@ -87,13 +99,20 @@
         "-m"
       ];
       # TODO smart hidding. Some hidden files/dirs I need (.config, .gitignore), some - don't  (.cache, .cargo)
-      defaultCommand = "${pkgs.fd}/bin/fd --type f . \\$dir | sed 's@^\./@@'";
+      # Find both files and symlinks
+      defaultCommand = "${pkgs.fd}/bin/fd -tf -tl . \\$dir | sed 's@^\./@@'";
       fileWidgetCommand = "${config.programs.fzf.defaultCommand}";
     };
+
     direnv = {
       enable = true;
       nix-direnv.enable = true;
     };
+    fish.shellInit = ''
+      # Disable noise from direnv
+      set -x DIRENV_LOG_FORMAT ""
+    '';
+
     bottom.enable = true;
     gh = {
       enable = true;
@@ -103,6 +122,7 @@
       enable = true;
       enableFishIntegration = true;
     };
+    firefox.enable = true;
   };
 
   services = {
@@ -116,6 +136,19 @@
     };
   };
 
+  dconf.settings = {
+    # https://hoverbear.org/blog/declarative-gnome-configuration-in-nixos/
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+    };
+    # https://nixos.wiki/wiki/Virt-manager
+    "org/virt-manager/virt-manager/connections" = {
+      autoconnect = [ "qemu:///system" ];
+      uris = [ "qemu:///system" ];
+    };
+  };
+
+  # Allows install unfree pkgs from `nix-shell` command
   xdg.configFile."nixpkgs/config.nix".text = ''
     {
       # Enable searching for and installing unfree packages

@@ -1,11 +1,9 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 
 let
   browser = "${pkgs.google-chrome}/bin/google-chrome-stable";
-  browser_pure = "Google Chrome";
-  terminal = "${pkgs.wezterm}/bin/wezterm";
-  terminal_pure = "wezterm";
-  bar = "${config.programs.waybar.package}/bin/waybar";
+  terminal = "${config.home.sessionVariables.TERMINAL}";
+  bar = "${pkgs.waybar}/bin/waybar";
   wofi = "${pkgs.wofi}/bin/wofi";
   wob = "${pkgs.wob}/bin/wob";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
@@ -16,17 +14,12 @@ let
   swappy = "${pkgs.swappy}/bin/swappy";
   notify-send = "${pkgs.libnotify}/bin/notify-send";
   emote = "${pkgs.emote}/bin/emote";
-  sleep = "${pkgs.coreutils}/bin/sleep";
-  hyprctl = "${config.wayland.windowManager.hyprland.package}/bin/hyprctl";
+  hyprctl = "${pkgs.hyprland}/bin/hyprctl";
   systemctl = "${pkgs.systemd}/bin/systemctl";
   awk = "${pkgs.gawk}/bin/awk";
+  wl-clip-persist = lib.getExe pkgs.wl-clip-persist;
 in
 let
-  cleanupScript = pkgs.writeShellScript "cleanup-script" ''
-    ${sleep} 4
-    ${hyprctl} keyword windowrule "workspace unset, ${browser_pure}"
-    ${hyprctl} keyword windowrule "workspace unset, ${terminal_pure}"
-  '';
   getVolumeScript = pkgs.writeShellScript "get-volume-script" ''
     ans=$(${wpctl} get-volume @DEFAULT_AUDIO_SINK@)
     if echo "$ans" | grep -q MUTED; then
@@ -41,13 +34,11 @@ let
   hyprlandConf = ''
     exec-once = ${bar}
     exec-once = ${emote}
+    exec-once = ${wl-clip-persist} --clipboard regular
 
-    # Workspace setup
-    exec-once = ${hyprctl} keyword windowrule "workspace 1 silent, ${browser_pure}"
-    exec-once = ${hyprctl} keyword windowrule "workspace 2 silent, ${terminal_pure}"
-    exec-once = ${browser}
-    exec-once = ${terminal}
-    exec-once = ${cleanupScript.outPath}
+    # Workspace setup: https://wiki.hyprland.org/Configuring/Dispatchers/#executing-with-rules
+    exec-once = [workspace 1 silent] ${browser}
+    exec-once = [workspace 2 silent] ${terminal}
 
     # Wob setup
     env = WOBSOCK, $XDG_RUNTIME_DIR/wob.sock
@@ -178,9 +169,9 @@ in
 
   wayland.windowManager.hyprland = {
     enable = true;
-    # TODO support nvidiaPatches here and in the nvidia.nix
     # TODO use settings instead of extraConfig
     extraConfig = hyprlandConf;
+    enableNvidiaPatches = true;
   };
 
   services = {

@@ -12,7 +12,7 @@
 
   users.users.${user} = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "video" "audio" "docker" ];
+    extraGroups = [ "wheel" "networkmanager" "video" "audio" "docker" "libvirtd" ];
   };
 
   boot = {
@@ -67,6 +67,14 @@
     };
     gvfs.enable = true; # https://nixos.wiki/wiki/Nautilus
     blueman.enable = true;
+    # TODO: Add this to the startup script (declarative-like setup)
+    # flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    # flatpak install flathub com.obsproject.Studio
+    flatpak.enable = true;
+    # Don't see any difference actually
+    thermald = {
+      enable = true;
+    };
 
     # Chad moment: https://github.com/NixOS/nixpkgs/pull/221321
     keyd = {
@@ -95,11 +103,31 @@
       enable = true;
       settings.General.Experimental = true; # Device battery status: https://askubuntu.com/a/1420501
     };
+    opengl = {
+      # Opengl is enabled by default by the window-managers modules, so you do not usually have to set it yourself
+      extraPackages = with pkgs; [ intel-media-driver ];
+    };
   };
 
-  virtualisation.docker.rootless = {
-    enable = true;
-    setSocketVariable = true;
+  virtualisation = {
+    docker.rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+    # Windows on qemu is unusable: slow + laggy. I probably need to setup
+    # graphic card but laptop is so hot with nvidia drivers.
+    # https://discourse.nixos.org/t/windows-11-vm-on-nixos/30631/4
+    libvirtd = {
+      enable = false;
+      qemu = {
+        package = pkgs.qemu_kvm;
+        swtpm.enable = true;
+        ovmf = {
+          enable = true;
+          packages = [ pkgs.OVMFFull.fd ];
+        };
+      };
+    };
   };
 
   i18n = {
