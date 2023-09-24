@@ -3,7 +3,7 @@
 let
   browser = "${pkgs.google-chrome}/bin/google-chrome-stable";
   terminal = "${config.home.sessionVariables.TERMINAL}";
-  bar = "${pkgs.waybar}/bin/waybar";
+  bar = "${config.programs.waybar.package}/bin/waybar";
   wofi = "${pkgs.wofi}/bin/wofi";
   wob = "${pkgs.wob}/bin/wob";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
@@ -95,9 +95,10 @@ let
     	rounding = 5
     }
 
-    # misc {
+    misc {
     #   force_hypr_chan = true
-    # }
+      focus_on_activate = true
+    }
 
     bind = $mainMod, q, killactive
     bind = $mainMod, m, fullscreen, 1
@@ -122,6 +123,7 @@ let
     bind = $mainMod, 7, workspace, 7
     bind = $mainMod, 8, workspace, 8
     bind = $mainMod, 9, workspace, 9
+    bind = $mainMod, 0, togglespecialworkspace,
 
     bind = $shiftMod, 1, movetoworkspace, 1 
     bind = $shiftMod, 2, movetoworkspace, 2 
@@ -132,6 +134,7 @@ let
     bind = $shiftMod, 7, movetoworkspace, 7 
     bind = $shiftMod, 8, movetoworkspace, 8 
     bind = $shiftMod, 9, movetoworkspacesilent, 9 
+    bind = $shiftMod, 0, movetoworkspace, special
     bind = $shiftMod, right, movetoworkspace, +1
     bind = $shiftMod, left, movetoworkspace, -1
 
@@ -160,13 +163,14 @@ let
 
     bind = , Print, exec, ${grim} -g "$(${slurp})" - | ${swappy} -f - && ${notify-send} "Saved to ~/Pictures/Screenshots"
     bind = $altMod, Print, exec, ${grim} - | ${swappy} -f - && ${notify-send} "Saved to ~/Pictures/Screenshots"
+
+    # Autocompletion, etc, take hyprland focus
+    windowrulev2 = noborder, class:^(jetbrains-idea)(.*)$
+    # Wrong telegram scale after opening tg image/video viewer: https://github.com/hyprwm/Hyprland/issues/839
+    windowrulev2=float,class:^(org.telegram.desktop|telegramdesktop)$,title:^(Media viewer)$
   '';
 in
 {
-  imports =
-    [ (import ../../programs/waybar.nix) ] ++
-    [ (import ../../programs/wob.nix) ];
-
   wayland.windowManager.hyprland = {
     enable = true;
     # TODO use settings instead of extraConfig

@@ -1,6 +1,10 @@
 { config, helix-flake, ... }:
 
 {
+  home.sessionVariables = {
+    EDITOR = "${helix-flake}/bin/hx";
+    VISUAL = "${config.home.sessionVariables.EDITOR}";
+  };
   programs.helix = {
     enable = true;
     package = helix-flake;
@@ -10,7 +14,7 @@
         line-number = "relative";
         shell = [ "${config.home.sessionVariables.SHELL}" "-c" ];
         bufferline = "multiple";
-        idle-timeout = 50;
+        idle-timeout = 20;
         color-modes = true;
         cursor-shape.insert = "underline";
         scrolloff = 3;
@@ -48,6 +52,7 @@
               "a" = ":set whitespace.render all";
               "n" = ":set whitespace.render none";
             };
+            "s" = "signature_help";
           };
           # Ukrainian basic movement (https://docs.helix-editor.com/master/keymap.html)
           ## Movement

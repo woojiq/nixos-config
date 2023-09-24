@@ -1,11 +1,8 @@
 ### TODO
-* Alt-tab (like on Windows)
-* Use nix-colors module
-
-### FIX
-
-### Might be fixed/broken in the next app release
-* Tokei: colored output
+* Alt-tab (like on Windows).
+* Use nix-colors module ??? 🤔.
+* Change VT-colors using `setvtrgb`.
+* Chrome sometimes is not hardware accelerated.
 
 # Gallery
 ![Desktop image](./misc/preview.png)

@@ -13,10 +13,10 @@ let
     allow_images = true;
     term = "${config.home.sessionVariables.TERMINAL}";
 
-    key_down = "Tab";
-    key_up = "ISO_LEFT_TAB";
-    key_forward = "";
-    key_backward = "";
+    # key_down = "Tab";
+    # key_up = "ISO_LEFT_TAB";
+    # key_forward = "";
+    # key_backward = "";
   };
 
   wofiStyle = ''

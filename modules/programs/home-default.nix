@@ -7,6 +7,9 @@
   ./swappy.nix
   ./fish.nix
   ./wezterm.nix
-  # ./wob.nix # Imported in a desktop config
-  # ./waybar.nix # Imported in a desktop config
+  ./virt-manager/home.nix
+  ./dunst.nix
+  ./hyprland/home.nix
+  ./wob.nix
+  ./waybar.nix
 ]

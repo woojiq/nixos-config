@@ -3,16 +3,17 @@
 {
   imports =
     [ (import ./hardware-configuration.nix) ] ++
-    [ (import ../modules/desktop/hyprland/default.nix) ] ++
-    (import ../modules/services/system);
+    (import ../modules/programs/nix-default.nix);
 
   networking.networkmanager.enable = true;
 
   time.timeZone = "Europe/Kyiv";
 
-  users.users.${user} = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "video" "audio" "docker" "libvirtd" ];
+  users = {
+    users.${user} = {
+      isNormalUser = true;
+      extraGroups = [ "wheel" "networkmanager" "video" "audio" "docker" ];
+    };
   };
 
   boot = {
@@ -114,20 +115,6 @@
       enable = true;
       setSocketVariable = true;
     };
-    # Windows on qemu is unusable: slow + laggy. I probably need to setup
-    # graphic card but laptop is so hot with nvidia drivers.
-    # https://discourse.nixos.org/t/windows-11-vm-on-nixos/30631/4
-    libvirtd = {
-      enable = false;
-      qemu = {
-        package = pkgs.qemu_kvm;
-        swtpm.enable = true;
-        ovmf = {
-          enable = true;
-          packages = [ pkgs.OVMFFull.fd ];
-        };
-      };
-    };
   };
 
   i18n = {
@@ -139,11 +126,9 @@
     settings = {
       auto-optimise-store = true;
       substituters = [
-        "https://hyprland.cachix.org"
         "https://helix.cachix.org"
       ];
       trusted-public-keys = [
-        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
       ];
     };

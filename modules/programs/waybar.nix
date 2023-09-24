@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 let
   light = "${pkgs.light}/bin/light";
@@ -7,13 +7,14 @@ in
 {
   programs.waybar = {
     enable = true;
+    package = inputs.waybar.packages."${pkgs.system}".default;
 
     settings.mainBar = {
       layer = "top";
       position = "top";
       modules-left = [
         "custom/arch-pill"
-        "wlr/workspaces"
+        "hyprland/workspaces"
         "cpu"
         # "playerctl"
         "temperature"
@@ -38,23 +39,18 @@ in
         on-click = "${pkgs.wofi}/bin/wofi --show drun";
         tooltip = false;
       };
-      "wlr/workspaces" = {
+      "hyprland/workspaces" = {
         # format = "<span font='11'>{name}</span>";
         format = "<span font='13'>{icon}</span>";
         format-icons = {
           "1" = "";
           "2" = "";
-          # "3"="";
-          # "4"="";
-          # "5"="";
-          # "6"="";
-          # "7"="";
-          # "8"="";
-          # "9"="";
+          special = "󰈉";
         };
-        #all-outputs = true;
+        all-outputs = true;
         active-only = false;
         on-click = "activate";
+        show-special = true;
       };
       "cpu" = {
         interval = 5;

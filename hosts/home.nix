@@ -1,10 +1,8 @@
-{ config, user, pkgs, helix-flake, ... }:
+{ config, user, pkgs, ... }:
 
 {
   imports =
-    [ (import ../modules/desktop/hyprland/home.nix) ] ++
-    (import ../modules/programs) ++
-    (import ../modules/services/user);
+    (import ../modules/programs/home-default.nix);
 
   home = {
     username = "${user}";
@@ -20,6 +18,7 @@
       commitizen # Conventional commit messages
       asciinema # Terminal session recorder
       curlie # Nicer cli for `curl`
+      ripgrep # `grep` alternative
 
       xdg-user-dirs
       xdg-utils
@@ -35,7 +34,7 @@
       cinnamon.nemo # File manager
       google-chrome
       emote # Emoji picker
-      virt-manager # Gui for managing virtual machines
+      telegram-desktop
     ];
 
     pointerCursor = {
@@ -46,17 +45,17 @@
     };
 
     sessionVariables = {
-      # Real value of `SHELL` is set in the nixos config. This value is used only inside home-manager
+      # Possibilty of negative side-effects
       SHELL = "${pkgs.fish}/bin/fish";
       TERMINAL = "${pkgs.wezterm}/bin/wezterm";
-      EDITOR = "${helix-flake}/bin/hx";
-      VISUAL = "${config.home.sessionVariables.EDITOR}";
 
       # tldr
       TLDR_AUTO_UPDATE_DISABLED = "true";
     };
 
-    file.${config.home.sessionVariables.WALLPAPERS_DIR}.source = ../misc/Wallpapers;
+    file = {
+      ${config.home.sessionVariables.WALLPAPERS_DIR}.source = ../misc/Wallpapers;
+    };
 
     stateVersion = "22.11";
   };
@@ -80,7 +79,8 @@
 
   programs = {
     home-manager.enable = true;
-    exa.enable = true;
+    bash.enable = true;
+    eza.enable = true;
     bat = {
       enable = true;
       config = {
@@ -95,7 +95,7 @@
       defaultOptions = [
         "--height 40%"
         "--reverse"
-        "--preview '${pkgs.bat}/bin/bat {} 2>/dev/null || ${pkgs.exa}/bin/exa -a {}'"
+        "--preview '${pkgs.bat}/bin/bat {} 2>/dev/null || ${pkgs.eza}/bin/eza -a {}'"
         "-m"
       ];
       # TODO smart hidding. Some hidden files/dirs I need (.config, .gitignore), some - don't  (.cache, .cargo)
@@ -140,11 +140,6 @@
     # https://hoverbear.org/blog/declarative-gnome-configuration-in-nixos/
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
-    };
-    # https://nixos.wiki/wiki/Virt-manager
-    "org/virt-manager/virt-manager/connections" = {
-      autoconnect = [ "qemu:///system" ];
-      uris = [ "qemu:///system" ];
     };
   };
 

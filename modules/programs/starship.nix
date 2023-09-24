@@ -4,6 +4,7 @@
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
+    enableBashIntegration = false;
     settings = {
       # time.disabled = false;
       command_timeout = 3000;

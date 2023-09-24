@@ -7,9 +7,9 @@ in
 {
   environment = {
     loginShellInit = ''
-      if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
-        exec ${hyprland}
-      fi
+      # if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then
+      #   exec ${hyprland}
+      # fi
       # Set minimum brightness value
       ${light} -N 5
     '';
@@ -20,6 +20,9 @@ in
       wl-clipboard
       wl-clip-persist
     ];
+    sessionVariables = {
+      NIXOS_OZONE_WL = "1";
+    };
   };
 
   programs = {

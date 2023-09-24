@@ -9,6 +9,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     helix.url = "github:helix-editor/helix";
+    # TODO Remove this after 0.9.22
+    waybar = {
+      url = "github:Alexays/Waybar";
+      inputs.nixpkgs.follows = "nixpkgs";
+      flake = false;
+    };
   };
 
   outputs = inputs @ { nixpkgs, home-manager, ... }:

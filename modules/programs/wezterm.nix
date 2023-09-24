@@ -34,6 +34,8 @@
           { key = 'l', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Right' },
           { key = 'f', mods = 'SHIFT|ALT', action = act.TogglePaneZoomState },
           -- { key = 'd', mods = 'SHIFT|ALT', action = wezterm.action.ShowDebugOverlay },
+          { key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
+          { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },
         },
         -- color_scheme = "Sonokai (Gogh)",
         -- color_scheme = "Aura (Gogh)",

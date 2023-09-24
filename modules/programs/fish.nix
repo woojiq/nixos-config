@@ -12,10 +12,10 @@
         	cd (printf "%.s../" (seq $argv[1]));
         	ls
       '';
-      # `exa` with tree-like output
+      # `eza` with tree-like output
       lst =
         let
-          base = "${pkgs.exa}/bin/exa -Tl --git --no-permissions --git-ignore --icons -I=\".git\"";
+          base = "${pkgs.eza}/bin/eza -Tl --git --no-permissions --git-ignore --icons -I=\".git\"";
         in
         ''
           # Check if last argument is number (for -L argument)
