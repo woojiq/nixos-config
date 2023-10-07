@@ -1,7 +1,6 @@
 # https://github.com/nrdxp/nrdos/blob/f4160da8e16b71b3e92abd7ce038341a1946724a/src/hardware/profiles/optimus.nix
-{ ... }:
-{
-  services.xserver.videoDrivers = [ "nvidia" ];
+{...}: {
+  services.xserver.videoDrivers = ["nvidia"];
 
   hardware = {
     nvidia = {

@@ -1,9 +1,12 @@
-{ pkgs, user, options, ... }:
-
 {
+  pkgs,
+  user,
+  options,
+  ...
+}: {
   imports =
-    [ (import ./hardware-configuration.nix) ] ++
-    (import ../modules/programs/nix-default.nix);
+    [(import ./hardware-configuration.nix)]
+    ++ (import ../modules/programs/nix-default.nix);
 
   networking.networkmanager.enable = true;
 
@@ -12,7 +15,7 @@
   users = {
     users.${user} = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "networkmanager" "video" "audio" "docker" ];
+      extraGroups = ["wheel" "networkmanager" "video" "audio" "docker"];
     };
   };
 
@@ -29,7 +32,7 @@
     # Flicker-free (without text) graphical boot process
     consoleLogLevel = 0;
     initrd.verbose = false;
-    kernelParams = [ "quiet" "udev.log_level=3" ];
+    kernelParams = ["quiet" "udev.log_level=3"];
     plymouth.enable = true;
   };
 
@@ -43,6 +46,7 @@
     (nerdfonts.override {
       fonts = [
         "FiraCode"
+        "InconsolataLGC"
       ];
     })
     (google-fonts.override {
@@ -54,7 +58,7 @@
 
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
+    extraPortals = with pkgs; [xdg-desktop-portal-gtk];
   };
 
   services = {
@@ -87,11 +91,12 @@
               capslock = "overload(control, esc)";
               rightalt = "layer(rightalt)";
             };
-            rightalt = {
+            "rightalt:G" = {
               h = "left";
               j = "down";
               k = "up";
               l = "right";
+              leftalt = "capslock";
             };
           };
         };
@@ -106,7 +111,7 @@
     };
     opengl = {
       # Opengl is enabled by default by the window-managers modules, so you do not usually have to set it yourself
-      extraPackages = with pkgs; [ intel-media-driver ];
+      extraPackages = with pkgs; [intel-media-driver];
     };
   };
 
@@ -118,7 +123,7 @@
   };
 
   i18n = {
-    supportedLocales = options.i18n.supportedLocales.default ++ [ "uk_UA.UTF-8/UTF-8" ];
+    supportedLocales = options.i18n.supportedLocales.default ++ ["uk_UA.UTF-8/UTF-8"];
     extraLocaleSettings.LC_TIME = "en_GB.UTF-8";
   };
 
@@ -137,7 +142,7 @@
       dates = "weekly";
       options = "--delete-older-than 10d";
     };
-    nixPath = [ "nixpkgs=${pkgs.path}" ];
+    nixPath = ["nixpkgs=${pkgs.path}"];
     extraOptions = ''
       experimental-features = nix-command flakes
       # To protect your nix-shell against garbage collection
@@ -148,4 +153,3 @@
 
   system.stateVersion = "23.11";
 }
-

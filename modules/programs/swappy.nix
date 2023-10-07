@@ -1,13 +1,14 @@
-{ pkgs, config, ... }:
-
-let
+{
+  pkgs,
+  config,
+  ...
+}: let
   configIni = ''
     [Default]
     save_dir=${config.home.sessionVariables.SCREENSHOTS_DIR}
     early_exit=true
   '';
-in
-{
+in {
   home.packages = with pkgs; [
     swappy
   ];

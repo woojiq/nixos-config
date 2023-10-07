@@ -1,10 +1,11 @@
-{ pkgs, inputs, ... }:
-
-let
+{
+  pkgs,
+  inputs,
+  ...
+}: let
   light = "${pkgs.light}/bin/light";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
-in
-{
+in {
   programs.waybar = {
     enable = true;
     package = inputs.waybar.packages."${pkgs.system}".default;
@@ -132,7 +133,7 @@ in
         on-scroll-up = "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.01-";
         format = "{icon}  {volume}%";
         format-muted = "<span size='13000' foreground='#fab387'> </span>";
-        format-icons = [ "<span size='13000' foreground='#fab387'></span>" ];
+        format-icons = ["<span size='13000' foreground='#fab387'></span>"];
       };
       "backlight" = {
         "device" = "intel_backlight";

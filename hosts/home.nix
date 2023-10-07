@@ -1,8 +1,11 @@
-{ config, user, pkgs, ... }:
-
 {
+  config,
+  user,
+  pkgs,
+  ...
+}: {
   imports =
-    (import ../modules/programs/home-default.nix);
+    import ../modules/programs/home-default.nix;
 
   home = {
     username = "${user}";
@@ -17,7 +20,6 @@
       tldr # Simplified `man`
       commitizen # Conventional commit messages
       asciinema # Terminal session recorder
-      curlie # Nicer cli for `curl`
       ripgrep # `grep` alternative
 
       xdg-user-dirs
@@ -26,7 +28,7 @@
       # Developing
       ## Nix
       nil
-      nixpkgs-fmt
+      alejandra
 
       # Desktop application
       mpv # Media player
@@ -49,6 +51,8 @@
       SHELL = "${pkgs.fish}/bin/fish";
       TERMINAL = "${pkgs.wezterm}/bin/wezterm";
 
+      # Case-insensitive Less pager
+      LESS = "-i";
       # tldr
       TLDR_AUTO_UPDATE_DISABLED = "true";
     };
@@ -144,12 +148,16 @@
   };
 
   # Allows install unfree pkgs from `nix-shell` command
-  xdg.configFile."nixpkgs/config.nix".text = ''
-    {
-      # Enable searching for and installing unfree packages
-      allowUnfree = true;
-    }
-  '';
+  xdg.configFile = {
+    "nixpkgs/config.nix".text = ''
+      {
+        # Enable searching for and installing unfree packages
+        allowUnfree = true;
+      }
+    '';
+    # Enables pretty-printing rust in `gdb`
+    "gdb/gdbinit".text = "set auto-load safe-path /nix/store";
+  };
 
   xdg.userDirs = {
     enable = true;

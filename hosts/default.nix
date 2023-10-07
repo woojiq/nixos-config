@@ -1,6 +1,9 @@
-{ user, nixpkgs, home-manager, inputs }:
-
-let
+{
+  user,
+  nixpkgs,
+  home-manager,
+  inputs,
+}: let
   system = "x86_64-linux";
   pkgs = import nixpkgs {
     inherit system;
@@ -9,8 +12,7 @@ let
       (import ../overlays)
     ];
   };
-in
-{
+in {
   laptop = nixpkgs.lib.nixosSystem {
     inherit system;
     specialArgs = {
@@ -25,7 +27,6 @@ in
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
           inherit user pkgs inputs;
-          helix-flake = inputs.helix.packages.${system}.default;
         };
         home-manager.users.${user} = {
           imports = [

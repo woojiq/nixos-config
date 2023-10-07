@@ -1,6 +1,4 @@
-{ config, ... }:
-
-{
+{config, ...}: {
   programs.wezterm = {
     enable = true;
     extraConfig = ''
@@ -14,7 +12,7 @@
           { key = 't', mods = 'ALT', action = act.SpawnTab 'CurrentPaneDomain' },
           { key = 'Tab', mods = 'CTRL', action = act.ActivateTabRelative(1) },
           { key = 'Tab', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(-1) },
-          { key = 'c', mods = 'CTRL|SHIFT', action = wezterm.action.CopyTo 'ClipboardAndPrimarySelection' },
+          { key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo 'ClipboardAndPrimarySelection' },
           { key = 'v', mods = 'CTRL', action = act.PasteFrom 'Clipboard' },
           { key = '1', mods = 'ALT', action = act.ActivateTab(0) },
           { key = '2', mods = 'ALT', action = act.ActivateTab(1) },
@@ -33,7 +31,7 @@
           { key = 'k', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Up' },
           { key = 'l', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Right' },
           { key = 'f', mods = 'SHIFT|ALT', action = act.TogglePaneZoomState },
-          -- { key = 'd', mods = 'SHIFT|ALT', action = wezterm.action.ShowDebugOverlay },
+          -- { key = 'd', mods = 'SHIFT|ALT', action = act.ShowDebugOverlay },
           { key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
           { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },
         },
@@ -50,6 +48,8 @@
         -- window_background_image_hsb = { brightness = 0.07 },
         -- warn_about_missing_glyphs = false,
         -- enable_kitty_keyboard = true,
+        font = wezterm.font 'Inconsolata LGC Nerd Font Mono',
+        font_size = 11.4,
       }
     '';
 

@@ -3,10 +3,13 @@
 # * Install spice guest tools
 # * [Setup shared folders](https://www.debugpoint.com/kvm-share-folder-windows-guest/)
 # * [Setup VFIO (untested)](https://astrid.tech/2022/09/22/0/nixos-gpu-vfio/)
-{ user, pkgs, ... }:
 {
+  user,
+  pkgs,
+  ...
+}: {
   users = {
-    users.${user}.extraGroups = [ "libvirtd" ];
+    users.${user}.extraGroups = ["libvirtd"];
   };
 
   environment.systemPackages = with pkgs; [
@@ -22,7 +25,7 @@
         swtpm.enable = true;
         ovmf = {
           enable = true;
-          packages = [ pkgs.OVMFFull.fd ];
+          packages = [pkgs.OVMFFull.fd];
         };
       };
     };

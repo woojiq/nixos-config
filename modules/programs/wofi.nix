@@ -1,6 +1,8 @@
-{ pkgs, config, ... }:
-
-let
+{
+  pkgs,
+  config,
+  ...
+}: let
   wofiSettings = {
     xoffset = 710;
     yoffset = 275;
@@ -61,7 +63,7 @@ let
     margin: 5px;
     border: none;
     color: #c0caf5;
-    } 
+    }
 
     #entry:selected {
     	background-color: #414868;
@@ -73,8 +75,7 @@ let
     	font-weight: normal;
     }
   '';
-in
-{
+in {
   programs.wofi = {
     enable = true;
     settings = wofiSettings;

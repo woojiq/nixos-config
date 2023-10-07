@@ -1,10 +1,7 @@
-{ pkgs, ... }:
-
-let
+{pkgs, ...}: let
   light = "${pkgs.light}/bin/light";
   hyprland = "${pkgs.hyprland}/bin/Hyprland";
-in
-{
+in {
   environment = {
     loginShellInit = ''
       # if [ -z $DISPLAY ] && [ "$(tty)" = "/dev/tty1" ]; then

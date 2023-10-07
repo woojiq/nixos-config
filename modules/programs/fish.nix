@@ -1,45 +1,47 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   programs.fish = {
     enable = true;
+    shellAbbrs = {
+      nish = "nix-shell --run fish -p";
+      tnix = "sudo nixos-rebuild test --flake .#laptop";
+      snix = "sudo nixos-rebuild switch --flake .#laptop";
+    };
     functions = {
       # `cd ..` multiple times
       up = ''
-        	if not set -q argv[1]
-        		set argv[1] 1
-        	end
-        	cd (printf "%.s../" (seq $argv[1]));
-        	ls
+        if not set -q argv[1]
+        	set argv[1] 1
+        end
+        cd (printf "%.s../" (seq $argv[1]));
+        ls
       '';
       # `eza` with tree-like output
-      lst =
-        let
-          base = "${pkgs.eza}/bin/eza -Tl --git --no-permissions --git-ignore --icons -I=\".git\"";
-        in
-        ''
-          # Check if last argument is number (for -L argument)
-          # https://stackoverflow.com/a/56615368/17903686
-          math "0+$argv[-1]" 2>/dev/null
-          if test $status -ne 0
-            ${base} $argv
-          else
-            ${base} $argv[1..-2] -L $argv[-1]
-          end
-        '';
+      lst = let
+        base = "${pkgs.eza}/bin/eza -Tl --git --no-permissions --git-ignore --icons -I=\".git\"";
+      in ''
+        # Check if last argument is number (for -L argument)
+        # https://stackoverflow.com/a/56615368/17903686
+        math "0+$argv[-1]" 2&>/dev/null
+        if test $status -ne 0
+          ${base} $argv
+        else
+          ${base} $argv[1..-2] -L $argv[-1]
+        end
+      '';
       # `mkdir` + `cd`
       mkcd = ''
-        	mkdir $argv[1]
-        	cd $argv[1]
+        mkdir $argv[1]
+        cd $argv[1]
       '';
       # https://fishshell.com/docs/current/interactive.html#programmable-title
       fish_title = ''
         if test -z $argv[1]
           prompt_pwd
         else
-          echo $argv[1] 
+          echo $argv[1]
         end
       '';
+      # Remove `Ctrl-d` bindings to avoid accidentally closing a shell when the pager is not present
       fish_user_key_bindings = ''
         bind --erase --mode insert --preset \cd
         bind --erase --mode visual --preset \cd

@@ -1,6 +1,4 @@
-{ ... }:
-
-{
+{...}: {
   programs.starship = {
     enable = true;
     enableFishIntegration = true;
@@ -16,6 +14,12 @@
         vimcmd_replace_symbol = "[](bold purple) ";
         vimcmd_visual_symbol = "[](bold yellow) ";
       };
+
+      git_status = {
+        untracked = "";
+        ignore_submodules = true;
+      };
+
       aws.symbol = "  ";
       buf.symbol = " ";
       c.symbol = " ";

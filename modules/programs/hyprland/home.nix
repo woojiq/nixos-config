@@ -1,6 +1,9 @@
-{ pkgs, config, lib, ... }:
-
-let
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}: let
   browser = "${pkgs.google-chrome}/bin/google-chrome-stable";
   terminal = "${config.home.sessionVariables.TERMINAL}";
   bar = "${config.programs.waybar.package}/bin/waybar";
@@ -18,8 +21,8 @@ let
   systemctl = "${pkgs.systemd}/bin/systemctl";
   awk = "${pkgs.gawk}/bin/awk";
   wl-clip-persist = lib.getExe pkgs.wl-clip-persist;
-in
-let
+  blueman-applet = "${pkgs.blueman}/bin/blueman-applet";
+in let
   getVolumeScript = pkgs.writeShellScript "get-volume-script" ''
     ans=$(${wpctl} get-volume @DEFAULT_AUDIO_SINK@)
     if echo "$ans" | grep -q MUTED; then
@@ -28,11 +31,11 @@ let
       echo "$ans" | ${awk} -F': ' '{printf "%.0f\n", $2*100}'
     fi
   '';
-in
-let
+in let
   # Pseudo Alt-Tab with dmenu: https://github.com/hyprwm/Hyprland/discussions/830#discussioncomment-3868467
   hyprlandConf = ''
     exec-once = ${bar}
+    exec-once = ${blueman-applet}
     exec-once = ${emote}
     exec-once = ${wl-clip-persist} --clipboard regular
 
@@ -125,15 +128,15 @@ let
     bind = $mainMod, 9, workspace, 9
     bind = $mainMod, 0, togglespecialworkspace,
 
-    bind = $shiftMod, 1, movetoworkspace, 1 
-    bind = $shiftMod, 2, movetoworkspace, 2 
-    bind = $shiftMod, 3, movetoworkspace, 3 
-    bind = $shiftMod, 4, movetoworkspace, 4 
-    bind = $shiftMod, 5, movetoworkspace, 5 
-    bind = $shiftMod, 6, movetoworkspace, 6 
-    bind = $shiftMod, 7, movetoworkspace, 7 
-    bind = $shiftMod, 8, movetoworkspace, 8 
-    bind = $shiftMod, 9, movetoworkspacesilent, 9 
+    bind = $shiftMod, 1, movetoworkspace, 1
+    bind = $shiftMod, 2, movetoworkspace, 2
+    bind = $shiftMod, 3, movetoworkspace, 3
+    bind = $shiftMod, 4, movetoworkspace, 4
+    bind = $shiftMod, 5, movetoworkspace, 5
+    bind = $shiftMod, 6, movetoworkspace, 6
+    bind = $shiftMod, 7, movetoworkspace, 7
+    bind = $shiftMod, 8, movetoworkspace, 8
+    bind = $shiftMod, 9, movetoworkspacesilent, 9
     bind = $shiftMod, 0, movetoworkspace, special
     bind = $shiftMod, right, movetoworkspace, +1
     bind = $shiftMod, left, movetoworkspace, -1
@@ -169,8 +172,7 @@ let
     # Wrong telegram scale after opening tg image/video viewer: https://github.com/hyprwm/Hyprland/issues/839
     windowrulev2=float,class:^(org.telegram.desktop|telegramdesktop)$,title:^(Media viewer)$
   '';
-in
-{
+in {
   wayland.windowManager.hyprland = {
     enable = true;
     # TODO use settings instead of extraConfig
@@ -182,8 +184,15 @@ in
     swayidle = {
       enable = true;
       timeouts = [
-        { timeout = 600; command = "${hyprctl} dispatch dpms off"; resumeCommand = "${hyprctl} dispatch dpms on"; }
-        { timeout = 1800; command = "${systemctl} poweroff"; }
+        {
+          timeout = 600;
+          command = "${hyprctl} dispatch dpms off";
+          resumeCommand = "${hyprctl} dispatch dpms on";
+        }
+        {
+          timeout = 1800;
+          command = "${systemctl} poweroff";
+        }
       ];
       systemdTarget = "hyprland-session.target";
     };

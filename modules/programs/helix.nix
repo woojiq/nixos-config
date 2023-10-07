@@ -1,6 +1,11 @@
-{ config, helix-flake, ... }:
-
 {
+  config,
+  inputs,
+  pkgs,
+  ...
+}: let
+  helix-flake = inputs.helix.packages.${pkgs.system}.default;
+in {
   home.sessionVariables = {
     EDITOR = "${helix-flake}/bin/hx";
     VISUAL = "${config.home.sessionVariables.EDITOR}";
@@ -12,16 +17,16 @@
     settings = {
       editor = {
         line-number = "relative";
-        shell = [ "${config.home.sessionVariables.SHELL}" "-c" ];
+        shell = ["${config.home.sessionVariables.SHELL}" "-c"];
         bufferline = "multiple";
         idle-timeout = 20;
         color-modes = true;
         cursor-shape.insert = "underline";
         scrolloff = 3;
         statusline = {
-          left = [ "mode" "spinner" "spacer" "version-control" "read-only-indicator" ];
-          center = [ "file-name" "file-modification-indicator" "spacer" "diagnostics" ];
-          right = [ "selections" "position-percentage" "position" "file-encoding" "file-type" ];
+          left = ["mode" "spinner" "spacer" "version-control" "read-only-indicator"];
+          center = ["file-name" "file-modification-indicator" "spacer" "diagnostics"];
+          right = ["selections" "position-percentage" "position" "file-encoding" "file-type"];
         };
         lsp = {
           display-signature-help-docs = false;
@@ -91,43 +96,65 @@
         };
         pyright-langserver = {
           command = "pyright-langserver";
-          args = [ "--stdio" ];
-          config = { };
+          args = ["--stdio"];
+          config = {};
         };
       };
       language = [
         {
           name = "python";
-          roots = [ "pyproject.toml" ];
-          language-servers = [ "pyright-langserver" ];
-          formatter = { command = "black"; args = [ "--quiet" "-" ]; };
+          roots = ["pyproject.toml"];
+          language-servers = ["pyright-langserver"];
+          formatter = {
+            command = "black";
+            args = ["--quiet" "-"];
+          };
           auto-format = true;
         }
         {
           name = "nix";
           auto-format = true;
-          formatter = { command = "nixpkgs-fmt"; args = [ ]; };
+          formatter = {
+            command = "alejandra";
+            args = [];
+          };
         }
         {
           name = "javascript";
-          formatter = { command = "prettier"; args = [ "--parser" "typescript" ]; };
+          formatter = {
+            command = "prettier";
+            args = ["--parser" "typescript"];
+          };
           auto-format = true;
         }
         {
           name = "typescript";
-          formatter = { command = "prettier"; args = [ "--parser" "typescript" ]; };
+          formatter = {
+            command = "prettier";
+            args = ["--parser" "typescript"];
+          };
           auto-format = true;
         }
         {
           name = "html";
-          formatter = { command = "prettier"; args = [ "--parser" "html" ]; };
+          formatter = {
+            command = "prettier";
+            args = ["--parser" "html"];
+          };
         }
       ];
     };
     themes = {
       github_dark_dimmed_custom = {
         inherits = "github_dark_dimmed";
-        "ui.virtual.ruler" = { bg = "scale.gray.8"; };
+        "ui.virtual.ruler" = {bg = "scale.gray.8";};
+
+        # Less colors pls <3
+        "operator" = "fg.default";
+        "variable.parameter" = "fg.default";
+        "variable.other.member" = "scale.purple.1";
+        "string" = "#d6dde3";
+        "type" = "fg.default";
       };
       sonokai-custom = {
         inherits = "sonokai";
@@ -135,16 +162,22 @@
           fg = "grey_dim";
         };
         # "ui.statusline.normal" = { fg = "bg0"; bg = "bg_blue"; }; # Noisy when scrolling through code
-        "ui.statusline.insert" = { fg = "bg0"; bg = "bg_green"; };
-        "ui.statusline.select" = { fg = "bg0"; bg = "bg_red"; };
+        "ui.statusline.insert" = {
+          fg = "bg0";
+          bg = "bg_green";
+        };
+        "ui.statusline.select" = {
+          fg = "bg0";
+          bg = "bg_red";
+        };
       };
       sonokai-transparent = {
         inherits = "sonokai-custom";
-        "ui.background" = { };
-        "ui.statusline" = { };
-        "ui.statusline.inacative" = { };
-        "ui.bufferline" = { };
-        "ui.bufferline.active" = { bg = "bg1"; };
+        "ui.background" = {};
+        "ui.statusline" = {};
+        "ui.statusline.inacative" = {};
+        "ui.bufferline" = {};
+        "ui.bufferline.active" = {bg = "bg1";};
       };
     };
   };

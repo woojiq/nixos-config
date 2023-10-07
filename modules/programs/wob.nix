@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-let
+{pkgs, ...}: let
   config = ''
     anchor = top left
     margin = 10
@@ -14,8 +12,7 @@ let
     border_size = 1
     border_color = efe3e3
   '';
-in
-{
+in {
   home.packages = with pkgs; [
     wob
   ];
