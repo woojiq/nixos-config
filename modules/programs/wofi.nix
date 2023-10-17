@@ -14,11 +14,6 @@
     prompt = "";
     allow_images = true;
     term = "${config.home.sessionVariables.TERMINAL}";
-
-    # key_down = "Tab";
-    # key_up = "ISO_LEFT_TAB";
-    # key_forward = "";
-    # key_backward = "";
   };
 
   wofiStyle = ''
@@ -87,7 +82,7 @@ in {
       executable = true;
       text = ''
         # https://github.com/MatthiasBenaets/nixos-config/blob/9e799904e74d43a2c0ad1a8b6ac4db86993bf2dd/modules/programs/wofi.nix#L18
-        entries="⏾  Suspend\n⭮  Reboot\n⏻  Shutdown"
+        entries="⏾  Suspend\n⭮  Reboot\n⏼  Hibernate\n⏻  Shutdown"
         selected=$(echo -e $entries|${pkgs.wofi}/bin/wofi --dmenu --cache-file /dev/null --height 20% | awk '{print tolower($2)}')
 
         case $selected in
@@ -95,6 +90,8 @@ in {
             exec systemctl suspend;;
           reboot)
             exec systemctl reboot;;
+          hibernate)
+            exec systemctl hibernate;;
           shutdown)
             exec systemctl poweroff -i;;
         esac

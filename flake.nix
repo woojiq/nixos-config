@@ -10,8 +10,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     helix = {
-      # url = "github:helix-editor/helix";
-      url = "github:pascalkuthe/helix/event_system";
+      url = "github:helix-editor/helix";
+      # url = "github:pascalkuthe/helix/event_system";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # TODO Remove this after 0.9.22

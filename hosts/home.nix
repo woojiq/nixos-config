@@ -14,10 +14,10 @@
     packages = with pkgs; [
       # CLI
       unzip
+      file
       neofetch # System info
       fd # `find` alternative
       tokei # Code statistics
-      tldr # Simplified `man`
       commitizen # Conventional commit messages
       asciinema # Terminal session recorder
       ripgrep # `grep` alternative
@@ -37,6 +37,10 @@
       google-chrome
       emote # Emoji picker
       telegram-desktop
+      obs-studio
+      # TODO add gnome.pomodoro to drv and manage PATH somehow
+      gnome.pomodoro
+      i3-gnome-pomodoro
     ];
 
     pointerCursor = {
@@ -52,13 +56,11 @@
       TERMINAL = "${pkgs.wezterm}/bin/wezterm";
 
       # Case-insensitive Less pager
-      LESS = "-i";
-      # tldr
-      TLDR_AUTO_UPDATE_DISABLED = "true";
+      LESS = "-iR";
     };
 
     file = {
-      ${config.home.sessionVariables.WALLPAPERS_DIR}.source = ../misc/Wallpapers;
+      ${config.home.sessionVariables.WALLPAPERS_DIR}.source = ../misc/wallpapers;
     };
 
     stateVersion = "22.11";
@@ -107,6 +109,7 @@
       defaultCommand = "${pkgs.fd}/bin/fd -tf -tl . \\$dir | sed 's@^\./@@'";
       fileWidgetCommand = "${config.programs.fzf.defaultCommand}";
     };
+    tealdeer.enable = true;
 
     direnv = {
       enable = true;
@@ -148,21 +151,24 @@
   };
 
   # Allows install unfree pkgs from `nix-shell` command
-  xdg.configFile = {
-    "nixpkgs/config.nix".text = ''
-      {
-        # Enable searching for and installing unfree packages
-        allowUnfree = true;
-      }
-    '';
-    # Enables pretty-printing rust in `gdb`
-    "gdb/gdbinit".text = "set auto-load safe-path /nix/store";
+  xdg = {
+    configFile = {
+      "nixpkgs/config.nix".text = ''
+        {
+          # Enable searching for and installing unfree packages
+          allowUnfree = true;
+        }
+      '';
+      # Enables pretty-printing rust in `gdb`
+      "gdb/gdbinit".text = "set auto-load safe-path /nix/store";
+    };
   };
 
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
     desktop = null; # `nemo` will anyway create this folder.
+    documents = "${config.home.homeDirectory}/docs";
     music = null;
     publicShare = null;
     templates = null;
@@ -170,7 +176,7 @@
     extraConfig = {
       SCREENSHOTS_DIR = "${config.home.homeDirectory}/Pictures/Screenshots";
       WALLPAPERS_DIR = "${config.home.homeDirectory}/Pictures/Wallpapers";
-      HACKS_DIR = "${config.home.homeDirectory}/Hacks";
+      CODE_DIR = "${config.home.homeDirectory}/code";
     };
   };
 }

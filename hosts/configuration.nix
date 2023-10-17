@@ -32,9 +32,21 @@
     # Flicker-free (without text) graphical boot process
     consoleLogLevel = 0;
     initrd.verbose = false;
-    kernelParams = ["quiet" "udev.log_level=3"];
+    kernelParams = ["quiet" "udev.log_level=3" "resume_offset=151552"];
     plymouth.enable = true;
+    # Configure hibernation (resume_offset cannot be precalculated on fresh system):
+    # https://discourse.nixos.org/t/is-it-possible-to-hibernate-with-swap-file/2852
+    # Calculate offset on swap file using:
+    # filefrag -v /var/swapfile | awk '{if($1=="0:"){print $4}}'
+    resumeDevice = "/dev/disk/by-label/nixos";
   };
+
+  swapDevices = [
+    {
+      device = "/var/swapfile";
+      size = 1024 * 20;
+    }
+  ];
 
   security = {
     sudo.wheelNeedsPassword = false;
@@ -72,35 +84,9 @@
     };
     gvfs.enable = true; # https://nixos.wiki/wiki/Nautilus
     blueman.enable = true;
-    # TODO: Add this to the startup script (declarative-like setup)
-    # flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-    # flatpak install flathub com.obsproject.Studio
-    flatpak.enable = true;
     # Don't see any difference actually
     thermald = {
       enable = true;
-    };
-
-    # Chad moment: https://github.com/NixOS/nixpkgs/pull/221321
-    keyd = {
-      enable = true;
-      keyboards = {
-        default = {
-          settings = {
-            main = {
-              capslock = "overload(control, esc)";
-              rightalt = "layer(rightalt)";
-            };
-            "rightalt:G" = {
-              h = "left";
-              j = "down";
-              k = "up";
-              l = "right";
-              leftalt = "capslock";
-            };
-          };
-        };
-      };
     };
   };
 
@@ -110,8 +96,10 @@
       settings.General.Experimental = true; # Device battery status: https://askubuntu.com/a/1420501
     };
     opengl = {
-      # Opengl is enabled by default by the window-managers modules, so you do not usually have to set it yourself
-      extraPackages = with pkgs; [intel-media-driver];
+      enable = true;
+      extraPackages = with pkgs; [
+        intel-media-driver
+      ];
     };
   };
 

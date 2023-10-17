@@ -99,6 +99,10 @@ in {
           args = ["--stdio"];
           config = {};
         };
+        emmet-ls = {
+          command = "emmet-ls";
+          args = ["--stdio"];
+        };
       };
       language = [
         {
@@ -137,6 +141,7 @@ in {
         }
         {
           name = "html";
+          language-servers = ["vscode-html-language-server" "emmet-ls"];
           formatter = {
             command = "prettier";
             args = ["--parser" "html"];

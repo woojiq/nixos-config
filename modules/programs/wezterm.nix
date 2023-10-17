@@ -7,7 +7,6 @@
       return {
         disable_default_key_bindings = true,
         keys = {
-          -- TODO move tab with mouse :)
           { key = 'q', mods = 'ALT|SHIFT', action = act.CloseCurrentPane { confirm = false } },
           { key = 't', mods = 'ALT', action = act.SpawnTab 'CurrentPaneDomain' },
           { key = 'Tab', mods = 'CTRL', action = act.ActivateTabRelative(1) },
@@ -30,13 +29,11 @@
           { key = 'j', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Down' },
           { key = 'k', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Up' },
           { key = 'l', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Right' },
-          { key = 'f', mods = 'SHIFT|ALT', action = act.TogglePaneZoomState },
+          { key = 'm', mods = 'SHIFT|ALT', action = act.TogglePaneZoomState },
           -- { key = 'd', mods = 'SHIFT|ALT', action = act.ShowDebugOverlay },
           { key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
           { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },
         },
-        -- color_scheme = "Sonokai (Gogh)",
-        -- color_scheme = "Aura (Gogh)",
         color_scheme = "github_dark_dimmed",
         default_prog = { '${config.home.sessionVariables.SHELL}', '-l' },
         cursor_blink_rate = 0,
@@ -44,12 +41,8 @@
         hide_mouse_cursor_when_typing = false,
         force_reverse_video_cursor = true,
         inactive_pane_hsb = { brightness = 0.7 },
-        -- window_background_image = '${config.home.sessionVariables.WALLPAPERS_DIR}/1.png',
-        -- window_background_image_hsb = { brightness = 0.07 },
-        -- warn_about_missing_glyphs = false,
-        -- enable_kitty_keyboard = true,
         font = wezterm.font 'Inconsolata LGC Nerd Font Mono',
-        font_size = 11.4,
+        -- font_size = 11.4,
       }
     '';
 

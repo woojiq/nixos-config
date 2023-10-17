@@ -1,15 +1,14 @@
 [
-  ./helix.nix
-  ./starship.nix
-  ./wofi.nix
-  ./git.nix
-  ./starship.nix
-  ./swappy.nix
-  ./fish.nix
-  ./wezterm.nix
-  ./virt-manager/home.nix
   ./dunst.nix
+  ./fish.nix
+  ./git.nix
+  ./helix.nix
   ./hyprland/home.nix
-  ./wob.nix
+  ./starship/home.nix
+  ./swappy.nix
+  ./virt-manager/home.nix
   ./waybar.nix
+  ./wezterm.nix
+  ./wob.nix
+  ./wofi.nix
 ]

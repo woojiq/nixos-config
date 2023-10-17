@@ -3,6 +3,7 @@
 * Use nix-colors module ??? 🤔.
 * Change VT-colors using `setvtrgb`.
 * Chrome sometimes is not hardware accelerated.
+* Understand nix holistically (one week deep dive; package multiple apps/libs by myself; create multiple services, etc).
 
 # Gallery
 ![Desktop image](./misc/preview.png)

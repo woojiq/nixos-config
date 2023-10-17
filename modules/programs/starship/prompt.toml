@@ -1,0 +1,13 @@
+command_timeout = 3000
+
+[character]
+error_symbol = "[](red) "
+success_symbol = "[](purple) "
+vimcmd_replace_one_symbol = "[](blue) "
+vimcmd_replace_symbol = "[](blue) "
+vimcmd_symbol = "[](green) "
+vimcmd_visual_symbol = "[](yellow) "
+
+[git_status]
+ignore_submodules = true
+untracked = " "

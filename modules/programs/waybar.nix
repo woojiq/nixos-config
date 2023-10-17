@@ -5,6 +5,8 @@
 }: let
   light = "${pkgs.light}/bin/light";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
+  i3-pomodoro = "${pkgs.i3-gnome-pomodoro}/bin/i3-gnome-pomodoro";
+  gnome-pomodoro = "${pkgs.gnome.pomodoro}/bin/gnome-pomodoro";
 in {
   programs.waybar = {
     enable = true;
@@ -21,6 +23,7 @@ in {
         "temperature"
         "backlight"
         "idle_inhibitor"
+        "custom/pomodoro"
       ];
       modules-center = [
         "tray"
@@ -155,6 +158,16 @@ in {
           "activated" = " ";
           "deactivated" = " ";
         };
+      };
+      "custom/pomodoro" = {
+        exec = ''
+          ${i3-pomodoro} status --format=waybar --no-seconds \
+          --icon-text "<span foreground='#eba0ac'></span>" --always
+        '';
+        return-type = "json";
+        interval = 10;
+        on-click = "${i3-pomodoro} start";
+        on-click-right = "${gnome-pomodoro}";
       };
       "clock" = {
         # https://github.com/Alexays/Waybar/wiki/Module:-Clock#example
@@ -302,6 +315,7 @@ in {
         background-color: @rosewater;
       }
 
+      #custom-pomodoro,
       #wireplumber,
       #pulseaudio,
       #cpu,

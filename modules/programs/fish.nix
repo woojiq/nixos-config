@@ -5,6 +5,7 @@
       nish = "nix-shell --run fish -p";
       tnix = "sudo nixos-rebuild test --flake .#laptop";
       snix = "sudo nixos-rebuild switch --flake .#laptop";
+      chrome = "google-chrome-stable";
     };
     functions = {
       # `cd ..` multiple times
@@ -50,7 +51,7 @@
     };
 
     shellInit = ''
-      fish_vi_key_bindings
+      # fish_vi_key_bindings
       set -U fish_greeting ""
     '';
   };

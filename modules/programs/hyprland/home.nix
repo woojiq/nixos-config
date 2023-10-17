@@ -99,7 +99,6 @@ in let
     }
 
     misc {
-    #   force_hypr_chan = true
       focus_on_activate = true
     }
 
@@ -137,7 +136,7 @@ in let
     bind = $shiftMod, 7, movetoworkspace, 7
     bind = $shiftMod, 8, movetoworkspace, 8
     bind = $shiftMod, 9, movetoworkspacesilent, 9
-    bind = $shiftMod, 0, movetoworkspace, special
+    bind = $shiftMod, 0, movetoworkspacesilent, special
     bind = $shiftMod, right, movetoworkspace, +1
     bind = $shiftMod, left, movetoworkspace, -1
 

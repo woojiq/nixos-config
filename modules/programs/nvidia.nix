@@ -16,10 +16,4 @@
       };
     };
   };
-
-  programs = {
-    steam = {
-      enable = false;
-    };
-  };
 }
