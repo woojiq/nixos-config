@@ -6,7 +6,7 @@
 }: let
   browser = "${pkgs.google-chrome}/bin/google-chrome-stable";
   terminal = "${config.home.sessionVariables.TERMINAL}";
-  bar = "${config.programs.waybar.package}/bin/waybar";
+  bar = "${pkgs.waybar}/bin/waybar";
   wofi = "${pkgs.wofi}/bin/wofi";
   wob = "${pkgs.wob}/bin/wob";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
@@ -23,17 +23,27 @@
   wl-clip-persist = lib.getExe pkgs.wl-clip-persist;
   blueman-applet = "${pkgs.blueman}/bin/blueman-applet";
 in let
-  getVolumeScript = pkgs.writeShellScript "get-volume-script" ''
-    ans=$(${wpctl} get-volume @DEFAULT_AUDIO_SINK@)
-    if echo "$ans" | grep -q MUTED; then
-      echo 0
-    else
-      echo "$ans" | ${awk} -F': ' '{printf "%.0f\n", $2*100}'
-    fi
-  '';
-in let
   # Pseudo Alt-Tab with dmenu: https://github.com/hyprwm/Hyprland/discussions/830#discussioncomment-3868467
-  hyprlandConf = ''
+  hyprlandConf = let
+    getVolumeScript = pkgs.writeShellScript "get-volume-script" ''
+      ans=$(${wpctl} get-volume @DEFAULT_AUDIO_SINK@)
+      if echo "$ans" | grep -q MUTED; then
+        echo 0
+      else
+        echo "$ans" | ${awk} -F': ' '{printf "%.0f\n", $2*100}'
+      fi
+    '';
+
+    doubleMove = {
+      num,
+      dir ? "r",
+    }: "${hyprctl} dispatch movetoworkspace ${toString num} && ${hyprctl} dispatch movewindow ${dir}";
+
+    genBind = mod: cmd: l: r:
+      lib.concatMapStringsSep "\n" (
+        i: "bind = ${mod}, ${toString i}, ${cmd}, ${toString i}"
+      ) (lib.lists.range l r);
+  in ''
     exec-once = ${bar}
     exec-once = ${blueman-applet}
     exec-once = ${emote}
@@ -100,13 +110,15 @@ in let
 
     misc {
       focus_on_activate = true
+      disable_hyprland_logo = true
+      disable_splash_rendering = true
     }
 
     bind = $mainMod, q, killactive
     bind = $mainMod, m, fullscreen, 1
     bind = $mainMod, f, togglefloating
     bind = $mainMod, p, pin
-    bind = $mainMod, d, exec, ${wofi} --show drun
+    bind = $mainMod, d, exec, ${wofi} --show drun | xargs -Ioutput hyprctl dispatch exec output
     bind = $shiftMod, d, exec, ${wofi} --show run
     bind = $mainMod, t, exec, ${terminal}
     bind = $mainMod, b, exec, ${browser}
@@ -116,25 +128,11 @@ in let
 
     bind = $altMod, Tab, focuscurrentorlast
 
-    bind = $mainMod, 1, workspace, 1
-    bind = $mainMod, 2, workspace, 2
-    bind = $mainMod, 3, workspace, 3
-    bind = $mainMod, 4, workspace, 4
-    bind = $mainMod, 5, workspace, 5
-    bind = $mainMod, 6, workspace, 6
-    bind = $mainMod, 7, workspace, 7
-    bind = $mainMod, 8, workspace, 8
-    bind = $mainMod, 9, workspace, 9
+    ${genBind "$mainMod" "workspace" 1 9}
     bind = $mainMod, 0, togglespecialworkspace,
 
-    bind = $shiftMod, 1, movetoworkspace, 1
-    bind = $shiftMod, 2, movetoworkspace, 2
-    bind = $shiftMod, 3, movetoworkspace, 3
-    bind = $shiftMod, 4, movetoworkspace, 4
-    bind = $shiftMod, 5, movetoworkspace, 5
-    bind = $shiftMod, 6, movetoworkspace, 6
-    bind = $shiftMod, 7, movetoworkspace, 7
-    bind = $shiftMod, 8, movetoworkspace, 8
+    bind = $shiftMod, 1, exec, ${doubleMove {num = 1;}}
+    ${genBind "$shiftMod" "movetoworkspace" 2 8}
     bind = $shiftMod, 9, movetoworkspacesilent, 9
     bind = $shiftMod, 0, movetoworkspacesilent, special
     bind = $shiftMod, right, movetoworkspace, +1
@@ -170,6 +168,8 @@ in let
     windowrulev2 = noborder, class:^(jetbrains-idea)(.*)$
     # Wrong telegram scale after opening tg image/video viewer: https://github.com/hyprwm/Hyprland/issues/839
     windowrulev2=float,class:^(org.telegram.desktop|telegramdesktop)$,title:^(Media viewer)$
+
+    windowrulev2=float,class:^(gnome-pomodoro)$
   '';
 in {
   wayland.windowManager.hyprland = {
@@ -190,7 +190,9 @@ in {
         }
         {
           timeout = 1800;
-          command = "${systemctl} poweroff";
+          # TODO make script to lock screen before hibernation.
+          # And use it in wofi module too.
+          command = "${systemctl} hibernate";
         }
       ];
       systemdTarget = "hyprland-session.target";

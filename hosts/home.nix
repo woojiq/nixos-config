@@ -2,6 +2,7 @@
   config,
   user,
   pkgs,
+  inputs,
   ...
 }: {
   imports =
@@ -21,6 +22,9 @@
       commitizen # Conventional commit messages
       asciinema # Terminal session recorder
       ripgrep # `grep` alternative
+      ## Networking
+      tcpdump
+      traceroute
 
       xdg-user-dirs
       xdg-utils
@@ -63,6 +67,8 @@
       ${config.home.sessionVariables.WALLPAPERS_DIR}.source = ../misc/wallpapers;
     };
 
+    shellAliases.wping = "sudo ${inputs.wping.packages.${pkgs.system}.default}";
+
     stateVersion = "22.11";
   };
 
@@ -87,21 +93,14 @@
     home-manager.enable = true;
     bash.enable = true;
     eza.enable = true;
-    bat = {
-      enable = true;
-      config = {
-        color = "always";
-      };
-    };
-    zoxide = {
-      enable = true;
-    };
+    bat.enable = true;
+    zoxide.enable = true;
     fzf = {
       enable = true;
       defaultOptions = [
         "--height 40%"
         "--reverse"
-        "--preview '${pkgs.bat}/bin/bat {} 2>/dev/null || ${pkgs.eza}/bin/eza -a {}'"
+        "--preview '${pkgs.bat}/bin/bat -f {} -f 2>/dev/null || ${pkgs.eza}/bin/eza -a {}'"
         "-m"
       ];
       # TODO smart hidding. Some hidden files/dirs I need (.config, .gitignore), some - don't  (.cache, .cargo)
@@ -115,21 +114,18 @@
       enable = true;
       nix-direnv.enable = true;
     };
-    fish.shellInit = ''
-      # Disable noise from direnv
-      set -x DIRENV_LOG_FORMAT ""
-    '';
+    fish = {
+      shellInit = ''
+        # Disable noise from direnv
+        set -x DIRENV_LOG_FORMAT ""
+      '';
+    };
 
     bottom.enable = true;
-    gh = {
-      enable = true;
-    };
     command-not-found.enable = false;
-    nix-index = {
-      enable = true;
-      enableFishIntegration = true;
-    };
+    nix-index.enable = true;
     firefox.enable = true;
+    foot.enable = true;
   };
 
   services = {

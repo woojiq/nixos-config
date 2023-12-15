@@ -1,20 +1,15 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: let
+{pkgs, ...}: let
   light = "${pkgs.light}/bin/light";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
   i3-pomodoro = "${pkgs.i3-gnome-pomodoro}/bin/i3-gnome-pomodoro";
-  gnome-pomodoro = "${pkgs.gnome.pomodoro}/bin/gnome-pomodoro";
+  # gnome-pomodoro = "${pkgs.gnome.pomodoro}/bin/gnome-pomodoro";
 in {
   programs.waybar = {
     enable = true;
-    package = inputs.waybar.packages."${pkgs.system}".default;
 
     settings.mainBar = {
-      layer = "top";
       position = "top";
+      layer = "top";
       modules-left = [
         "custom/arch-pill"
         "hyprland/workspaces"
@@ -60,19 +55,6 @@ in {
         interval = 5;
         format = "<span foreground='#89b4fa'></span> {usage}%";
       };
-      # "custom/playerctl" = {
-      #   format = "{icon}  <span>{}</span>";
-      #   return-type = "json";
-      #   max-length = 50;
-      #   exec = "playerctl -a metadata --format '{\"text\": \"{{artist}} ~ {{markup_escape(title)}}\", \"tooltip\": \"{{playerName}} : {{markup_escape(title)}}\", \"alt\": \"{{status}}\", \"class\": \"{{status}}\"}' -F";
-      #   on-click-middle = "playerctl play-pause";
-      #   on-click = "playerctl previous";
-      #   on-click-right = "playerctl next";
-      #   format-icons = {
-      #     Playing = "<span foreground='#94e2d5'></span>";
-      #     Paused = "<span foreground='#f38ba8'></span>";
-      #   };
-      # };
       "temperature" = {
         critical-threshold = 80;
         format = "<span foreground='#eba0ac'></span> {temperatureC}°C";
@@ -106,6 +88,14 @@ in {
         tooltip-format-ethernet = "{ifname}  ";
         tooltip-format-disconnected = "Disconnected";
         on-click = "sudo systemctl restart NetworkManager";
+        on-click-right = let
+          vpn = "openvpn-work.service";
+        in ''
+          if systemctl is-active --quiet ${vpn}
+          then sudo systemctl stop ${vpn}
+          else sudo systemctl start ${vpn}
+          fi
+        '';
       };
       "battery" = {
         states = {
@@ -123,13 +113,6 @@ in {
         ];
         format-charging = " <span foreground='#a6e3a1'>{icon}</span>  {capacity}%";
       };
-      # "pulseaudio" = {
-      #   on-click = "${pamixer} set-sink-mute -t";
-      #   on-scroll-down = "${pamixer} -i 1";
-      #   on-scroll-up = "${pamixer} -d 1";
-      #   format = "<span size='13000' foreground='#fab387'></span>  {volume}%";
-      #   format-muted = "<span size='13000' foreground='#fab387'> </span>";
-      # };
       "wireplumber" = {
         on-click = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
         on-scroll-down = "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.01+";
@@ -166,8 +149,10 @@ in {
         '';
         return-type = "json";
         interval = 10;
-        on-click = "${i3-pomodoro} start";
-        on-click-right = "${gnome-pomodoro}";
+        # TODO libnotify on pause
+        # notify-send --icon=gnome-pomodoro "Paused"
+        on-click = "${i3-pomodoro} toggle";
+        on-click-right = "${i3-pomodoro} start-stop";
       };
       "clock" = {
         # https://github.com/Alexays/Waybar/wiki/Module:-Clock#example
@@ -186,12 +171,6 @@ in {
             weekdays = "<span color='#ffcc66'><b>{}</b></span>";
             today = "<span color='#ff6699'><b><u>{}</u></b></span>";
           };
-          # Old calendar
-          # tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-          # today-format = "<span color = '#ff6699'><b><u>{}</u></b></span>";
-          # format-calendar = "<span color='#ecc6d9'><b>{}</b></span>";
-          # format-calendar-weeks = "<span color='#99ffdd'><b>W{:%U}</b></span>";
-          # format-calendar-weekdays = "<span color='#ffcc66'><b>{}</b></span>";
         };
       };
       "custom/power" = {

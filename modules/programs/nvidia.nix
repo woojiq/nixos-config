@@ -2,6 +2,10 @@
 {...}: {
   services.xserver.videoDrivers = ["nvidia"];
 
+  # Fixes problems with hardware acceleration in Chrome.
+  # But sometimes can't startup Hyprland.
+  # boot.blacklistedKernelModules = ["nvidia-drm"];
+
   hardware = {
     nvidia = {
       modesetting.enable = true;

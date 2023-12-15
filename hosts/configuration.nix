@@ -8,7 +8,10 @@
     [(import ./hardware-configuration.nix)]
     ++ (import ../modules/programs/nix-default.nix);
 
-  networking.networkmanager.enable = true;
+  networking = {
+    networkmanager.enable = true;
+    firewall.enable = true;
+  };
 
   time.timeZone = "Europe/Kyiv";
 
@@ -54,16 +57,18 @@
     rtkit.enable = true;
   };
 
+  environment.systemPackages = with pkgs; [
+    man-pages
+    # man-pages-posix
+  ];
+
+  documentation.man.generateCaches = true;
+
   fonts.packages = with pkgs; [
     (nerdfonts.override {
       fonts = [
         "FiraCode"
         "InconsolataLGC"
-      ];
-    })
-    (google-fonts.override {
-      fonts = [
-        "Fredoka One"
       ];
     })
   ];
@@ -87,6 +92,12 @@
     # Don't see any difference actually
     thermald = {
       enable = true;
+    };
+    openvpn.servers = {
+      work = {
+        config = "config /etc/openvpn/client.conf";
+        autoStart = false;
+      };
     };
   };
 

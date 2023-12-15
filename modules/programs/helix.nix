@@ -6,13 +6,10 @@
 }: let
   helix-flake = inputs.helix.packages.${pkgs.system}.default;
 in {
-  home.sessionVariables = {
-    EDITOR = "${helix-flake}/bin/hx";
-    VISUAL = "${config.home.sessionVariables.EDITOR}";
-  };
   programs.helix = {
     enable = true;
     package = helix-flake;
+    defaultEditor = true;
 
     settings = {
       editor = {
@@ -58,6 +55,7 @@ in {
               "n" = ":set whitespace.render none";
             };
             "s" = "signature_help";
+            "l" = ":lsp-restart";
           };
           # Ukrainian basic movement (https://docs.helix-editor.com/master/keymap.html)
           ## Movement
@@ -80,6 +78,8 @@ in {
           "ʼ" = "switch_case";
           ## Search
           "." = "search";
+          ## Minor modes
+          "м" = "select_mode";
         };
       };
       # theme = "sonokai-transparent";
@@ -157,7 +157,8 @@ in {
         # Less colors pls <3
         "operator" = "fg.default";
         "variable.parameter" = "fg.default";
-        "variable.other.member" = "scale.purple.1";
+        "variable.other.member" = "fg.default";
+        "function" = "fg.default";
         "string" = "#d6dde3";
         "type" = "fg.default";
       };

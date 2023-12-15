@@ -14,6 +14,9 @@
     prompt = "";
     allow_images = true;
     term = "${config.home.sessionVariables.TERMINAL}";
+    # Window manager will open passed binary name (don't wait for application to start, close wofi asap).
+    drun-print_command = true;
+    # key_expand = TODO with multiple chrome profiles
   };
 
   wofiStyle = ''
@@ -80,10 +83,12 @@ in {
   xdg.configFile = {
     "wofi/power-menu.sh" = {
       executable = true;
-      text = ''
+      text = let
+        wofi = "${pkgs.wofi}/bin/wofi";
+      in ''
         # https://github.com/MatthiasBenaets/nixos-config/blob/9e799904e74d43a2c0ad1a8b6ac4db86993bf2dd/modules/programs/wofi.nix#L18
-        entries="⏾  Suspend\n⭮  Reboot\n⏼  Hibernate\n⏻  Shutdown"
-        selected=$(echo -e $entries|${pkgs.wofi}/bin/wofi --dmenu --cache-file /dev/null --height 20% | awk '{print tolower($2)}')
+        entries="⏾ Suspend\n⭮ Reboot\n⏼ Hibernate\n⏻ Shutdown"
+        selected=$(echo -e $entries|${wofi} --dmenu --cache-file /dev/null --height 20% | awk '{print tolower($2)}')
 
         case $selected in
           suspend)

@@ -4,6 +4,7 @@
   ./git.nix
   ./helix.nix
   ./hyprland/home.nix
+  ./ssh.nix
   ./starship/home.nix
   ./swappy.nix
   ./virt-manager/home.nix

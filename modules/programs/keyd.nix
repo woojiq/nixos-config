@@ -20,12 +20,4 @@
       };
     };
   };
-
-  # Disable touchpad while typing
-  # environment.etc."libinput/local-overrides.quirks".text = ''
-  #   [Serial Keyboards]
-  #   MatchUdevType=keyboard
-  #   MatchName=keyd virtual device
-  #   AttrKeyboardIntegration=internal
-  # '';
 }

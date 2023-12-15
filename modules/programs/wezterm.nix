@@ -3,47 +3,62 @@
     enable = true;
     extraConfig = ''
       local act = wezterm.action
+      local config = wezterm.config_builder()
 
-      return {
-        disable_default_key_bindings = true,
-        keys = {
-          { key = 'q', mods = 'ALT|SHIFT', action = act.CloseCurrentPane { confirm = false } },
-          { key = 't', mods = 'ALT', action = act.SpawnTab 'CurrentPaneDomain' },
-          { key = 'Tab', mods = 'CTRL', action = act.ActivateTabRelative(1) },
-          { key = 'Tab', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(-1) },
-          { key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo 'ClipboardAndPrimarySelection' },
-          { key = 'v', mods = 'CTRL', action = act.PasteFrom 'Clipboard' },
-          { key = '1', mods = 'ALT', action = act.ActivateTab(0) },
-          { key = '2', mods = 'ALT', action = act.ActivateTab(1) },
-          { key = '3', mods = 'ALT', action = act.ActivateTab(2) },
-          { key = '4', mods = 'ALT', action = act.ActivateTab(3) },
-          { key = '5', mods = 'ALT', action = act.ActivateTab(4) },
-          { key = '6', mods = 'ALT', action = act.ActivateTab(5) },
-          { key = '7', mods = 'ALT', action = act.ActivateTab(6) },
-          { key = '8', mods = 'ALT', action = act.ActivateTab(7) },
-          { key = 'LeftArrow', mods = 'SHIFT|ALT', action = act.MoveTabRelative(-1) },
-          { key = 'RightArrow', mods = 'SHIFT|ALT', action = act.MoveTabRelative(1) },
-          { key = '_', mods = 'SHIFT|ALT', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
-          { key = '|', mods = 'SHIFT|ALT', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
-          { key = 'h', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Left' },
-          { key = 'j', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Down' },
-          { key = 'k', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Up' },
-          { key = 'l', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Right' },
-          { key = 'm', mods = 'SHIFT|ALT', action = act.TogglePaneZoomState },
-          -- { key = 'd', mods = 'SHIFT|ALT', action = act.ShowDebugOverlay },
-          { key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
-          { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },
-        },
-        color_scheme = "github_dark_dimmed",
-        default_prog = { '${config.home.sessionVariables.SHELL}', '-l' },
-        cursor_blink_rate = 0,
-        default_cursor_style = 'BlinkingBlock',
-        hide_mouse_cursor_when_typing = false,
-        force_reverse_video_cursor = true,
-        inactive_pane_hsb = { brightness = 0.7 },
-        font = wezterm.font 'Inconsolata LGC Nerd Font Mono',
-        -- font_size = 11.4,
+      config.keys = {
+        { key = 'q', mods = 'ALT|SHIFT', action = act.CloseCurrentPane { confirm = false } },
+        { key = 't', mods = 'ALT', action = act.SpawnTab 'CurrentPaneDomain' },
+        { key = 'Tab', mods = 'CTRL', action = act.ActivateTabRelative(1) },
+        { key = 'Tab', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(-1) },
+        { key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo 'ClipboardAndPrimarySelection' },
+        { key = 'v', mods = 'CTRL', action = act.PasteFrom 'Clipboard' },
+        { key = '1', mods = 'ALT', action = act.ActivateTab(0) },
+        { key = '2', mods = 'ALT', action = act.ActivateTab(1) },
+        { key = '3', mods = 'ALT', action = act.ActivateTab(2) },
+        { key = '4', mods = 'ALT', action = act.ActivateTab(3) },
+        { key = '5', mods = 'ALT', action = act.ActivateTab(4) },
+        { key = '6', mods = 'ALT', action = act.ActivateTab(5) },
+        { key = '7', mods = 'ALT', action = act.ActivateTab(6) },
+        { key = '8', mods = 'ALT', action = act.ActivateTab(7) },
+        { key = 'LeftArrow', mods = 'SHIFT|ALT', action = act.MoveTabRelative(-1) },
+        { key = 'RightArrow', mods = 'SHIFT|ALT', action = act.MoveTabRelative(1) },
+        { key = '_', mods = 'SHIFT|ALT', action = act.SplitVertical { domain = 'CurrentPaneDomain' } },
+        { key = '|', mods = 'SHIFT|ALT', action = act.SplitHorizontal { domain = 'CurrentPaneDomain' } },
+        { key = 'h', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Left' },
+        { key = 'j', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Down' },
+        { key = 'k', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Up' },
+        { key = 'l', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Right' },
+        { key = 'm', mods = 'SHIFT|ALT', action = act.TogglePaneZoomState },
+        -- { key = 'd', mods = 'SHIFT|ALT', action = act.ShowDebugOverlay },
+        { key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
+        { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },
       }
+
+      -- config.color_scheme = "Nucolors (terminal.sexy)" -- Black bg
+      config.color_scheme = "github_dark_dimmed"
+      -- color_scheme = "Green Screen (base16)", -- Hacker theme😎
+      config.disable_default_key_bindings = true
+      config.default_prog = { '${config.home.sessionVariables.SHELL}', '-l' }
+      config.cursor_blink_rate = 0
+      config.default_cursor_style = 'BlinkingBlock'
+      config.hide_mouse_cursor_when_typing = false
+      config.force_reverse_video_cursor = true
+      config.inactive_pane_hsb = { brightness = 0.7 }
+      config.font = wezterm.font 'Inconsolata LGC Nerd Font Mono'
+      config.font_size = 14
+
+      --[[ Noticeably slower than ssh or ssh + tmux.
+      config.ssh_domains = {
+        {
+          name = "",
+          remote_address = "",
+          username = "",
+          local_echo_threshold_ms = 300,
+        },
+      }
+      --]]
+
+      return config
     '';
 
     colorSchemes.github_dark_dimmed = {
