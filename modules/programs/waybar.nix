@@ -14,8 +14,7 @@ in {
         "custom/arch-pill"
         "hyprland/workspaces"
         "cpu"
-        # "playerctl"
-        "temperature"
+        # "temperature"
         "backlight"
         "idle_inhibitor"
         "custom/pomodoro"
@@ -29,7 +28,6 @@ in {
         "network"
         "battery"
         "wireplumber"
-        # "pulseaudio"
         "clock"
         "custom/power"
       ];
@@ -296,7 +294,6 @@ in {
 
       #custom-pomodoro,
       #wireplumber,
-      #pulseaudio,
       #cpu,
       #memory,
       #temperature,
@@ -311,8 +308,7 @@ in {
         background-color: @bg;
       }
 
-      #window,
-      #custom-playerctl {
+      #window {
         margin: 5px;
         padding-left: 10px;
         padding-right: 10px;
@@ -321,8 +317,7 @@ in {
         background-color: @bg;
       }
 
-      #wireplumber.muted,
-      #pulseaudio.muted {
+      #wireplumber.muted {
         background-color: @red;
         color: @dark-fg;
       }

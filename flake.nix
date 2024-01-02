@@ -13,10 +13,6 @@
       # url = "github:pascalkuthe/helix/event_system";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    wping = {
-      url = "github:woojiq/wotils?dir=ping";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = inputs @ {

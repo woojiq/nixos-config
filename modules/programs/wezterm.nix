@@ -34,11 +34,11 @@
         { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },
       }
 
-      -- config.color_scheme = "Nucolors (terminal.sexy)" -- Black bg
+      -- TODO find theme using: https://github.com/wez/wezterm/discussions/3426
+      -- config.color_scheme = "Hardcore" -- Black bg
       config.color_scheme = "github_dark_dimmed"
-      -- color_scheme = "Green Screen (base16)", -- Hacker theme😎
       config.disable_default_key_bindings = true
-      config.default_prog = { '${config.home.sessionVariables.SHELL}', '-l' }
+      config.default_prog = { '${config.globals.shell}', '-l' }
       config.cursor_blink_rate = 0
       config.default_cursor_style = 'BlinkingBlock'
       config.hide_mouse_cursor_when_typing = false

@@ -2,11 +2,11 @@
   config,
   user,
   pkgs,
-  inputs,
   ...
 }: {
   imports =
-    import ../modules/programs/home-default.nix;
+    (import ../modules/programs/home-default.nix)
+    ++ [(import ../modules/globals.nix)];
 
   home = {
     username = "${user}";
@@ -19,7 +19,6 @@
       neofetch # System info
       fd # `find` alternative
       tokei # Code statistics
-      commitizen # Conventional commit messages
       asciinema # Terminal session recorder
       ripgrep # `grep` alternative
       ## Networking
@@ -32,7 +31,7 @@
       # Developing
       ## Nix
       nil
-      alejandra
+      alejandra # code formatter
 
       # Desktop application
       mpv # Media player
@@ -45,6 +44,7 @@
       # TODO add gnome.pomodoro to drv and manage PATH somehow
       gnome.pomodoro
       i3-gnome-pomodoro
+      netconf # Netconf protocol browser
     ];
 
     pointerCursor = {
@@ -55,10 +55,6 @@
     };
 
     sessionVariables = {
-      # Possibilty of negative side-effects
-      SHELL = "${pkgs.fish}/bin/fish";
-      TERMINAL = "${pkgs.wezterm}/bin/wezterm";
-
       # Case-insensitive Less pager
       LESS = "-iR";
     };
@@ -67,9 +63,7 @@
       ${config.home.sessionVariables.WALLPAPERS_DIR}.source = ../misc/wallpapers;
     };
 
-    shellAliases.wping = "sudo ${inputs.wping.packages.${pkgs.system}.default}";
-
-    stateVersion = "22.11";
+    stateVersion = "23.11";
   };
 
   gtk = {
@@ -103,7 +97,6 @@
         "--preview '${pkgs.bat}/bin/bat -f {} -f 2>/dev/null || ${pkgs.eza}/bin/eza -a {}'"
         "-m"
       ];
-      # TODO smart hidding. Some hidden files/dirs I need (.config, .gitignore), some - don't  (.cache, .cargo)
       # Find both files and symlinks
       defaultCommand = "${pkgs.fd}/bin/fd -tf -tl . \\$dir | sed 's@^\./@@'";
       fileWidgetCommand = "${config.programs.fzf.defaultCommand}";
@@ -114,15 +107,15 @@
       enable = true;
       nix-direnv.enable = true;
     };
-    fish = {
-      shellInit = ''
-        # Disable noise from direnv
-        set -x DIRENV_LOG_FORMAT ""
-      '';
-    };
 
-    bottom.enable = true;
-    command-not-found.enable = false;
+    bottom = {
+      enable = true;
+      settings.flags = {
+        battery = true;
+        group_processes = true;
+        basic = true;
+      };
+    };
     nix-index.enable = true;
     firefox.enable = true;
     foot.enable = true;
@@ -130,6 +123,7 @@
 
   services = {
     blueman-applet.enable = true;
+    network-manager-applet.enable = true;
     gammastep = {
       enable = true;
       dawnTime = "7:00-8:00";
@@ -146,7 +140,7 @@
     };
   };
 
-  # Allows install unfree pkgs from `nix-shell` command
+  # Allows install unfree pkgs from nix-shell
   xdg = {
     configFile = {
       "nixpkgs/config.nix".text = ''

@@ -37,9 +37,9 @@
     initrd.verbose = false;
     kernelParams = ["quiet" "udev.log_level=3" "resume_offset=151552"];
     plymouth.enable = true;
+    # NOTDECL: Calculate offset on swap file using:
     # Configure hibernation (resume_offset cannot be precalculated on fresh system):
     # https://discourse.nixos.org/t/is-it-possible-to-hibernate-with-swap-file/2852
-    # Calculate offset on swap file using:
     # filefrag -v /var/swapfile | awk '{if($1=="0:"){print $4}}'
     resumeDevice = "/dev/disk/by-label/nixos";
   };
@@ -91,20 +91,28 @@
     blueman.enable = true;
     # Don't see any difference actually
     thermald = {
-      enable = true;
+      enable = false;
     };
     openvpn.servers = {
       work = {
+        # NOTDECL: get this config somewhere, xd
         config = "config /etc/openvpn/client.conf";
         autoStart = false;
       };
+    };
+    strongswan = {
+      enable = true;
+      secrets = [
+        "ipsec.d/ipsec.nm-l2tp.secrets"
+      ];
     };
   };
 
   hardware = {
     bluetooth = {
       enable = true;
-      settings.General.Experimental = true; # Device battery status: https://askubuntu.com/a/1420501
+      # Device battery status: https://askubuntu.com/a/1420501
+      settings.General.Experimental = true;
     };
     opengl = {
       enable = true;

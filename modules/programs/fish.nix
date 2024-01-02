@@ -6,6 +6,7 @@
       tnix = "sudo nixos-rebuild test --flake .#laptop";
       snix = "sudo nixos-rebuild switch --flake .#laptop";
       chrome = "google-chrome-stable";
+      tabname = "wezterm cli set-tab-title";
     };
     functions = {
       # `cd ..` multiple times
@@ -53,6 +54,9 @@
     shellInit = ''
       # fish_vi_key_bindings
       set -U fish_greeting ""
+
+      # Disable noise from direnv
+      set -x DIRENV_LOG_FORMAT ""
     '';
   };
 }

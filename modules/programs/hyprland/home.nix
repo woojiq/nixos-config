@@ -1,11 +1,11 @@
 {
   pkgs,
-  config,
   lib,
+  config,
   ...
 }: let
-  browser = "${pkgs.google-chrome}/bin/google-chrome-stable";
-  terminal = "${config.home.sessionVariables.TERMINAL}";
+  browser = config.globals.browser;
+  terminal = config.globals.terminal;
   bar = "${pkgs.waybar}/bin/waybar";
   wofi = "${pkgs.wofi}/bin/wofi";
   wob = "${pkgs.wob}/bin/wob";
@@ -43,6 +43,19 @@ in let
       lib.concatMapStringsSep "\n" (
         i: "bind = ${mod}, ${toString i}, ${cmd}, ${toString i}"
       ) (lib.lists.range l r);
+
+    # wofi --show drun | xargs -Ioutput hyprctl dispatch exec output
+    wofiWithFilter = pkgs.writeShellScript "wofi-with-filter" ''
+      res=$(${wofi} --show drun)
+      filter=("telegram-desktop --")
+      # filter=()
+      for name in "''${filter[@]}"; do
+        if [ "$res" = "$name" ]; then
+          exit
+        fi
+      done
+      ${hyprctl} dispatch exec $res
+    '';
   in ''
     exec-once = ${bar}
     exec-once = ${blueman-applet}
@@ -74,6 +87,7 @@ in let
     }
 
     monitor = eDP-1, 1920x1080@60, 0x0, 1
+    # monitor=,preferred,auto,1,mirror,eDP-1 # Doesn't work
 
     xwayland {
       force_zero_scaling = true
@@ -118,7 +132,7 @@ in let
     bind = $mainMod, m, fullscreen, 1
     bind = $mainMod, f, togglefloating
     bind = $mainMod, p, pin
-    bind = $mainMod, d, exec, ${wofi} --show drun | xargs -Ioutput hyprctl dispatch exec output
+    bind = $mainMod, d, exec, ${wofiWithFilter}
     bind = $shiftMod, d, exec, ${wofi} --show run
     bind = $mainMod, t, exec, ${terminal}
     bind = $mainMod, b, exec, ${browser}
@@ -170,13 +184,19 @@ in let
     windowrulev2=float,class:^(org.telegram.desktop|telegramdesktop)$,title:^(Media viewer)$
 
     windowrulev2=float,class:^(gnome-pomodoro)$
+
+    # Fixes dropdown windows may disappear if you hover them:
+    # https://github.com/hyprwm/Hyprland/issues/2661#issuecomment-1821639125
+    windowrulev2 = stayfocused, title:^()$,class:^(steam)$
+    windowrulev2 = minsize 1 1, title:^()$,class:^(steam)$
+
+    windowrulev2 = tile, title:^(.*)NetConf Browser(.*)$
   '';
 in {
   wayland.windowManager.hyprland = {
     enable = true;
     # TODO use settings instead of extraConfig
     extraConfig = hyprlandConf;
-    enableNvidiaPatches = true;
   };
 
   services = {
@@ -192,7 +212,7 @@ in {
           timeout = 1800;
           # TODO make script to lock screen before hibernation.
           # And use it in wofi module too.
-          command = "${systemctl} hibernate";
+          command = "${hyprctl} dispatch dpms on && ${systemctl} hibernate";
         }
       ];
       systemdTarget = "hyprland-session.target";

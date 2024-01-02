@@ -14,7 +14,8 @@ in {
     settings = {
       editor = {
         line-number = "relative";
-        shell = ["${config.home.sessionVariables.SHELL}" "-c"];
+        popup-border = "none";
+        shell = ["${config.globals.shell}" "-c"];
         bufferline = "multiple";
         idle-timeout = 20;
         color-modes = true;
@@ -57,7 +58,7 @@ in {
             "s" = "signature_help";
             "l" = ":lsp-restart";
           };
-          # Ukrainian basic movement (https://docs.helix-editor.com/master/keymap.html)
+          # Ukrainian layout imitation (https://docs.helix-editor.com/master/keymap.html)
           ## Movement
           "р" = "move_char_left";
           "о" = "move_visual_line_down";
@@ -76,6 +77,9 @@ in {
           "с" = "change_selection";
           "в" = "delete_selection";
           "ʼ" = "switch_case";
+          ## Selection manipulation
+          "ч" = "extend_line_below";
+          "Ч" = "extend_line_above";
           ## Search
           "." = "search";
           ## Minor modes

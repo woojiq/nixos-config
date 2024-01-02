@@ -3,12 +3,11 @@
     enable = true;
     enableFishIntegration = true;
     enableBashIntegration = false;
+    enableZshIntegration = false;
     enableTransience = true;
     settings = let
       prompt = builtins.fromTOML (builtins.readFile ./prompt.toml);
-
       preset = builtins.fromTOML (builtins.readFile ./pure-preset.toml);
-      # preset = builtins.fromTOML (builtins.readFile ./nerd-font.toml);
     in
       lib.recursiveUpdate prompt preset;
   };

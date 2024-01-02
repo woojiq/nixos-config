@@ -25,7 +25,6 @@ in {
   programs = {
     hyprland = {
       enable = true;
-      enableNvidiaPatches = true;
     };
     light.enable = true;
   };

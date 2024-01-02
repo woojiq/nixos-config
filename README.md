@@ -1,17 +1,12 @@
-### TODO January 1
-* Use black theme.
-* Use zsh/bash instead of fish.
-* Use zig as primary language.
-
 ### TODO
 * Alt-tab (like on Windows).
-* Chrome sometimes is not hardware accelerated.
-* Understand nix holistically (one week deep dive; package multiple apps/libs by myself; create multiple services, etc).
 * Screen lock before hibernating.
 * Fix bash ps1 with direnv (mb install bash-interactive globally).
 
 # Gallery
 ![Desktop image](./misc/preview.png)
+
+_NOTDECL_ comment (not declaratively) means I (you) need to do this manually on fresh installation.
 
 # Credits
 * @<!-- -->MatthiasBenaets for his [YT](https://github.com/MatthiasBenaets/nixos-config) tutorials.
