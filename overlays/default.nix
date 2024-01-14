@@ -4,7 +4,7 @@ final: prev: let
     (import ./tokei.nix)
     (import ./wezterm.nix)
     (final: prev: {
-      i3-gnome-pomodoro = prev.callPackage ./i3-gnome-pomodoro.nix {};
+      # i3-gnome-pomodoro = prev.callPackage ./i3-gnome-pomodoro.nix {};
 
       google-chrome = prev.google-chrome.override {
         commandLineArgs = prev.lib.concatStringsSep " " [

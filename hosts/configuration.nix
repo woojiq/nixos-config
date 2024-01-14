@@ -93,15 +93,9 @@
     thermald = {
       enable = false;
     };
-    openvpn.servers = {
-      work = {
-        # NOTDECL: get this config somewhere, xd
-        config = "config /etc/openvpn/client.conf";
-        autoStart = false;
-      };
-    };
     strongswan = {
       enable = true;
+      # NOTDECL: Connect to tunnel using nm-applet without strongswan first to get secret file.
       secrets = [
         "ipsec.d/ipsec.nm-l2tp.secrets"
       ];
@@ -147,7 +141,7 @@
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 10d";
+      options = "--delete-older-than 7d";
     };
     nixPath = ["nixpkgs=${pkgs.path}"];
     extraOptions = ''

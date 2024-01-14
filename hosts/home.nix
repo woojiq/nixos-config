@@ -35,15 +35,11 @@
 
       # Desktop application
       mpv # Media player
-      evince # Pdf reader
       cinnamon.nemo # File manager
       google-chrome
       emote # Emoji picker
       telegram-desktop
       obs-studio
-      # TODO add gnome.pomodoro to drv and manage PATH somehow
-      gnome.pomodoro
-      i3-gnome-pomodoro
       netconf # Netconf protocol browser
     ];
 

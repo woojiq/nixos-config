@@ -34,7 +34,6 @@
         { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },
       }
 
-      -- TODO find theme using: https://github.com/wez/wezterm/discussions/3426
       -- config.color_scheme = "Hardcore" -- Black bg
       config.color_scheme = "github_dark_dimmed"
       config.disable_default_key_bindings = true

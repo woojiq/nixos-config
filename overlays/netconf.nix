@@ -1,17 +1,26 @@
 # NOTDECL: install license key
-{pkgs}: let
+{
+  stdenv,
+  autoPatchelfHook,
+  dpkg,
+  makeWrapper,
+  glib,
+  bash,
+  xterm,
+  jre8,
+}: let
   src = fetchTarball {
     url = "https://www.mg-soft.net/files/mgNetConfBrowser-2024a-deb.tar.gz";
     sha256 = "sha256:1pqhdj7lbvhqszhkbs3fsxn4i6nxz64vfs1r9nl17vhad7rjm0cf";
   };
 in
-  pkgs.stdenv.mkDerivation {
+  stdenv.mkDerivation {
     pname = "NetConfBrowser";
     system = "x86_64-linux";
     version = "2024a";
     inherit src;
 
-    nativeBuildInputs = with pkgs; [
+    nativeBuildInputs = [
       autoPatchelfHook
       dpkg
       makeWrapper
@@ -23,7 +32,7 @@ in
       dpkg-deb -x $src/${name} deb
     '';
 
-    buildInputs = with pkgs; [
+    buildInputs = [
       glib
     ];
 
@@ -35,9 +44,9 @@ in
       substituteInPlace $out/share/applications/*.desktop --replace /usr/local/ $out/opt/
       substituteInPlace $out/opt/mg-soft/mgnetconfbrowser/bin/*.sh \
       --replace "/usr/local/" $out/opt/ \
-      --replace "/bin/bash" "${pkgs.bash}/bin/bash" \
-      --replace "/usr/bin/xterm" "${pkgs.xterm}/bin/xterm" \
-      --replace "/usr/bin/java" "${pkgs.jre8}/bin/java"
+      --replace "/bin/bash" "${bash}/bin/bash" \
+      --replace "/usr/bin/xterm" "${xterm}/bin/xterm" \
+      --replace "/usr/bin/java" "${jre8}/bin/java"
 
       ln -sf $out/opt/mg-soft/mgnetconfbrowser/bin $out/bin
       rm $out/bin/xdg-open

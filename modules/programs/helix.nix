@@ -86,9 +86,7 @@ in {
           "м" = "select_mode";
         };
       };
-      # theme = "sonokai-transparent";
-      # theme = "ayu_dark";
-      theme = "github_dark_dimmed_custom";
+      theme = "github_dark_dimmed2";
     };
     languages = {
       language-server = {
@@ -154,7 +152,7 @@ in {
       ];
     };
     themes = {
-      github_dark_dimmed_custom = {
+      github_dark_dimmed2 = {
         inherits = "github_dark_dimmed";
         "ui.virtual.ruler" = {bg = "scale.gray.8";};
 
@@ -166,7 +164,11 @@ in {
         "string" = "#d6dde3";
         "type" = "fg.default";
       };
-      sonokai-custom = {
+      ttox2 = {
+        inherits = "ttox";
+        "ui.virtual.inlay-hint" = {bg = "gray";};
+      };
+      sonokai2 = {
         inherits = "sonokai";
         "ui.virtual.inlay-hint" = {
           fg = "grey_dim";
@@ -181,8 +183,8 @@ in {
           bg = "bg_red";
         };
       };
-      sonokai-transparent = {
-        inherits = "sonokai-custom";
+      sonokai_transparent = {
+        inherits = "sonokai2";
         "ui.background" = {};
         "ui.statusline" = {};
         "ui.statusline.inacative" = {};

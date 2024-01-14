@@ -1,9 +1,11 @@
-# Windows Guest w/ virt-manager
-# * [Install windows 10](https://getlabsdone.com/10-easy-steps-to-install-windows-10-on-linux-kvm/)
-# * Install spice guest tools
-# * [Setup shared folders](https://www.debugpoint.com/kvm-share-folder-windows-guest/)
-# * [Setup VFIO (untested)](https://astrid.tech/2022/09/22/0/nixos-gpu-vfio/)
-# * [Windows-on-NixOS, part 2: Make it go fast!(untested)](https://nixos.mayflower.consulting/blog/2020/06/17/windows-vm-performance/)
+/*
+Windows Guest w/ virt-manager:
+* [Install windows 10](https://getlabsdone.com/10-easy-steps-to-install-windows-10-on-linux-kvm/)
+* Install spice guest tools
+* [Setup shared folders](https://www.debugpoint.com/kvm-share-folder-windows-guest/)
+* [Setup VFIO (untested)](https://astrid.tech/2022/09/22/0/nixos-gpu-vfio/)
+* [Windows-on-NixOS, part 2: Make it go fast!(untested)](https://nixos.mayflower.consulting/blog/2020/06/17/windows-vm-performance/)
+*/
 {
   user,
   pkgs,

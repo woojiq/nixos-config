@@ -16,7 +16,6 @@
     term = config.globals.terminal;
     # Window manager will open passed binary name (don't wait for application to start, close wofi asap).
     drun-print_command = true;
-    # key_expand = TODO with multiple chrome profiles
   };
 
   wofiStyle = ''

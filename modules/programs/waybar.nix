@@ -1,8 +1,6 @@
 {pkgs, ...}: let
   light = "${pkgs.light}/bin/light";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
-  i3-pomodoro = "${pkgs.i3-gnome-pomodoro}/bin/i3-gnome-pomodoro";
-  # gnome-pomodoro = "${pkgs.gnome.pomodoro}/bin/gnome-pomodoro";
 in {
   programs.waybar = {
     enable = true;
@@ -17,7 +15,6 @@ in {
         # "temperature"
         "backlight"
         "idle_inhibitor"
-        "custom/pomodoro"
       ];
       modules-center = [
         "tray"
@@ -86,14 +83,6 @@ in {
         tooltip-format-ethernet = "{ifname}  ";
         tooltip-format-disconnected = "Disconnected";
         on-click = "sudo systemctl restart NetworkManager";
-        on-click-right = let
-          vpn = "openvpn-work.service";
-        in ''
-          if systemctl is-active --quiet ${vpn}
-          then sudo systemctl stop ${vpn}
-          else sudo systemctl start ${vpn}
-          fi
-        '';
       };
       "battery" = {
         states = {
@@ -139,18 +128,6 @@ in {
           "activated" = " ";
           "deactivated" = " ";
         };
-      };
-      "custom/pomodoro" = {
-        exec = ''
-          ${i3-pomodoro} status --format=waybar --no-seconds \
-          --icon-text "<span foreground='#eba0ac'></span>" --always
-        '';
-        return-type = "json";
-        interval = 10;
-        # TODO libnotify on pause
-        # notify-send --icon=gnome-pomodoro "Paused"
-        on-click = "${i3-pomodoro} toggle";
-        on-click-right = "${i3-pomodoro} start-stop";
       };
       "clock" = {
         # https://github.com/Alexays/Waybar/wiki/Module:-Clock#example
@@ -292,7 +269,6 @@ in {
         background-color: @rosewater;
       }
 
-      #custom-pomodoro,
       #wireplumber,
       #cpu,
       #memory,

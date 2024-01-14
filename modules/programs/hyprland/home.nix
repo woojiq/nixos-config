@@ -23,180 +23,197 @@
   wl-clip-persist = lib.getExe pkgs.wl-clip-persist;
   blueman-applet = "${pkgs.blueman}/bin/blueman-applet";
 in let
-  # Pseudo Alt-Tab with dmenu: https://github.com/hyprwm/Hyprland/discussions/830#discussioncomment-3868467
-  hyprlandConf = let
-    getVolumeScript = pkgs.writeShellScript "get-volume-script" ''
-      ans=$(${wpctl} get-volume @DEFAULT_AUDIO_SINK@)
-      if echo "$ans" | grep -q MUTED; then
-        echo 0
-      else
-        echo "$ans" | ${awk} -F': ' '{printf "%.0f\n", $2*100}'
-      fi
-    '';
+  volumePt = "0.04";
+  brightnessPt = "5";
 
-    doubleMove = {
-      num,
-      dir ? "r",
-    }: "${hyprctl} dispatch movetoworkspace ${toString num} && ${hyprctl} dispatch movewindow ${dir}";
+  doubleMove = {
+    num,
+    dir ? "r",
+  }: "${hyprctl} dispatch movetoworkspace ${toString num} && ${hyprctl} dispatch movewindow ${dir}";
 
-    genBind = mod: cmd: l: r:
-      lib.concatMapStringsSep "\n" (
-        i: "bind = ${mod}, ${toString i}, ${cmd}, ${toString i}"
-      ) (lib.lists.range l r);
+  genBind = mod: cmd: l: r:
+    lib.lists.concatMap (
+      i: ["${mod}, ${toString i}, ${cmd}, ${toString i}"]
+    ) (lib.lists.range l r);
 
-    # wofi --show drun | xargs -Ioutput hyprctl dispatch exec output
-    wofiWithFilter = pkgs.writeShellScript "wofi-with-filter" ''
-      res=$(${wofi} --show drun)
-      filter=("telegram-desktop --")
-      # filter=()
-      for name in "''${filter[@]}"; do
-        if [ "$res" = "$name" ]; then
-          exit
-        fi
-      done
-      ${hyprctl} dispatch exec $res
-    '';
-  in ''
-    exec-once = ${bar}
-    exec-once = ${blueman-applet}
-    exec-once = ${emote}
-    exec-once = ${wl-clip-persist} --clipboard regular
-
-    # Workspace setup: https://wiki.hyprland.org/Configuring/Dispatchers/#executing-with-rules
-    exec-once = [workspace 1 silent] ${browser}
-    exec-once = [workspace 2 silent] ${terminal}
-
-    # Wob setup
-    env = WOBSOCK, $XDG_RUNTIME_DIR/wob.sock
-    exec-once = rm -f $WOBSOCK && mkfifo $WOBSOCK && tail -f $WOBSOCK | ${wob}
-
-    $mainMod = SUPER
-    $shiftMod = SUPER + SHIFT
-    $altMod = ALT
-
-    general {
-    	layout = dwindle
-    	# gaps_in = 0
-    	gaps_out = 0
-    }
-
-    dwindle {
-      # Does it really do smth?)
-      pseudotile = true
-      force_split = 2
-    }
-
-    monitor = eDP-1, 1920x1080@60, 0x0, 1
-    # monitor=,preferred,auto,1,mirror,eDP-1 # Doesn't work
-
-    xwayland {
-      force_zero_scaling = true
-    }
-
-    input {
-    	kb_layout = us,ua
-    	kb_options = grp:win_space_toggle
-    	repeat_rate = 25
-    	repeat_delay = 220
-    	sensitivity = -0.25
-    	follow_mouse = 2
-    	touchpad {
-    		natural_scroll = true
-    		tap-to-click = true
-    		scroll_factor = 0.2
-    		middle_button_emulation = true
-    	}
-    }
-
-    gestures {
-    	workspace_swipe = true
-    	workspace_swipe_fingers = 4
-    	workspace_swipe_distance = 130
-    }
-
-    animations {
-    	enabled = false
-    }
-
-    decoration {
-    	rounding = 5
-    }
-
-    misc {
-      focus_on_activate = true
-      disable_hyprland_logo = true
-      disable_splash_rendering = true
-    }
-
-    bind = $mainMod, q, killactive
-    bind = $mainMod, m, fullscreen, 1
-    bind = $mainMod, f, togglefloating
-    bind = $mainMod, p, pin
-    bind = $mainMod, d, exec, ${wofiWithFilter}
-    bind = $shiftMod, d, exec, ${wofi} --show run
-    bind = $mainMod, t, exec, ${terminal}
-    bind = $mainMod, b, exec, ${browser}
-    bind = $mainMod, escape, exec, ~/.config/wofi/power-menu.sh
-    bind = $shiftMod, escape, exit,
-    bind = $mainMod, code:60, exec, ${emote}
-
-    bind = $altMod, Tab, focuscurrentorlast
-
-    ${genBind "$mainMod" "workspace" 1 9}
-    bind = $mainMod, 0, togglespecialworkspace,
-
-    bind = $shiftMod, 1, exec, ${doubleMove {num = 1;}}
-    ${genBind "$shiftMod" "movetoworkspace" 2 8}
-    bind = $shiftMod, 9, movetoworkspacesilent, 9
-    bind = $shiftMod, 0, movetoworkspacesilent, special
-    bind = $shiftMod, right, movetoworkspace, +1
-    bind = $shiftMod, left, movetoworkspace, -1
-
-    bind = $mainMod, h, workspace, -1
-    bind = $mainMod, l, workspace, +1
-    bind = $shiftMod, h, movefocus, l
-    bind = $shiftMod, l, movefocus, r
-    bind = $shiftMod, k, movefocus, u
-    bind = $shiftMod, j, movefocus, d
-
-    # 272 - LMB, 273 - RBM
-    bindm = $mainMod, mouse:272, movewindow
-    bindm = $mainMod, mouse:273, resizewindow
-
-    # https://github.com/francma/wob
-    $volume_pt = 0.04
-    $brightness_pt = 5
-    binde = , XF86AudioLowerVolume, exec, ${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ $volume_pt- && ${getVolumeScript} > $WOBSOCK
-    binde = , XF86AudioRaiseVolume, exec, ${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ $volume_pt+ && ${getVolumeScript} > $WOBSOCK
-    bind = , XF86AudioMute, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle && ${getVolumeScript} > $WOBSOCK
-    bind = , XF86MonBrightnessDown, exec, ${light} -U $brightness_pt && light -G | cut -d'.' -f1 > $WOBSOCK
-    bind = , XF86MonBrightnessUP, exec, ${light} -A $brightness_pt && light -G | cut -d'.' -f1 > $WOBSOCK
-    bind = , XF86AudioNext, exec, ${playerctl} next
-    bind = , XF86AudioPrev, exec, ${playerctl} previous
-    bind = , XF86AudioPlay, exec, ${playerctl} play-pause
-
-    bind = , Print, exec, ${grim} -g "$(${slurp})" - | ${swappy} -f - && ${notify-send} "Saved to ~/Pictures/Screenshots"
-    bind = $altMod, Print, exec, ${grim} - | ${swappy} -f - && ${notify-send} "Saved to ~/Pictures/Screenshots"
-
-    # Autocompletion, etc, take hyprland focus
-    windowrulev2 = noborder, class:^(jetbrains-idea)(.*)$
-    # Wrong telegram scale after opening tg image/video viewer: https://github.com/hyprwm/Hyprland/issues/839
-    windowrulev2=float,class:^(org.telegram.desktop|telegramdesktop)$,title:^(Media viewer)$
-
-    windowrulev2=float,class:^(gnome-pomodoro)$
-
-    # Fixes dropdown windows may disappear if you hover them:
-    # https://github.com/hyprwm/Hyprland/issues/2661#issuecomment-1821639125
-    windowrulev2 = stayfocused, title:^()$,class:^(steam)$
-    windowrulev2 = minsize 1 1, title:^()$,class:^(steam)$
-
-    windowrulev2 = tile, title:^(.*)NetConf Browser(.*)$
+  getVolumeScript = pkgs.writeShellScript "get-volume-script" ''
+    ans=$(${wpctl} get-volume @DEFAULT_AUDIO_SINK@)
+    if echo "$ans" | grep -q MUTED; then
+      echo 0
+    else
+      echo "$ans" | ${awk} -F': ' '{printf "%.0f\n", $2*100}'
+    fi
   '';
+
+  # wofi --show drun | xargs -Ioutput hyprctl dispatch exec output
+  wofiWithFilter = pkgs.writeShellScript "wofi-with-filter" ''
+    res=$(${wofi} --show drun)
+    filter=("telegram-desktop --")
+    # filter=()
+    for name in "''${filter[@]}"; do
+      if [ "$res" = "$name" ]; then
+        exit
+      fi
+    done
+    ${hyprctl} dispatch exec "$res"
+  '';
+in let
+  hyprlandSettings = {
+    "$mainMod" = "SUPER";
+    "$shiftMod" = "SUPER + SHIFT";
+    "$altMod" = "ALT";
+
+    env = [
+      # Wob setup
+      "WOBSOCK, $XDG_RUNTIME_DIR/wob.sock"
+    ];
+
+    exec-once = [
+      bar
+      blueman-applet
+      emote
+      "${wl-clip-persist} --clipboard regular"
+
+      # Workspace setup: https://wiki.hyprland.org/Configuring/Dispatchers/#executing-with-rules
+      "[workspace 1 silent] ${browser}"
+      "[workspace 2 silent] ${terminal}"
+
+      "rm -f $WOBSOCK && mkfifo $WOBSOCK && tail -f $WOBSOCK | ${wob}"
+    ];
+
+    general = {
+      layout = "dwindle";
+      # gaps_in = 0;
+      gaps_out = 0;
+    };
+
+    dwindle = {
+      # Does it really do smth?)
+      pseudotile = true;
+      force_split = 2;
+    };
+
+    monitor = [
+      "eDP-1, 1920x1080@60, 0x0, 1"
+      # monitor=,preferred,auto,1,mirror,eDP-1 # Doesn't work
+    ];
+
+    xwayland = {
+      force_zero_scaling = true;
+    };
+
+    input = {
+      kb_layout = "us,ua";
+      kb_options = "grp:win_space_toggle";
+      repeat_rate = 25;
+      repeat_delay = 220;
+      sensitivity = "-0.25";
+      follow_mouse = 2;
+      touchpad = {
+        natural_scroll = true;
+        tap-to-click = true;
+        scroll_factor = 0.2;
+        middle_button_emulation = true;
+      };
+    };
+
+    gestures = {
+      workspace_swipe = true;
+      workspace_swipe_fingers = 4;
+      workspace_swipe_distance = 130;
+    };
+
+    animations = {
+      enabled = false;
+    };
+
+    decoration = {
+      rounding = 5;
+    };
+
+    misc = {
+      focus_on_activate = true;
+      disable_hyprland_logo = true;
+      disable_splash_rendering = true;
+    };
+
+    bind =
+      [
+        "$mainMod, q, killactive"
+        "$mainMod, m, fullscreen, 1"
+        "$mainMod, f, togglefloating"
+        "$mainMod, p, pin"
+        "$mainMod, d, exec, ${wofiWithFilter}"
+        "$shiftMod, d, exec, ${wofi} --show run"
+        "$mainMod, t, exec, ${terminal}"
+        "$mainMod, b, exec, ${browser}"
+        "$mainMod, escape, exec, ~/.config/wofi/power-menu.sh"
+        "$shiftMod, escape, exit,"
+        "$mainMod, code:60, exec, ${emote}"
+
+        "$altMod, Tab, focuscurrentorlast"
+
+        "$mainMod, 0, togglespecialworkspace,"
+        # Other mainMod bindings are generated using `genBind` function.
+
+        "$shiftMod, 1, exec, ${doubleMove {num = 1;}}"
+        # Other shiftMod bindings are generated using `genBind` function.
+
+        "$shiftMod, 9, movetoworkspacesilent, 9"
+        "$shiftMod, 0, movetoworkspacesilent, special"
+        "$shiftMod, right, movetoworkspace, +1"
+        "$shiftMod, left, movetoworkspace, -1"
+
+        "$mainMod, h, workspace, -1"
+        "$mainMod, l, workspace, +1"
+        "$shiftMod, h, movefocus, l"
+        "$shiftMod, l, movefocus, r"
+        "$shiftMod, k, movefocus, u"
+        "$shiftMod, j, movefocus, d"
+
+        ", XF86AudioMute, exec, ${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle && ${getVolumeScript} > $WOBSOCK"
+        ", XF86MonBrightnessDown, exec, ${light} -U ${brightnessPt} && light -G | cut -d'.' -f1 > $WOBSOCK"
+        ", XF86MonBrightnessUP, exec, ${light} -A ${brightnessPt} && light -G | cut -d'.' -f1 > $WOBSOCK"
+        ", XF86AudioNext, exec, ${playerctl} next"
+        ", XF86AudioPrev, exec, ${playerctl} previous"
+        ", XF86AudioPlay, exec, ${playerctl} play-pause"
+
+        ", Print, exec, ${grim} -g '$(${slurp})' - | ${swappy} -f - && ${notify-send} 'Saved to ~/Pictures/Screenshots'"
+        "$altMod, Print, exec, ${grim} - | ${swappy} -f - && ${notify-send} 'Saved to ~/Pictures/Screenshots'"
+      ]
+      ++ (genBind "$mainMod" "workspace" 1 9)
+      ++ (genBind "$shiftMod" "movetoworkspace" 2 8);
+
+    bindm = [
+      # 272 - LMB, 273 - RBM
+      "$mainMod, mouse:272, movewindow"
+      "$mainMod, mouse:273, resizewindow"
+    ];
+
+    binde = [
+      # https://github.com/francma/wob
+      ", XF86AudioLowerVolume, exec, ${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ ${volumePt}- && ${getVolumeScript} > $WOBSOCK"
+      ", XF86AudioRaiseVolume, exec, ${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ ${volumePt}+ && ${getVolumeScript} > $WOBSOCK"
+    ];
+
+    windowrulev2 = [
+      # Autocompletion, etc, take hyprland focus
+      "noborder, class:^(jetbrains-idea)(.*)$"
+      # Wrong telegram scale after opening tg image/video viewer: https://github.com/hyprwm/Hyprland/issues/839
+      "float,class:^(org.telegram.desktop|telegramdesktop)$,title:^(Media viewer)$"
+
+      # Fixes dropdown windows may disappear if you hover them:
+      # https://github.com/hyprwm/Hyprland/issues/2661#issuecomment-1821639125
+      "stayfocused, title:^()$,class:^(steam)$"
+      "minsize 1 1, title:^()$,class:^(steam)$"
+
+      "tile, title:^(.*)(NETCONF|NetConf)(.*)$"
+    ];
+  };
 in {
   wayland.windowManager.hyprland = {
     enable = true;
-    # TODO use settings instead of extraConfig
-    extraConfig = hyprlandConf;
+    settings = hyprlandSettings;
   };
 
   services = {
