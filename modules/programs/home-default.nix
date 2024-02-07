@@ -1,4 +1,5 @@
 [
+  ./chrome/home.nix
   ./dunst.nix
   ./fish.nix
   ./git.nix

@@ -19,7 +19,7 @@ in {
   laptop = nixpkgs.lib.nixosSystem {
     inherit system;
     specialArgs = {
-      inherit user pkgs;
+      inherit user pkgs inputs;
     };
     modules = [
       ./configuration.nix

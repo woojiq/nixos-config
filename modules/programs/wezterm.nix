@@ -1,3 +1,4 @@
+# TODO: use nix variables to simplify config.
 {config, ...}: {
   programs.wezterm = {
     enable = true;
@@ -11,6 +12,7 @@
         { key = 'Tab', mods = 'CTRL', action = act.ActivateTabRelative(1) },
         { key = 'Tab', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(-1) },
         { key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo 'ClipboardAndPrimarySelection' },
+        { key = 'f', mods = 'CTRL|SHIFT', action = act.Search { CaseInSensitiveString = "" } },
         { key = 'v', mods = 'CTRL', action = act.PasteFrom 'Clipboard' },
         { key = '1', mods = 'ALT', action = act.ActivateTab(0) },
         { key = '2', mods = 'ALT', action = act.ActivateTab(1) },
@@ -35,7 +37,7 @@
       }
 
       -- config.color_scheme = "Hardcore" -- Black bg
-      config.color_scheme = "github_dark_dimmed"
+      -- config.color_scheme = "github_dark_dimmed"
       config.disable_default_key_bindings = true
       config.default_prog = { '${config.globals.shell}', '-l' }
       config.cursor_blink_rate = 0
@@ -43,8 +45,13 @@
       config.hide_mouse_cursor_when_typing = false
       config.force_reverse_video_cursor = true
       config.inactive_pane_hsb = { brightness = 0.7 }
-      config.font = wezterm.font 'Inconsolata LGC Nerd Font Mono'
-      config.font_size = 14
+      -- config.font = wezterm.font 'Inconsolata LGC Nerd Font Mono'
+      -- config.font_size = 14
+      config.font = wezterm.font 'MesloLGM Nerd Font Mono'
+      config.font_size = 12
+
+      -- A little bolder font is cool.
+      config.front_end = "WebGpu"
 
       --[[ Noticeably slower than ssh or ssh + tmux.
       config.ssh_domains = {

@@ -1,4 +1,5 @@
-# TODO add ssh-agent somehow to not write password every time
+# NOTDECL: Create ssh key using `ssh-keygen -i` and use `ssh-copy-id <server-name>` to copy public key to servers.
+# TODO: Replace manual key generation with `services.openssh.hostKeys` option.
 {pkgs, ...}: {
   home = {
     packages = with pkgs; [

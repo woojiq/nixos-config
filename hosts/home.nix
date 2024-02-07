@@ -3,7 +3,19 @@
   user,
   pkgs,
   ...
-}: {
+}: let
+  /*
+  * Trim clipboard contents. It is designed to trim from the beginning of each
+  * line (line number + some stuff). This is useful when copying via terminal
+  * from helix with mouse support disabled.
+  */
+  trim-clipboard = let
+    clip = "${pkgs.wl-clipboard}/bin";
+  in
+    pkgs.writeShellScriptBin "trim-clipboard" ''
+      ${clip}/wl-paste | sed -r -e 's/^[^0-9]*[[:digit:]]+.//g' -e 's/╎|▍//g' | ${clip}/wl-copy
+    '';
+in {
   imports =
     (import ../modules/programs/home-default.nix)
     ++ [(import ../modules/globals.nix)];
@@ -21,6 +33,7 @@
       tokei # Code statistics
       asciinema # Terminal session recorder
       ripgrep # `grep` alternative
+      trim-clipboard
       ## Networking
       tcpdump
       traceroute
@@ -36,7 +49,6 @@
       # Desktop application
       mpv # Media player
       cinnamon.nemo # File manager
-      google-chrome
       emote # Emoji picker
       telegram-desktop
       obs-studio

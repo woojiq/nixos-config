@@ -14,7 +14,7 @@ in {
     settings = {
       editor = {
         line-number = "relative";
-        popup-border = "none";
+        popup-border = "all";
         shell = ["${config.globals.shell}" "-c"];
         bufferline = "multiple";
         idle-timeout = 20;
@@ -77,6 +77,8 @@ in {
           "с" = "change_selection";
           "в" = "delete_selection";
           "ʼ" = "switch_case";
+          "Ю" = "indent";
+          "Б" = "unindent";
           ## Selection manipulation
           "ч" = "extend_line_below";
           "Ч" = "extend_line_above";
@@ -86,7 +88,8 @@ in {
           "м" = "select_mode";
         };
       };
-      theme = "github_dark_dimmed2";
+      # theme = "github_dark_dimmed";
+      theme = "base16_transparent";
     };
     languages = {
       language-server = {
@@ -151,8 +154,9 @@ in {
         }
       ];
     };
+    # TODO: Separate repo with themes.
     themes = {
-      github_dark_dimmed2 = {
+      github_dark_dimmed = {
         inherits = "github_dark_dimmed";
         "ui.virtual.ruler" = {bg = "scale.gray.8";};
 
@@ -164,11 +168,11 @@ in {
         "string" = "#d6dde3";
         "type" = "fg.default";
       };
-      ttox2 = {
+      ttox = {
         inherits = "ttox";
         "ui.virtual.inlay-hint" = {bg = "gray";};
       };
-      sonokai2 = {
+      sonokai = {
         inherits = "sonokai";
         "ui.virtual.inlay-hint" = {
           fg = "grey_dim";
@@ -184,12 +188,22 @@ in {
         };
       };
       sonokai_transparent = {
-        inherits = "sonokai2";
+        inherits = "sonokai";
         "ui.background" = {};
         "ui.statusline" = {};
         "ui.statusline.inacative" = {};
         "ui.bufferline" = {};
         "ui.bufferline.active" = {bg = "bg1";};
+      };
+      base16_transparent = {
+        inherits = "base16_transparent";
+        # Remove blinking.
+        "ui.cursor.primary" = {modifiers = ["reversed"];};
+      };
+      purple_paradise = {
+        inherits = "default";
+        "ui.background" = {fg = "white";};
+        "ui.background.separator" = {fg = "gray";};
       };
     };
   };

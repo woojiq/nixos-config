@@ -13,6 +13,15 @@
       # url = "github:pascalkuthe/helix/event_system";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # hyprland = {
+    #   url = "github:hyprwm/Hyprland/refs/tags/v0.34.0";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # Unfortunately I cannot use hyprland plugins and use precompiled hyprland itself.
+    # hycov = {
+    #   url = "github:DreamMaoMao/hycov";
+    #   inputs.hyprland.follows = "hyprland";
+    # };
   };
 
   outputs = inputs @ {

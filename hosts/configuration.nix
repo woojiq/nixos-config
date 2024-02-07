@@ -9,7 +9,9 @@
     ++ (import ../modules/programs/nix-default.nix);
 
   networking = {
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+    };
     firewall.enable = true;
   };
 
@@ -69,6 +71,7 @@
       fonts = [
         "FiraCode"
         "InconsolataLGC"
+        "Meslo"
       ];
     })
   ];

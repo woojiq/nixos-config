@@ -34,13 +34,7 @@ in {
         tooltip = false;
       };
       "hyprland/workspaces" = {
-        # format = "<span font='11'>{name}</span>";
-        format = "<span font='13'>{icon}</span>";
-        format-icons = {
-          "1" = "";
-          "2" = "";
-          special = "󰈉";
-        };
+        format = "<span font='12'>{name}</span>";
         all-outputs = true;
         active-only = false;
         on-click = "activate";
@@ -98,7 +92,7 @@ in {
           " "
           " "
         ];
-        format-charging = " <span foreground='#a6e3a1'>{icon}</span>  {capacity}%";
+        format-charging = " <span foreground='#a6e3a1'>{icon}</span> {capacity}%";
       };
       "wireplumber" = {
         on-click = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";

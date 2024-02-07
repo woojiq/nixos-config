@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  inputs,
   ...
 }: let
   browser = config.globals.browser;
@@ -22,6 +23,7 @@
   awk = "${pkgs.gawk}/bin/awk";
   wl-clip-persist = lib.getExe pkgs.wl-clip-persist;
   blueman-applet = "${pkgs.blueman}/bin/blueman-applet";
+  hyprpaper = "${pkgs.hyprpaper}/bin/hyprpaper";
 in let
   volumePt = "0.04";
   brightnessPt = "5";
@@ -58,6 +60,14 @@ in let
     ${hyprctl} dispatch exec "$res"
   '';
 in let
+  hyprpaperConf = let
+    wallpapers = "${config.home.sessionVariables.WALLPAPERS_DIR}/1.jpg";
+  in ''
+    preload = ${wallpapers}
+    wallpaper = eDP-1,${wallpapers}
+    # ipc = off
+  '';
+
   hyprlandSettings = {
     "$mainMod" = "SUPER";
     "$shiftMod" = "SUPER + SHIFT";
@@ -66,12 +76,15 @@ in let
     env = [
       # Wob setup
       "WOBSOCK, $XDG_RUNTIME_DIR/wob.sock"
+      # Make cursor visible on other monitors too.
+      "WLR_NO_HARDWARE_CURSORS, 1"
     ];
 
     exec-once = [
       bar
       blueman-applet
       emote
+      hyprpaper
       "${wl-clip-persist} --clipboard regular"
 
       # Workspace setup: https://wiki.hyprland.org/Configuring/Dispatchers/#executing-with-rules
@@ -95,7 +108,8 @@ in let
 
     monitor = [
       "eDP-1, 1920x1080@60, 0x0, 1"
-      # monitor=,preferred,auto,1,mirror,eDP-1 # Doesn't work
+      # 1440
+      "DP-1, 3840x2160@60, 0x-1728, 1.25"
     ];
 
     xwayland = {
@@ -178,7 +192,7 @@ in let
         ", XF86AudioPrev, exec, ${playerctl} previous"
         ", XF86AudioPlay, exec, ${playerctl} play-pause"
 
-        ", Print, exec, ${grim} -g '$(${slurp})' - | ${swappy} -f - && ${notify-send} 'Saved to ~/Pictures/Screenshots'"
+        ", Print, exec, ${grim} -g \"$(${slurp})\" - | ${swappy} -f - && ${notify-send} 'Saved to ~/Pictures/Screenshots'"
         "$altMod, Print, exec, ${grim} - | ${swappy} -f - && ${notify-send} 'Saved to ~/Pictures/Screenshots'"
       ]
       ++ (genBind "$mainMod" "workspace" 1 9)
@@ -214,7 +228,13 @@ in {
   wayland.windowManager.hyprland = {
     enable = true;
     settings = hyprlandSettings;
+    plugins = [
+      # Alt-Tab switch mode doesn't work.
+      # inputs.hycov.packages.${pkgs.system}.hycov
+    ];
   };
+
+  xdg.configFile."hypr/hyprpaper.conf".text = hyprpaperConf;
 
   services = {
     swayidle = {
