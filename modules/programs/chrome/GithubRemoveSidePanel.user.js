@@ -5,7 +5,7 @@
 // @grant       none
 // @version     1.0
 // @author      @woojiq
-// @description 1/29/2024, 15:52:00 AM
+// @description Remove sidepanel that shows "Popular repositoriers", etc.
 // ==/UserScript==
 
 document.querySelector('aside.feed-right-sidebar').remove()

@@ -1,5 +1,6 @@
 /*
 Windows Guest w/ virt-manager:
+* [FAST! Windows VM on Linux using QEMU / kvm / VirtIO // Ditch Your VirtualBox!](https://www.youtube.com/watch?v=Zei8i9CpAn0)
 * [Install windows 10](https://getlabsdone.com/10-easy-steps-to-install-windows-10-on-linux-kvm/)
 * Install spice guest tools
 * [Setup shared folders](https://www.debugpoint.com/kvm-share-folder-windows-guest/)

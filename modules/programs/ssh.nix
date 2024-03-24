@@ -9,11 +9,14 @@
     file.".ssh/config".text = let
       is3ip = "192.168.77.29";
       is7ip = "192.168.77.30";
+      is19ip = "192.168.77.72";
       makePrxX = idx: server: let
         getIp =
           if server == 3
           then is3ip
-          else is7ip;
+          else if server == 7
+          then is7ip
+          else is19ip;
         idxStr = toString idx;
       in ''
         Host prx${idxStr}
@@ -30,11 +33,16 @@
         Hostname ${is7ip}
         User y.shymon
 
+      Host is19
+        Hostname ${is19ip}
+        User y.shymon
+
       Host wkz
         User y.shymon
         Hostname 192.168.73.141
 
       ${makePrxX 1 7}
+      ${makePrxX 2 19}
       ${makePrxX 3 7}
       ${makePrxX 4 7}
       ${makePrxX 5 7}
@@ -50,7 +58,7 @@
       ${makePrxX 11 3}
       ${makePrxX 14 3}
       ${makePrxX 15 3}
-      ${makePrxX 16 3}
+      ${makePrxX 16 19}
 
       Host prx*
         HostKeyAlgorithms=+ssh-rsa

@@ -134,8 +134,8 @@ in {
     network-manager-applet.enable = true;
     gammastep = {
       enable = true;
-      dawnTime = "7:00-8:00";
-      duskTime = "22:00-23:00";
+      dawnTime = "7:00-7:30";
+      duskTime = "21:30-22:00";
       temperature.day = 6500;
       tray = true;
     };

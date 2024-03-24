@@ -12,7 +12,10 @@
     networkmanager = {
       enable = true;
     };
-    firewall.enable = true;
+    firewall = {
+      enable = true;
+      extraCommands = '''';
+    };
   };
 
   time.timeZone = "Europe/Kyiv";
@@ -20,7 +23,7 @@
   users = {
     users.${user} = {
       isNormalUser = true;
-      extraGroups = ["wheel" "networkmanager" "video" "audio" "docker"];
+      extraGroups = ["wheel" "networkmanager" "video" "audio"];
     };
   };
 
@@ -29,16 +32,19 @@
     loader = {
       systemd-boot = {
         enable = true;
+        # Maximum number of latest generations in the boot menu.
         configurationLimit = 10;
       };
       efi.canTouchEfiVariables = true;
       timeout = 1;
     };
     # Flicker-free (without text) graphical boot process
-    consoleLogLevel = 0;
+    consoleLogLevel = 4;
     initrd.verbose = false;
     kernelParams = ["quiet" "udev.log_level=3" "resume_offset=151552"];
-    plymouth.enable = true;
+    # Stopped working after some update. Sometimes the computer cannot turn off.
+    # Maybe this is it: https://github.com/NixOS/nixpkgs/issues/274491
+    plymouth.enable = false;
     # NOTDECL: Calculate offset on swap file using:
     # Configure hibernation (resume_offset cannot be precalculated on fresh system):
     # https://discourse.nixos.org/t/is-it-possible-to-hibernate-with-swap-file/2852
@@ -116,13 +122,6 @@
       extraPackages = with pkgs; [
         intel-media-driver
       ];
-    };
-  };
-
-  virtualisation = {
-    docker.rootless = {
-      enable = true;
-      setSocketVariable = true;
     };
   };
 

@@ -2,7 +2,9 @@
   description = "Personal NixOs Setup";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # FIXME: Until https://github.com/NixOS/nixpkgs/issues/291588 is not fixed.
+    nixpkgs.url = "github:nixos/nixpkgs/9099616b93301d5cf84274b184a3a5ec69e94e08";
+    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs.url = "/home/woojiq/code/nixpkgs/";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -10,18 +12,8 @@
     };
     helix = {
       url = "github:helix-editor/helix";
-      # url = "github:pascalkuthe/helix/event_system";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
-    # hyprland = {
-    #   url = "github:hyprwm/Hyprland/refs/tags/v0.34.0";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    # Unfortunately I cannot use hyprland plugins and use precompiled hyprland itself.
-    # hycov = {
-    #   url = "github:DreamMaoMao/hycov";
-    #   inputs.hyprland.follows = "hyprland";
-    # };
   };
 
   outputs = inputs @ {

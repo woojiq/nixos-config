@@ -33,7 +33,7 @@ in {
           display-messages = true;
         };
         indent-guides = {
-          render = true;
+          render = false;
           character = "╎";
           skip-levels = 1;
         };
@@ -41,6 +41,9 @@ in {
           enable = true;
           # MB remove this because outside of the markdown I think I would need it
           wrap-indicator = "";
+        };
+        file-picker = {
+          hidden = false;
         };
       };
       keys = {
@@ -50,6 +53,7 @@ in {
           "A-l" = ":buffer-next";
           "A-h" = ":buffer-previous";
           space.c = {
+            "f" = ":reflow";
             "r" = ":reset-diff-change";
             "w" = {
               "a" = ":set whitespace.render all";
@@ -66,6 +70,8 @@ in {
           "д" = "move_char_right";
           "и" = "move_prev_word_start";
           "у" = "move_next_word_end";
+          "е" = "find_till_char";
+          "Е" = "till_prev_char";
           ## Changes
           "щ" = "open_below";
           "Щ" = "open_above";
@@ -79,13 +85,18 @@ in {
           "ʼ" = "switch_case";
           "Ю" = "indent";
           "Б" = "unindent";
+          "г" = "undo";
+          "Г" = "redo";
           ## Selection manipulation
           "ч" = "extend_line_below";
           "Ч" = "extend_line_above";
           ## Search
-          "." = "search";
+          # "." = "search"; Doesn't work because in Eng layout this key is mapped to "repeat op".
+          "т" = "search_next";
+          "Т" = "search_prev";
           ## Minor modes
           "м" = "select_mode";
+          "Ж" = "command_mode";
         };
       };
       # theme = "github_dark_dimmed";
@@ -154,7 +165,6 @@ in {
         }
       ];
     };
-    # TODO: Separate repo with themes.
     themes = {
       github_dark_dimmed = {
         inherits = "github_dark_dimmed";
@@ -168,9 +178,27 @@ in {
         "string" = "#d6dde3";
         "type" = "fg.default";
       };
-      ttox = {
-        inherits = "ttox";
+      mini = {
+        palette = {};
+        "ui.bufferline.active" = {bg = "gray";};
+        "ui.text.focus" = {bg = "gray";};
         "ui.virtual.inlay-hint" = {bg = "gray";};
+        "ui.selection" = {
+          fg = "white";
+          bg = "gray";
+        };
+        "ui.cursor.primary" = {
+          fg = "black";
+          bg = "light-gray";
+        };
+        "ui.linenr.selected" = {
+          fg = "white";
+          bg = "gray";
+        };
+        "ui.menu.selected" = {
+          bg = "light-gray";
+          fg = "black";
+        };
       };
       sonokai = {
         inherits = "sonokai";
@@ -199,11 +227,6 @@ in {
         inherits = "base16_transparent";
         # Remove blinking.
         "ui.cursor.primary" = {modifiers = ["reversed"];};
-      };
-      purple_paradise = {
-        inherits = "default";
-        "ui.background" = {fg = "white";};
-        "ui.background.separator" = {fg = "gray";};
       };
     };
   };

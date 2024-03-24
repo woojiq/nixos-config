@@ -2,7 +2,6 @@
   pkgs,
   lib,
   config,
-  inputs,
   ...
 }: let
   browser = config.globals.browser;
@@ -65,6 +64,7 @@ in let
   in ''
     preload = ${wallpapers}
     wallpaper = eDP-1,${wallpapers}
+    splash = false
     # ipc = off
   '';
 
