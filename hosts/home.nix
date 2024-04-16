@@ -33,6 +33,9 @@ in {
       tokei # Code statistics
       asciinema # Terminal session recorder
       ripgrep # `grep` alternative
+      rclone # rsync for cloud storage
+      eza # `ls` alternative
+      hyprpicker # color picker
       trim-clipboard
       ## Networking
       tcpdump
@@ -94,7 +97,6 @@ in {
   programs = {
     home-manager.enable = true;
     bash.enable = true;
-    eza.enable = true;
     bat.enable = true;
     zoxide.enable = true;
     fzf = {

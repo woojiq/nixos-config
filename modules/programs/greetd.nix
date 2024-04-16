@@ -11,9 +11,4 @@
       };
     };
   };
-
-  # https://github.com/NixOS/nixpkgs/issues/248323
-  systemd.tmpfiles.rules = [
-    "d /var/cache/tuigreet - greeter greeter"
-  ];
 }

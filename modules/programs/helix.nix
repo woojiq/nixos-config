@@ -55,12 +55,10 @@ in {
           space.c = {
             "f" = ":reflow";
             "r" = ":reset-diff-change";
-            "w" = {
-              "a" = ":set whitespace.render all";
-              "n" = ":set whitespace.render none";
-            };
+            "w" = ":toggle-option whitespace.render all none";
             "s" = "signature_help";
             "l" = ":lsp-restart";
+            "h" = ":toggle-option lsp.display-inlay-hints";
           };
           # Ukrainian layout imitation (https://docs.helix-editor.com/master/keymap.html)
           ## Movement
@@ -87,16 +85,28 @@ in {
           "Б" = "unindent";
           "г" = "undo";
           "Г" = "redo";
+          "з" = "paste_after";
+          "З" = "paste_before";
           ## Selection manipulation
           "ч" = "extend_line_below";
           "Ч" = "extend_line_above";
+          "ж" = "collapse_selection";
           ## Search
           # "." = "search"; Doesn't work because in Eng layout this key is mapped to "repeat op".
           "т" = "search_next";
           "Т" = "search_prev";
+          ## Select manipulation
+          "і" = "select_regex";
+          "І" = "split_selection";
           ## Minor modes
           "м" = "select_mode";
           "Ж" = "command_mode";
+          ## Goto mode
+          "п" = {
+            "р" = "goto_line_start";
+            "д" = "goto_line_end";
+            "і" = "goto_first_nonwhitespace";
+          };
         };
       };
       # theme = "github_dark_dimmed";

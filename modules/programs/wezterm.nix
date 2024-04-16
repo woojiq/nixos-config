@@ -46,23 +46,12 @@
       config.force_reverse_video_cursor = true
       config.inactive_pane_hsb = { brightness = 0.7 }
       -- config.font = wezterm.font 'Inconsolata LGC Nerd Font Mono'
-      -- config.font_size = 14
       config.font = wezterm.font 'MesloLGM Nerd Font Mono'
-      config.font_size = 12
+      config.font_size = 14
+      config.selection_word_boundary = " \t\n{}[]()\"'`" .. "│▍"
 
       -- A little bolder font is cool.
       config.front_end = "WebGpu"
-
-      --[[ Noticeably slower than ssh or ssh + tmux.
-      config.ssh_domains = {
-        {
-          name = "",
-          remote_address = "",
-          username = "",
-          local_echo_threshold_ms = 300,
-        },
-      }
-      --]]
 
       return config
     '';

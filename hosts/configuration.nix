@@ -40,7 +40,10 @@
     };
     # Flicker-free (without text) graphical boot process
     consoleLogLevel = 4;
-    initrd.verbose = false;
+    initrd = {
+      verbose = false;
+      checkJournalingFS = true; # Sometimes on linux crash it deletes my important files :(
+    };
     kernelParams = ["quiet" "udev.log_level=3" "resume_offset=151552"];
     # Stopped working after some update. Sometimes the computer cannot turn off.
     # Maybe this is it: https://github.com/NixOS/nixpkgs/issues/274491

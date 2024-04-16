@@ -4,8 +4,8 @@
   config,
   ...
 }: let
-  browser = config.globals.browser;
-  terminal = config.globals.terminal;
+  browser = "${pkgs.google-chrome}/bin/google-chrome-stable";
+  terminal = "${config.programs.wezterm.package}/bin/wezterm";
   bar = "${pkgs.waybar}/bin/waybar";
   wofi = "${pkgs.wofi}/bin/wofi";
   wob = "${pkgs.wob}/bin/wob";
@@ -107,6 +107,7 @@ in let
     };
 
     monitor = [
+      # FIXME: Wezterm crashes when scaling > 1.0: https://github.com/wez/wezterm/issues/5067
       "eDP-1, 1920x1080@60, 0x0, 1"
       # 1440
       "DP-1, 3840x2160@60, 0x-1728, 1.25"
@@ -222,16 +223,14 @@ in let
       "minsize 1 1, title:^()$,class:^(steam)$"
 
       "tile, title:^(.*)(NETCONF|NetConf)(.*)$"
+      "idleinhibit fullscrean, class:steam_app*" # TODO: steam_app?
     ];
   };
 in {
   wayland.windowManager.hyprland = {
     enable = true;
     settings = hyprlandSettings;
-    plugins = [
-      # Alt-Tab switch mode doesn't work.
-      # inputs.hycov.packages.${pkgs.system}.hycov
-    ];
+    plugins = [];
   };
 
   xdg.configFile."hypr/hyprpaper.conf".text = hyprpaperConf;

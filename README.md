@@ -1,10 +1,8 @@
 ### TODO
+* Wezterm wayland problems with fractional scaling
+* Hibernation doesn't work (wake ups immediately)
 * Alt-tab (like on Windows).
 * Screen lock before hibernating.
-* Fix bash ps1 with direnv (mb install bash-interactive globally).
-
-# Gallery
-![Desktop image](./misc/preview.png)
 
 _NOTDECL_ comment (not declaratively) means I (you) need to do this manually on fresh installation.
 

@@ -13,7 +13,7 @@
     insensitive = true;
     prompt = "";
     allow_images = true;
-    term = config.globals.terminal;
+    term = "${config.programs.wezterm.package}/bin/wezterm";
     # Window manager will open passed binary name (don't wait for application to start, close wofi asap).
     drun-print_command = true;
   };
