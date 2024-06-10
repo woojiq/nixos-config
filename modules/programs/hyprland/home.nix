@@ -24,9 +24,6 @@
   blueman-applet = "${pkgs.blueman}/bin/blueman-applet";
   hyprpaper = "${pkgs.hyprpaper}/bin/hyprpaper";
 in let
-  volumePt = "0.04";
-  brightnessPt = "5";
-
   doubleMove = {
     num,
     dir ? "r",
@@ -108,9 +105,10 @@ in let
 
     monitor = [
       # FIXME: Wezterm crashes when scaling > 1.0: https://github.com/wez/wezterm/issues/5067
+      # TODO: Script to toggle laptop's monitor: https://github.com/hyprwm/Hyprland/issues/2845
       "eDP-1, 1920x1080@60, 0x0, 1"
-      # 1440
-      "DP-1, 3840x2160@60, 0x-1728, 1.25"
+      "DP-1, 2560x1440@60, auto-left, 1"
+      # "DP-1, 3840x2160@60, 0x-1728, 1.25"
     ];
 
     xwayland = {
@@ -152,7 +150,9 @@ in let
       disable_splash_rendering = true;
     };
 
-    bind =
+    bind = let
+      brightnessPt = "5";
+    in
       [
         "$mainMod, q, killactive"
         "$mainMod, m, fullscreen, 1"
@@ -205,7 +205,9 @@ in let
       "$mainMod, mouse:273, resizewindow"
     ];
 
-    binde = [
+    binde = let
+      volumePt = "0.04";
+    in [
       # https://github.com/francma/wob
       ", XF86AudioLowerVolume, exec, ${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ ${volumePt}- && ${getVolumeScript} > $WOBSOCK"
       ", XF86AudioRaiseVolume, exec, ${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ ${volumePt}+ && ${getVolumeScript} > $WOBSOCK"
@@ -225,6 +227,10 @@ in let
       "tile, title:^(.*)(NETCONF|NetConf)(.*)$"
       "idleinhibit fullscrean, class:steam_app*" # TODO: steam_app?
     ];
+
+    workspace = [
+      "1, monitor:DP-1, default:true"
+    ];
   };
 in {
   wayland.windowManager.hyprland = {
@@ -236,22 +242,27 @@ in {
   xdg.configFile."hypr/hyprpaper.conf".text = hyprpaperConf;
 
   services = {
-    swayidle = {
+    hypridle = {
       enable = true;
-      timeouts = [
-        {
-          timeout = 600;
-          command = "${hyprctl} dispatch dpms off";
-          resumeCommand = "${hyprctl} dispatch dpms on";
-        }
-        {
-          timeout = 1800;
-          # TODO make script to lock screen before hibernation.
-          # And use it in wofi module too.
-          command = "${hyprctl} dispatch dpms on && ${systemctl} hibernate";
-        }
-      ];
-      systemdTarget = "hyprland-session.target";
+      settings = {
+        general = {
+          after_sleep_cmd = "${hyprctl} dispatch dpms on";
+        };
+        listener = [
+          {
+            timeout = 600;
+            on-timeout = "${hyprctl} dispatch dpms off";
+            on-resume = "${hyprctl} dispatch dpms on";
+          }
+          {
+            # TODO: Need to press a key twice after suspend to dpms on.
+            # TODO: Make script to lock screen before hibernation.
+            # TODO: Hibernation doesn't work, see README.md
+            timeout = 1800;
+            on-timeout = "${systemctl} suspend";
+          }
+        ];
+      };
     };
   };
 }

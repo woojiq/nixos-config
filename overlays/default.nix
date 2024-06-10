@@ -15,7 +15,7 @@ final: prev: let
       netconf = prev.callPackage ./netconf.nix {};
     })
     (import ./wezterm.nix)
-    (import ./wl-clip-persist.nix)
   ];
 in
+  # WTF
   prev.lib.composeManyExtensions overlays final prev

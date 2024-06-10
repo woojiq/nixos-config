@@ -1,3 +1,4 @@
+# TODO: Add filter-out list for dmenu.
 {
   pkgs,
   config,

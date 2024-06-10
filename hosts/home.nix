@@ -46,6 +46,7 @@ in {
 
       # Developing
       ## Nix
+      # TODO: Try nixd language-server.
       nil
       alejandra # code formatter
 
@@ -107,8 +108,9 @@ in {
         "--preview '${pkgs.bat}/bin/bat -f {} -f 2>/dev/null || ${pkgs.eza}/bin/eza -a {}'"
         "-m"
       ];
-      # Find both files and symlinks
-      defaultCommand = "${pkgs.fd}/bin/fd -tf -tl . \\$dir | sed 's@^\./@@'";
+      # TODO: use "bind" to add directories and show only files by default
+      # Find files, symlinks and dirs
+      defaultCommand = "${pkgs.fd}/bin/fd -tf -tl -td . \\$dir | sed 's@^\./@@'";
       fileWidgetCommand = "${config.programs.fzf.defaultCommand}";
     };
     tealdeer.enable = true;

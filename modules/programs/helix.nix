@@ -21,6 +21,7 @@ in {
         color-modes = true;
         cursor-shape.insert = "underline";
         scrolloff = 3;
+        completion-replace = true;
         statusline = {
           left = ["mode" "spinner" "spacer" "version-control" "read-only-indicator"];
           center = ["file-name" "file-modification-indicator" "spacer" "diagnostics"];
@@ -106,6 +107,12 @@ in {
             "р" = "goto_line_start";
             "д" = "goto_line_end";
             "і" = "goto_first_nonwhitespace";
+            "п" = "goto_file_start";
+          };
+          ## Space mode
+          "space" = {
+            "f" = "file_picker_in_current_directory";
+            "F" = "file_picker";
           };
         };
       };
@@ -171,6 +178,16 @@ in {
           formatter = {
             command = "prettier";
             args = ["--parser" "html"];
+          };
+        }
+        {
+          name = "lox";
+          scope = "source.lox";
+          file-types = ["lox"];
+          comment-tokens = "//";
+          indent = {
+            tab-width = 4;
+            unit = "    ";
           };
         }
       ];
