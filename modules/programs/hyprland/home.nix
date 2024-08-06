@@ -56,15 +56,6 @@ in let
     ${hyprctl} dispatch exec "$res"
   '';
 in let
-  hyprpaperConf = let
-    wallpapers = "${config.home.sessionVariables.WALLPAPERS_DIR}/1.jpg";
-  in ''
-    preload = ${wallpapers}
-    wallpaper = eDP-1,${wallpapers}
-    splash = false
-    # ipc = off
-  '';
-
   hyprlandSettings = {
     "$mainMod" = "SUPER";
     "$shiftMod" = "SUPER + SHIFT";
@@ -104,10 +95,13 @@ in let
     };
 
     monitor = [
+      # TODO: Add script to `hyprctl dispatch moveworkspacetomonitor 2 DP-1` on monitor connection.
       # FIXME: Wezterm crashes when scaling > 1.0: https://github.com/wez/wezterm/issues/5067
       # TODO: Script to toggle laptop's monitor: https://github.com/hyprwm/Hyprland/issues/2845
       "eDP-1, 1920x1080@60, 0x0, 1"
-      "DP-1, 2560x1440@60, auto-left, 1"
+      # NOTE: auto-{left,right} may interfere with the `doubleMove` function.
+      # `movewindow` can move to the next monitor not only within the same workspace.
+      "DP-1, 2560x1440@60, auto-up, 1"
       # "DP-1, 3840x2160@60, 0x-1728, 1.25"
     ];
 
@@ -225,11 +219,14 @@ in let
       "minsize 1 1, title:^()$,class:^(steam)$"
 
       "tile, title:^(.*)(NETCONF|NetConf)(.*)$"
+      # Do not turn off screen when playing using radio controller or smth else.
       "idleinhibit fullscrean, class:steam_app*" # TODO: steam_app?
     ];
 
     workspace = [
       "1, monitor:DP-1, default:true"
+      "2, monitor:DP-1"
+      "9, monitor:eDP-1, default:true"
     ];
   };
 in {
@@ -239,9 +236,18 @@ in {
     plugins = [];
   };
 
-  xdg.configFile."hypr/hyprpaper.conf".text = hyprpaperConf;
-
   services = {
+    hyprpaper = {
+      enable = true;
+      settings = let
+        wallpapers = "${config.home.sessionVariables.WALLPAPERS_DIR}/main.jpg";
+      in {
+        preload = ["${wallpapers}"];
+        wallpaper = [", ${wallpapers}"];
+        splash = false;
+        # ipc = off
+      };
+    };
     hypridle = {
       enable = true;
       settings = {

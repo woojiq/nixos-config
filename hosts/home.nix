@@ -53,10 +53,13 @@ in {
       # Desktop application
       mpv # Media player
       cinnamon.nemo # File manager
+      gnome.eog # GNOME image viewer
       emote # Emoji picker
       telegram-desktop
       obs-studio
       netconf # Netconf protocol browser
+      darktable # Photography workflow application
+      # zed # Editor like VSCode
     ];
 
     pointerCursor = {
@@ -69,10 +72,6 @@ in {
     sessionVariables = {
       # Case-insensitive Less pager
       LESS = "-iR";
-    };
-
-    file = {
-      ${config.home.sessionVariables.WALLPAPERS_DIR}.source = ../misc/wallpapers;
     };
 
     stateVersion = "23.11";
@@ -163,6 +162,22 @@ in {
       '';
       # Enables pretty-printing rust in `gdb`
       "gdb/gdbinit".text = "set auto-load safe-path /nix/store";
+      # Some app overwrites mimeapps all the time.
+      "mimeapps.list".force = true;
+    };
+    mimeApps = {
+      enable = true;
+      # Use `file --mime-type <filename>` to get mime type
+      # Check $XDG_DATA_DIRS to search for .desktop
+      defaultApplications = let
+        # Generate "$base/$list[i] = $value" attributes for each element of the list.
+        forEachFileType = base: list: value: builtins.foldl' (accum: el: {"${base}/${el}" = value;} // accum) {} list;
+      in
+        {}
+        // (forEachFileType "image" ["jpeg" "jpg" "png"] "org.gnome.eog.desktop")
+        // (forEachFileType "video" ["mp4"] "mpv.desktop")
+        // (forEachFileType "x-scheme-handler" ["http" "https"] "google-chrome.desktop")
+        // (forEachFileType "text" ["html"] "google-chrome.desktop");
     };
   };
 

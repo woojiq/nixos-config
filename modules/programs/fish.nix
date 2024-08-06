@@ -19,7 +19,7 @@
       '';
       # `eza` with tree-like output
       lst = let
-        base = "${pkgs.eza}/bin/eza -Tl --git --no-permissions --git-ignore --icons -I=\".git\"";
+        base = "${pkgs.eza}/bin/eza -Tl --git --no-permissions --git-ignore --icons";
       in ''
         # Check if last argument is number (for -L argument)
         # https://stackoverflow.com/a/56615368/17903686

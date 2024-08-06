@@ -1,0 +1,5 @@
+# NOTDECL: List of filters to add to AdBlock to prevent some items from being
+# seen on websites. This list is manually exported and created by AdBlock.
+
+codeforces.com##DIV[class="recent-actions"]
+github.com##ASIDE[class="feed-right-sidebar mb-5 border-bottom"]

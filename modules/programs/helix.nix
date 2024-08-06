@@ -139,6 +139,20 @@ in {
       };
       language = [
         {
+          name = "cpp";
+          indent = {
+            tab-width = 4;
+            unit = "    ";
+          };
+        }
+        {
+          name = "c";
+          indent = {
+            tab-width = 4;
+            unit = "    ";
+          };
+        }
+        {
           name = "python";
           roots = ["pyproject.toml"];
           language-servers = ["pyright-langserver"];

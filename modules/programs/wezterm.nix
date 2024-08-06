@@ -31,6 +31,7 @@
         { key = 'k', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Up' },
         { key = 'l', mods = 'SHIFT|ALT', action = act.ActivatePaneDirection 'Right' },
         { key = 'm', mods = 'SHIFT|ALT', action = act.TogglePaneZoomState },
+        -- { key = 'b', mods = 'SHIFT|ALT', action = act.RotatePanes 'Clockwise' },
         -- { key = 'd', mods = 'SHIFT|ALT', action = act.ShowDebugOverlay },
         { key = '-', mods = 'CTRL', action = act.DecreaseFontSize },
         { key = '=', mods = 'CTRL', action = act.IncreaseFontSize },

@@ -45,9 +45,7 @@
       checkJournalingFS = true; # Sometimes on linux crash it deletes my important files :(
     };
     kernelParams = ["quiet" "udev.log_level=3" "resume_offset=151552"];
-    # Stopped working after some update. Sometimes the computer cannot turn off.
-    # Maybe this is it: https://github.com/NixOS/nixpkgs/issues/274491
-    plymouth.enable = false;
+    plymouth.enable = true;
     # NOTDECL: Calculate offset on swap file using:
     # Configure hibernation (resume_offset cannot be precalculated on fresh system):
     # https://discourse.nixos.org/t/is-it-possible-to-hibernate-with-swap-file/2852
@@ -116,6 +114,10 @@
 
   programs = {
     steam.enable = false;
+    wireshark = {
+      enable = true;
+      package = pkgs.wireshark;
+    };
   };
 
   hardware = {

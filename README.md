@@ -1,6 +1,6 @@
 ### TODO
 * Blueman applet sometimes is not started.
-* Remove photos from the repo history to decrease its size.
+* Remove photos from the repo history to decrease its size (use git filter-repo)
 * Wezterm wayland problems with fractional scaling
 * Hibernation doesn't work (wake ups immediately)
 * Alt-tab (like on Windows).
@@ -11,7 +11,8 @@
 * VsCode for openwrt development via ssh.
 * Setup LVM (disk).
 * Setup terminal different from wezterm (as a backup option).
-* Build Zed for Linux and try it out (intrigued).
+* Build Zed for Linux and try it out (intrigued):
+  * Remote development is still in alpha.
 
 _NOTDECL_ comment (not declaratively) means I (you) need to do this manually on fresh installation.
 
