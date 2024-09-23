@@ -75,6 +75,8 @@ in let
       hyprpaper
       "${wl-clip-persist} --clipboard regular"
 
+      "${hyprctl} setcursor ${config.home.pointerCursor.name} ${toString config.home.pointerCursor.size}"
+
       # Workspace setup: https://wiki.hyprland.org/Configuring/Dispatchers/#executing-with-rules
       "[workspace 1 silent] ${browser}"
       "[workspace 2 silent] ${terminal}"

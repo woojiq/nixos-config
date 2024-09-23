@@ -126,7 +126,7 @@
       # Device battery status: https://askubuntu.com/a/1420501
       settings.General.Experimental = true;
     };
-    opengl = {
+    graphics = {
       enable = true;
       extraPackages = with pkgs; [
         intel-media-driver

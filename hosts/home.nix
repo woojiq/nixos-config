@@ -15,6 +15,12 @@
     pkgs.writeShellScriptBin "trim-clipboard" ''
       ${clip}/wl-paste | sed -r -e 's/^[^0-9]*[[:digit:]]+.//g' -e 's/╎|▍//g' | ${clip}/wl-copy
     '';
+in let
+  cursorTheme = {
+    name = "macOS-White";
+    package = pkgs.apple-cursor;
+    size = 26;
+  };
 in {
   imports =
     (import ../modules/programs/home-default.nix)
@@ -52,24 +58,27 @@ in {
 
       # Desktop application
       mpv # Media player
-      cinnamon.nemo # File manager
-      gnome.eog # GNOME image viewer
+      nemo # File manager
+      eog # GNOME image viewer
       emote # Emoji picker
-      telegram-desktop
+      # telegram-desktop # Temporary uninstall
       obs-studio
       netconf # Netconf protocol browser
       darktable # Photography workflow application
       # zed # Editor like VSCode
+
+      cursorTheme.package
     ];
 
-    pointerCursor = {
-      gtk.enable = true;
-      name = "macOS-BigSur-White";
-      package = pkgs.apple-cursor;
-      size = 24;
-    };
+    pointerCursor =
+      cursorTheme
+      // {
+        gtk.enable = true;
+      };
 
     sessionVariables = {
+      XCURSOR_THEME = cursorTheme.name;
+      XCURSOR_SIZE = "${toString cursorTheme.size}";
       # Case-insensitive Less pager
       LESS = "-iR";
     };
@@ -78,6 +87,7 @@ in {
   };
 
   gtk = {
+    inherit cursorTheme;
     enable = true;
     theme = {
       name = "Juno";

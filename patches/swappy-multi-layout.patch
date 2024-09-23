@@ -1,6 +1,13 @@
-feat: use hardware keycodes intead of English
+From 751baedca4dcae87c455dcc54dd575013600ed0c Mon Sep 17 00:00:00 2001
+From: woojiq <yurii.shymon@gmail.com>
+Date: Fri, 18 Aug 2023 14:01:44 +0300
+Subject: [PATCH] feat: use hardware keycodes intead of English
 
-This allows hotkeys to be pressed on any language, but will have side effects if you're using a non-qwerty layout.
+This allows hotkeys to be pressed on any language, but will have side
+effects if you're using a non-qwerty layout.
+---
+ src/application.c | 200 +++++++++++++++++++++++++---------------------
+ 1 file changed, 109 insertions(+), 91 deletions(-)
 
 diff --git a/src/application.c b/src/application.c
 index 57d652f..6f54970 100644
@@ -216,3 +223,6 @@ index 57d652f..6f54970 100644
      }
    }
  }
+-- 
+2.44.1
+

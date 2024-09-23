@@ -2,17 +2,22 @@
   description = "Personal NixOs Setup";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/24.05";
-    # nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:nixos/nixpkgs/24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     # nixpkgs.url = "/home/woojiq/code/nixpkgs/";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      # url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     helix = {
       url = "github:helix-editor/helix";
       # We don't want to follow nixpkgs to be able to use cachix.
       # inputs.nixpkgs.follows = "nixpkgs";
+    };
+    wezterm-nightly = {
+      url = "github:wez/wezterm?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 

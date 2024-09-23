@@ -1,7 +1,13 @@
 # TODO: use nix variables to simplify config.
-{config, ...}: {
+{
+  pkgs,
+  config,
+  inputs,
+  ...
+}: {
   programs.wezterm = {
     enable = true;
+    package = inputs.wezterm-nightly.packages.${pkgs.system}.default;
     extraConfig = ''
       local act = wezterm.action
       local config = wezterm.config_builder()
@@ -50,9 +56,15 @@
       config.font = wezterm.font 'MesloLGM Nerd Font Mono'
       config.font_size = 14
       config.selection_word_boundary = " \t\n{}[]()\"'`" .. "│▍"
+      -- How many lines of scrollback you want to retain.
+      config.scrollback_lines = 3500
 
       -- A little bolder font is cool.
       config.front_end = "WebGpu"
+      -- https://github.com/wez/wezterm/issues/5197
+      -- WARN: Scrolling is not smooth on XWayland.
+      config.enable_wayland = false
+      config.audible_bell = 'Disabled'
 
       return config
     '';

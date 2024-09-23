@@ -1,5 +1,4 @@
 ### TODO
-* Blueman applet sometimes is not started.
 * Remove photos from the repo history to decrease its size (use git filter-repo)
 * Wezterm wayland problems with fractional scaling
 * Hibernation doesn't work (wake ups immediately)

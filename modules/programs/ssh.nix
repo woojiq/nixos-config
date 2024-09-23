@@ -29,6 +29,10 @@
         Hostname 192.168.77.30
         User y.shymon
 
+      Host is17
+        Hostname 192.168.77.167
+        User y.shymon
+
       Host is19
         Hostname 192.168.77.72
         User y.shymon

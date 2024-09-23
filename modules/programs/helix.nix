@@ -117,6 +117,7 @@ in {
         };
       };
       # theme = "github_dark_dimmed";
+      # theme = "yellowed";
       theme = "base16_transparent";
     };
     languages = {
