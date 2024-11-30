@@ -54,13 +54,14 @@
       config.inactive_pane_hsb = { brightness = 0.7 }
       -- config.font = wezterm.font 'Inconsolata LGC Nerd Font Mono'
       config.font = wezterm.font 'MesloLGM Nerd Font Mono'
-      config.font_size = 14
+      config.font_size = 16
       config.selection_word_boundary = " \t\n{}[]()\"'`" .. "│▍"
       -- How many lines of scrollback you want to retain.
       config.scrollback_lines = 3500
 
       -- A little bolder font is cool.
       config.front_end = "WebGpu"
+      -- It works with enable_wayland=true OK on sway.
       -- https://github.com/wez/wezterm/issues/5197
       -- WARN: Scrolling is not smooth on XWayland.
       config.enable_wayland = false

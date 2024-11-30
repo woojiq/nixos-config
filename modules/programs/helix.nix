@@ -118,6 +118,7 @@ in {
       };
       # theme = "github_dark_dimmed";
       # theme = "yellowed";
+      # theme = "monokai_pro_octagon";
       theme = "base16_transparent";
     };
     languages = {

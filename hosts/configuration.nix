@@ -28,7 +28,7 @@
   };
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    # kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       systemd-boot = {
         enable = true;
@@ -110,7 +110,11 @@
         "ipsec.d/ipsec.nm-l2tp.secrets"
       ];
     };
+    openssh.enable = true;
   };
+
+  # https://www.reddit.com/r/NixOS/comments/16mbn41/install_but_dont_enable_openssh_sshd_service/
+  systemd.services.sshd.wantedBy = pkgs.lib.mkForce [];
 
   programs = {
     steam.enable = false;

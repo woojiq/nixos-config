@@ -46,8 +46,8 @@ in let
   # wofi --show drun | xargs -Ioutput hyprctl dispatch exec output
   wofiWithFilter = pkgs.writeShellScript "wofi-with-filter" ''
     res=$(${wofi} --show drun)
-    filter=("telegram-desktop --")
-    # filter=()
+    # filter=("telegram-desktop --")
+    filter=()
     for name in "''${filter[@]}"; do
       if [ "$res" = "$name" ]; then
         exit
@@ -265,7 +265,6 @@ in {
           {
             # TODO: Need to press a key twice after suspend to dpms on.
             # TODO: Make script to lock screen before hibernation.
-            # TODO: Hibernation doesn't work, see README.md
             timeout = 1800;
             on-timeout = "${systemctl} suspend";
           }

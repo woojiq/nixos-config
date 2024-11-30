@@ -1,7 +1,6 @@
 ### TODO
 * Remove photos from the repo history to decrease its size (use git filter-repo)
 * Wezterm wayland problems with fractional scaling
-* Hibernation doesn't work (wake ups immediately)
 * Alt-tab (like on Windows).
 * Screen lock before hibernating.
 * Thunderbird and emails.

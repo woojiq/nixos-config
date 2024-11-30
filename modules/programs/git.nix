@@ -23,6 +23,7 @@
       merge.conflictstyle = "diff3";
       pull.rebase = true;
       rerere.enabled = true;
+      rebase.updateRefs = true;
     };
     delta.enable = true;
   };

@@ -3,6 +3,7 @@
     enable = true;
     shellAbbrs = {
       nish = "nix-shell --run fish -p";
+      bnix = "sudo nixos-rebuild boot --flake .#laptop";
       tnix = "sudo nixos-rebuild test --flake .#laptop";
       snix = "sudo nixos-rebuild switch --flake .#laptop";
       chrome = "google-chrome-stable";

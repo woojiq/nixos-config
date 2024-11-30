@@ -8,6 +8,7 @@
   ./ssh.nix
   ./starship/home.nix
   ./swappy.nix
+  ./sway.nix
   ./virt-manager/home.nix
   ./waybar.nix
   ./wezterm.nix

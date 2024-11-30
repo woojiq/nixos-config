@@ -61,11 +61,12 @@ in {
       nemo # File manager
       eog # GNOME image viewer
       emote # Emoji picker
-      # telegram-desktop # Temporary uninstall
+      telegram-desktop
       obs-studio
       netconf # Netconf protocol browser
       darktable # Photography workflow application
       # zed # Editor like VSCode
+      # foliate # Read e-books/pdf
 
       cursorTheme.package
     ];

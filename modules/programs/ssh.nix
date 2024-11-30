@@ -1,15 +1,7 @@
 # NOTDECL: Create ssh key using `ssh-keygen -i` and use `ssh-copy-id <server-name>` to copy public key to servers.
 # TODO: Replace manual key generation with `services.openssh.hostKeys` option.
-{
-  pkgs,
-  lib,
-  ...
-}: {
+{lib, ...}: {
   home = {
-    packages = with pkgs; [
-      openssh
-    ];
-
     file.".ssh/config".text = let
       makePrxX = idx: lastOct: let
         Ip = "192.168.77.${toString lastOct}";
