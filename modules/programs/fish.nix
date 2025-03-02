@@ -59,5 +59,10 @@
       # Disable noise from direnv
       set -x DIRENV_LOG_FORMAT ""
     '';
+
+    interactiveShellInit = ''
+      # Current directory as fallback (run local scripts without ./)
+      # set PATH $PATH .
+    '';
   };
 }

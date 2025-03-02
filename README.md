@@ -1,4 +1,5 @@
 ### TODO
+* Steam doesn't start
 * Remove photos from the repo history to decrease its size (use git filter-repo)
 * Wezterm wayland problems with fractional scaling
 * Alt-tab (like on Windows).

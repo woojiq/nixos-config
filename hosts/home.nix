@@ -42,10 +42,11 @@ in {
       rclone # rsync for cloud storage
       eza # `ls` alternative
       hyprpicker # color picker
+      # ffmpeg # handle video and audio
       trim-clipboard
       ## Networking
-      tcpdump
-      traceroute
+      # tcpdump
+      # traceroute
 
       xdg-user-dirs
       xdg-utils
@@ -64,8 +65,7 @@ in {
       telegram-desktop
       obs-studio
       netconf # Netconf protocol browser
-      darktable # Photography workflow application
-      # zed # Editor like VSCode
+      # darktable # Photography workflow application
       # foliate # Read e-books/pdf
 
       cursorTheme.package

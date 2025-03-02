@@ -29,11 +29,12 @@
         Hostname 192.168.77.72
         User y.shymon
 
-      Host wkz
+      Host wksv
         User y.shymon
-        Hostname 192.168.73.141
+        Hostname 192.168.78.119
 
-      ${lib.strings.concatMapStrings (idx: (makePrxX idx 29) + "\n") [2 10 14 15 16]}
+      ${lib.strings.concatMapStrings (idx: (makePrxX idx 167) + "\n") [10 17 18 19]}
+      ${lib.strings.concatMapStrings (idx: (makePrxX idx 29) + "\n") [2 14 15 16]}
       ${lib.strings.concatMapStrings (idx: (makePrxX idx 30) + "\n") [1 3 4 5 6 7 8 9 11 12 13]}
 
       Host prx*

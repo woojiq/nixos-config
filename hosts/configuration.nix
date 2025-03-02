@@ -74,13 +74,9 @@
   documentation.man.generateCaches = true;
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override {
-      fonts = [
-        "FiraCode"
-        "InconsolataLGC"
-        "Meslo"
-      ];
-    })
+    nerd-fonts.fira-code
+    nerd-fonts.inconsolata-lgc
+    nerd-fonts.meslo-lg
   ];
 
   xdg.portal = {
@@ -111,6 +107,7 @@
       ];
     };
     openssh.enable = true;
+    flatpak.enable = false;
   };
 
   # https://www.reddit.com/r/NixOS/comments/16mbn41/install_but_dont_enable_openssh_sshd_service/
@@ -148,9 +145,11 @@
       auto-optimise-store = true;
       substituters = [
         "https://helix.cachix.org"
+        "https://wezterm.cachix.org"
       ];
       trusted-public-keys = [
         "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
+        "wezterm.cachix.org-1:kAbhjYUC9qvblTE+s7S+kl5XM1zVa4skO+E/1IDWdH0="
       ];
     };
     gc = {

@@ -14,6 +14,7 @@ in {
     settings = {
       editor = {
         line-number = "relative";
+        continue-comments = false;
         popup-border = "all";
         shell = ["${config.globals.shell}" "-c"];
         bufferline = "multiple";
@@ -53,6 +54,7 @@ in {
           "A-w" = ":buffer-close";
           "A-l" = ":buffer-next";
           "A-h" = ":buffer-previous";
+          "*" = "search_selection";
           space.c = {
             "f" = ":reflow";
             "r" = ":reset-diff-change";
