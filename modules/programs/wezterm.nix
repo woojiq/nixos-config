@@ -54,7 +54,7 @@
       config.inactive_pane_hsb = { brightness = 0.7 }
       -- config.font = wezterm.font 'Inconsolata LGC Nerd Font Mono'
       config.font = wezterm.font 'MesloLGM Nerd Font Mono'
-      config.font_size = 16
+      config.font_size = 18
       config.selection_word_boundary = " \t\n{}[]()\"'`" .. "│▍"
       -- How many lines of scrollback you want to retain.
       config.scrollback_lines = 3500

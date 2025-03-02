@@ -14,6 +14,7 @@ in {
     settings = {
       editor = {
         line-number = "relative";
+        continue-comments = false;
         popup-border = "all";
         shell = ["${config.globals.shell}" "-c"];
         bufferline = "multiple";
@@ -53,6 +54,7 @@ in {
           "A-w" = ":buffer-close";
           "A-l" = ":buffer-next";
           "A-h" = ":buffer-previous";
+          "*" = "search_selection";
           space.c = {
             "f" = ":reflow";
             "r" = ":reset-diff-change";
@@ -117,8 +119,8 @@ in {
         };
       };
       # theme = "github_dark_dimmed";
-      # theme = "yellowed";
       # theme = "monokai_pro_octagon";
+      # theme = "yo_berry"
       theme = "base16_transparent";
     };
     languages = {
@@ -195,6 +197,10 @@ in {
             command = "prettier";
             args = ["--parser" "html"];
           };
+        }
+        {
+          name = "lua";
+          auto-format = true;
         }
         {
           name = "lox";

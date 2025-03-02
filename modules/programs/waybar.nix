@@ -122,6 +122,8 @@ in {
           "activated" = " ";
           "deactivated" = " ";
         };
+        # Whether the inhibit should be activated when starting waybar.
+        start-activated = true;
       };
       "clock" = {
         # https://github.com/Alexays/Waybar/wiki/Module:-Clock#example

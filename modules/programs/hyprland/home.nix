@@ -80,6 +80,7 @@ in let
       # Workspace setup: https://wiki.hyprland.org/Configuring/Dispatchers/#executing-with-rules
       "[workspace 1 silent] ${browser}"
       "[workspace 2 silent] ${terminal}"
+      "[workspace 9 silent] ${terminal}"
 
       "rm -f $WOBSOCK && mkfifo $WOBSOCK && tail -f $WOBSOCK | ${wob}"
     ];
@@ -98,13 +99,12 @@ in let
 
     monitor = [
       # TODO: Add script to `hyprctl dispatch moveworkspacetomonitor 2 DP-1` on monitor connection.
-      # FIXME: Wezterm crashes when scaling > 1.0: https://github.com/wez/wezterm/issues/5067
       # TODO: Script to toggle laptop's monitor: https://github.com/hyprwm/Hyprland/issues/2845
       "eDP-1, 1920x1080@60, 0x0, 1"
       # NOTE: auto-{left,right} may interfere with the `doubleMove` function.
       # `movewindow` can move to the next monitor not only within the same workspace.
       "DP-1, 2560x1440@60, auto-up, 1"
-      # "DP-1, 3840x2160@60, 0x-1728, 1.25"
+      # "DP-1, 3840x2160@60, auto-up, 1.5"
     ];
 
     xwayland = {

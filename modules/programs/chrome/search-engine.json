@@ -1,0 +1,27 @@
+# NOTDECL: List of bangs (like in DuckDuckGo).
+
+{
+    "url": "https://search.nixos.org/packages?channel=unstable&query={searchTerms}",
+    "short_name": "Nixos packages",
+    "keyword": "nish",
+},
+{
+    "url": "https://search.nixos.org/options?channel=unstable&query={searchTerms}",
+    "short_name": "Nixos options",
+    "keyword": "nio",
+},
+{
+    "url": "https://home-manager-options.extranix.com/?query={searchTerms}&release=master",
+    "short_name": "HomeManager options",
+    "keyword": "nih",
+},
+{
+    "url": "https://doc.rust-lang.org/std/?search={searchTerms}",
+    "short_name": "Rust std docs",
+    "keyword": "!std",
+},
+{
+    "url": "https://docs.rs/{searchTerms}",
+    "short_name": "Rust crate docs",
+    "keyword": "!crate",
+},
