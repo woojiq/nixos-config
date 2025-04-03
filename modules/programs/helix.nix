@@ -18,6 +18,7 @@ in {
         popup-border = "all";
         shell = ["${config.globals.shell}" "-c"];
         bufferline = "multiple";
+        text-width = 100;
         idle-timeout = 20;
         color-modes = true;
         cursor-shape.insert = "underline";

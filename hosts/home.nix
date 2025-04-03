@@ -12,6 +12,7 @@
   trim-clipboard = let
     clip = "${pkgs.wl-clipboard}/bin";
   in
+    # TODO: RIIR (Rewrite It In Rust)
     pkgs.writeShellScriptBin "trim-clipboard" ''
       ${clip}/wl-paste | sed -r -e 's/^[^0-9]*[[:digit:]]+.//g' -e 's/╎|▍//g' | ${clip}/wl-copy
     '';
@@ -37,16 +38,14 @@ in {
       neofetch # System info
       fd # `find` alternative
       tokei # Code statistics
-      asciinema # Terminal session recorder
       ripgrep # `grep` alternative
       rclone # rsync for cloud storage
       eza # `ls` alternative
       hyprpicker # color picker
-      # ffmpeg # handle video and audio
+
+      # Scripts
       trim-clipboard
-      ## Networking
-      # tcpdump
-      # traceroute
+      scripts
 
       xdg-user-dirs
       xdg-utils

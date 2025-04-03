@@ -1,0 +1,13 @@
+[package]
+name = "scripts"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.97"
+xflags = "0.4.0-pre.2"
+xshell = "0.3.0-pre.2"
+
+[[bin]]
+name = "git-review"
+path = "src/git-review.rs"
