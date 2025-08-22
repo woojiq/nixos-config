@@ -24,6 +24,7 @@
   blueman-applet = "${pkgs.blueman}/bin/blueman-applet";
   hyprpaper = "${pkgs.hyprpaper}/bin/hyprpaper";
 in let
+  # TODO: Script to move window between displays
   doubleMove = {
     num,
     dir ? "r",
@@ -105,6 +106,7 @@ in let
       # `movewindow` can move to the next monitor not only within the same workspace.
       "DP-1, 2560x1440@60, auto-up, 1"
       # "DP-1, 3840x2160@60, auto-up, 1.5"
+      # " , preferred, auto, 1"
     ];
 
     xwayland = {
@@ -235,6 +237,7 @@ in {
   wayland.windowManager.hyprland = {
     enable = true;
     settings = hyprlandSettings;
+    # Window titles: https://github.com/hyprwm/hyprland-plugins/tree/main/hyprbars
     plugins = [];
   };
 

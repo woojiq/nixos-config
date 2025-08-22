@@ -25,6 +25,10 @@
         Hostname 192.168.77.167
         User y.shymon
 
+      Host is18
+        Hostname 192.168.77.168
+        User y.shymon
+
       Host is19
         Hostname 192.168.77.72
         User y.shymon
@@ -33,9 +37,9 @@
         User y.shymon
         Hostname 192.168.78.119
 
+      ${lib.strings.concatMapStrings (idx: (makePrxX idx 30) + "\n") [11 12 13]}
       ${lib.strings.concatMapStrings (idx: (makePrxX idx 167) + "\n") [10 17 18 19]}
-      ${lib.strings.concatMapStrings (idx: (makePrxX idx 29) + "\n") [2 14 15 16]}
-      ${lib.strings.concatMapStrings (idx: (makePrxX idx 30) + "\n") [1 3 4 5 6 7 8 9 11 12 13]}
+      ${lib.strings.concatMapStrings (idx: (makePrxX idx 168) + "\n") [1 2 3 4 5 6 7 8 9 14 15 16]}
 
       Host prx*
         HostKeyAlgorithms=+ssh-rsa

@@ -25,6 +25,10 @@
       rerere.enabled = true;
       rebase.updateRefs = true;
     };
-    delta.enable = true;
+    delta.enable = false;
+    difftastic = {
+      enable = true;
+      enableAsDifftool = true;
+    };
   };
 }

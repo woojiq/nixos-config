@@ -12,7 +12,6 @@
   trim-clipboard = let
     clip = "${pkgs.wl-clipboard}/bin";
   in
-    # TODO: RIIR (Rewrite It In Rust)
     pkgs.writeShellScriptBin "trim-clipboard" ''
       ${clip}/wl-paste | sed -r -e 's/^[^0-9]*[[:digit:]]+.//g' -e 's/╎|▍//g' | ${clip}/wl-copy
     '';
@@ -64,6 +63,8 @@ in {
       telegram-desktop
       obs-studio
       netconf # Netconf protocol browser
+      gimp3 # Image processing
+      glogg # Log viewer
       # darktable # Photography workflow application
       # foliate # Read e-books/pdf
 
@@ -127,6 +128,7 @@ in {
     direnv = {
       enable = true;
       nix-direnv.enable = true;
+      silent = true;
     };
 
     bottom = {

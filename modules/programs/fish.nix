@@ -57,7 +57,7 @@
       set -U fish_greeting ""
 
       # Disable noise from direnv
-      set -x DIRENV_LOG_FORMAT ""
+      # set -x DIRENV_LOG_FORMAT ""
     '';
 
     interactiveShellInit = ''
