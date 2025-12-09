@@ -124,15 +124,17 @@ in let
         natural_scroll = true;
         tap-to-click = true;
         scroll_factor = 0.2;
+        # scroll_factor = 1;
         middle_button_emulation = true;
       };
     };
 
     gestures = {
-      workspace_swipe = true;
-      workspace_swipe_fingers = 4;
       workspace_swipe_distance = 130;
     };
+    gesture = [
+      "4, horizontal, workspace"
+    ];
 
     animations = {
       enabled = false;
@@ -146,6 +148,10 @@ in let
       focus_on_activate = true;
       disable_hyprland_logo = true;
       disable_splash_rendering = true;
+    };
+
+    ecosystem = {
+      no_update_news = true;
     };
 
     bind = let
@@ -217,6 +223,11 @@ in let
       # Wrong telegram scale after opening tg image/video viewer: https://github.com/hyprwm/Hyprland/issues/839
       "float,class:^(org.telegram.desktop|telegramdesktop)$,title:^(Media viewer)$"
 
+      # After nixpkgs update from 25.05->25.11, touchpad scroll speed in a browser became soo slow,
+      # in other apps it remained the same.
+      # https://www.reddit.com/r/hyprland/comments/17tfs2w/different_scroll_factor_for_kitty/
+      "scrolltouchpad 1, class:google-chrome"
+
       # Fixes dropdown windows may disappear if you hover them:
       # https://github.com/hyprwm/Hyprland/issues/2661#issuecomment-1821639125
       "stayfocused, title:^()$,class:^(steam)$"
@@ -230,6 +241,7 @@ in let
     workspace = [
       "1, monitor:DP-1, default:true"
       "2, monitor:DP-1"
+      "3, monitor:DP-1"
       "9, monitor:eDP-1, default:true"
     ];
   };

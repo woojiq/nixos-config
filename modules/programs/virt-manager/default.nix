@@ -27,10 +27,11 @@ Windows Guest w/ virt-manager:
       qemu = {
         package = pkgs.qemu_kvm;
         swtpm.enable = true;
-        ovmf = {
-          enable = true;
-          packages = [pkgs.OVMFFull.fd];
-        };
+        # No longer needed after 23.05 -> 23.11
+        # ovmf = {
+        #   enable = true;
+        #   packages = [pkgs.OVMFFull.fd];
+        # };
       };
     };
   };

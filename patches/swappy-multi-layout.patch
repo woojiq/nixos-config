@@ -1,23 +1,10 @@
-From 751baedca4dcae87c455dcc54dd575013600ed0c Mon Sep 17 00:00:00 2001
-From: woojiq <yurii.shymon@gmail.com>
-Date: Fri, 18 Aug 2023 14:01:44 +0300
-Subject: [PATCH] feat: use hardware keycodes intead of English
-
-This allows hotkeys to be pressed on any language, but will have side
-effects if you're using a non-qwerty layout.
----
- src/application.c | 200 +++++++++++++++++++++++++---------------------
- 1 file changed, 109 insertions(+), 91 deletions(-)
-
 diff --git a/src/application.c b/src/application.c
-index 57d652f..6f54970 100644
+index 975e572..bd4d4c1 100644
 --- a/src/application.c
 +++ b/src/application.c
-@@ -345,100 +345,118 @@ void window_keypress_handler(GtkWidget *widget, GdkEventKey *event,
-     render_state(state);
+@@ -435,106 +435,116 @@ void window_keypress_handler(GtkWidget *widget, GdkEventKey *event,
      return;
    }
-+  // g_print("Keycode: %u\nCTRL: %u\n", event->hardware_keycode, event->state);
    if (event->state & GDK_CONTROL_MASK) {
 -    switch (event->keyval) {
 -      case GDK_KEY_c:
@@ -88,15 +75,18 @@ index 57d652f..6f54970 100644
 -        switch_mode_to_brush(state);
 -        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->brush), true);
 -        break;
+-      case GDK_KEY_e:
 -      case GDK_KEY_t:
 -        switch_mode_to_text(state);
 -        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->text), true);
 -        break;
+-      case GDK_KEY_s:
 -      case GDK_KEY_r:
 -        switch_mode_to_rectangle(state);
 -        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->rectangle),
 -                                     true);
 -        break;
+-      case GDK_KEY_c:
 -      case GDK_KEY_o:
 -        switch_mode_to_ellipse(state);
 -        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->ellipse),
@@ -110,6 +100,7 @@ index 57d652f..6f54970 100644
 -        switch_mode_to_blur(state);
 -        gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(state->ui->blur), true);
 -        break;
+-      case GDK_KEY_x:
 -      case GDK_KEY_k:
 -        action_clear(state);
 -        break;
@@ -144,6 +135,9 @@ index 57d652f..6f54970 100644
 -        break;
 -      case GDK_KEY_f:
 -        action_fill_shape_toggle(state, NULL);
+-        break;
+-      case GDK_KEY_T:
+-        action_transparent_toggle(state, NULL);
 -        break;
 -      default:
 -        break;
@@ -223,6 +217,3 @@ index 57d652f..6f54970 100644
      }
    }
  }
--- 
-2.44.1
-

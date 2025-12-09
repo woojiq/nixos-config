@@ -1,13 +1,13 @@
 # TODO: use nix variables to simplify config.
 {
-  pkgs,
+  # pkgs,
   config,
-  inputs,
+  # inputs,
   ...
 }: {
   programs.wezterm = {
     enable = true;
-    package = inputs.wezterm-nightly.packages.${pkgs.system}.default;
+    # package = inputs.wezterm-nightly.packages.${pkgs.system}.default;
     extraConfig = ''
       local act = wezterm.action
       local config = wezterm.config_builder()
@@ -61,10 +61,6 @@
 
       -- A little bolder font is cool.
       config.front_end = "WebGpu"
-      -- It works with enable_wayland=true OK on sway.
-      -- https://github.com/wez/wezterm/issues/5197
-      -- WARN: Scrolling is not smooth on XWayland.
-      config.enable_wayland = false
       config.audible_bell = 'Disabled'
 
       return config

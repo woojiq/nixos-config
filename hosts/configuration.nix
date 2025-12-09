@@ -9,8 +9,14 @@
     ++ (import ../modules/programs/nix-default.nix);
 
   networking = {
+    nftables = {
+      enable = true;
+    };
     networkmanager = {
       enable = true;
+      plugins = with pkgs; [
+        networkmanager-l2tp
+      ];
     };
     firewall = {
       enable = true;
@@ -120,7 +126,7 @@
   systemd.services.sshd.wantedBy = pkgs.lib.mkForce [];
 
   programs = {
-    steam.enable = false;
+    steam.enable = true;
     wireshark = {
       enable = true;
       package = pkgs.wireshark;

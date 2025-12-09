@@ -41,6 +41,8 @@ in {
       rclone # rsync for cloud storage
       eza # `ls` alternative
       hyprpicker # color picker
+      traceroute
+      # wireguard-tools
 
       # Scripts
       trim-clipboard
@@ -48,6 +50,10 @@ in {
 
       xdg-user-dirs
       xdg-utils
+
+      # https://github.com/NixOS/nixpkgs/issues/164021
+      libheif
+      libheif.out # HEIC image previews in file manager
 
       # Developing
       ## Nix
@@ -67,6 +73,7 @@ in {
       glogg # Log viewer
       # darktable # Photography workflow application
       # foliate # Read e-books/pdf
+      anki # Learn words
 
       cursorTheme.package
     ];
@@ -186,8 +193,8 @@ in {
         forEachFileType = base: list: value: builtins.foldl' (accum: el: {"${base}/${el}" = value;} // accum) {} list;
       in
         {}
-        // (forEachFileType "image" ["jpeg" "jpg" "png"] "org.gnome.eog.desktop")
-        // (forEachFileType "video" ["mp4"] "mpv.desktop")
+        // (forEachFileType "image" ["jpeg" "jpg" "png" "heic" "heif"] "org.gnome.eog.desktop")
+        // (forEachFileType "video" ["mp4" "mov"] "mpv.desktop")
         // (forEachFileType "x-scheme-handler" ["http" "https"] "google-chrome.desktop")
         // (forEachFileType "text" ["html"] "google-chrome.desktop");
     };

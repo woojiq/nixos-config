@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  helix-flake = inputs.helix.packages.${pkgs.system}.default;
+  helix-flake = inputs.helix.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in {
   programs.helix = {
     enable = true;
