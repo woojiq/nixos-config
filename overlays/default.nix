@@ -3,6 +3,7 @@ final: prev: let
     (import ./swappy.nix)
     (final: prev: {
       netconf = prev.callPackage ./netconf.nix {};
+      keyprod = prev.callPackage ./keyprod.nix {};
       scripts = prev.callPackage ./scripts.nix {};
     })
   ];

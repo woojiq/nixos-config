@@ -47,8 +47,8 @@ in let
   # wofi --show drun | xargs -Ioutput hyprctl dispatch exec output
   wofiWithFilter = pkgs.writeShellScript "wofi-with-filter" ''
     res=$(${wofi} --show drun)
-    # filter=("telegram-desktop --")
-    filter=()
+    filter=("Telegram --")
+    # filter=()
     for name in "''${filter[@]}"; do
       if [ "$res" = "$name" ]; then
         exit
@@ -170,6 +170,8 @@ in let
         "$shiftMod, escape, exit,"
         "$mainMod, code:60, exec, ${emote}"
 
+        "$mainMod, g, hyprexpo:expo, toggle"
+
         "$altMod, Tab, focuscurrentorlast"
 
         "$mainMod, 0, togglespecialworkspace,"
@@ -244,13 +246,26 @@ in let
       "3, monitor:DP-1"
       "9, monitor:eDP-1, default:true"
     ];
+
+    plugin = {
+      hyprexpo = {
+        columns = 3;
+        gap_size = 5;
+        bg_col = "rgb(111111)";
+        workspace_method = "center current"; # [center/first] [workspace] e.g. first 1 or center m+1
+        gesture_distance = 300; # how far is the "max" for the gesture
+        skip_empty = true;
+      };
+    };
   };
 in {
   wayland.windowManager.hyprland = {
     enable = true;
     settings = hyprlandSettings;
     # Window titles: https://github.com/hyprwm/hyprland-plugins/tree/main/hyprbars
-    plugins = [];
+    plugins = with pkgs; [
+      hyprlandPlugins.hyprexpo
+    ];
   };
 
   services = {

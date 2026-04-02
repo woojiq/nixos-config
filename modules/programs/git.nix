@@ -3,6 +3,7 @@
     git = {
       enable = true;
       # TODO: Script that shows branch name and last commit date
+      # https://stackoverflow.com/questions/5188320/how-can-i-get-a-list-of-git-branches-ordered-by-most-recent-commit
       settings = {
         user = {
           name = "woojiq";

@@ -11,3 +11,5 @@ sudo nix-collect-garbage --delete-older-than 3d
 # There are also user-specific generations for different things (eg. home-manager):
 nix-collect-garbage -d
 ```
+
+/nix can reside on another device: https://nixos.wiki/wiki/Storage_optimization#Moving_the_store

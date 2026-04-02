@@ -13,7 +13,7 @@ Windows Guest w/ virt-manager:
   ...
 }: {
   users = {
-    users.${user}.extraGroups = ["libvirtd" "kvm"];
+    users.${user}.extraGroups = ["libvirtd" "kvm" "docker"];
   };
 
   environment.systemPackages = with pkgs; [
@@ -22,6 +22,7 @@ Windows Guest w/ virt-manager:
 
   virtualisation = {
     spiceUSBRedirection.enable = true;
+    docker.enable = true;
     libvirtd = {
       enable = true;
       qemu = {

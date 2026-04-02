@@ -14,5 +14,4 @@
   ./wezterm.nix
   ./wob.nix
   ./wofi.nix
-  ./zed.nix
 ]

@@ -21,6 +21,8 @@
     firewall = {
       enable = true;
       extraCommands = '''';
+      # https://discourse.nixos.org/t/how-to-get-libvirtd-working-with-nftables/62353/3
+      trustedInterfaces = ["virbr0"];
     };
   };
 
@@ -123,13 +125,71 @@
   };
 
   # https://www.reddit.com/r/NixOS/comments/16mbn41/install_but_dont_enable_openssh_sshd_service/
-  systemd.services.sshd.wantedBy = pkgs.lib.mkForce [];
+  systemd.services = {
+    sshd.wantedBy = pkgs.lib.mkForce [];
+    keyprod = {
+      enable = true;
+      wantedBy = ["multi-user.target"];
+      serviceConfig = {
+        Type = "exec";
+        Restart = "always";
+        ExecStart = "${pkgs.keyprod}/bin/keyprod --plugin history --interval 30";
+
+        # Sandboxing/Hardening
+        # systemd-analyze security keyprod.service
+        # Default score: 0.5 SAFE
+        DynamicUser = true;
+        StateDirectory = "keyprod";
+
+        DeviceAllow = [
+          "char-input r"
+          "/dev/uinput r"
+        ];
+        SupplementaryGroups = [
+          "input"
+          "uinput"
+        ];
+
+        RestrictNamespaces = true;
+        ProtectClock = true;
+        PrivateNetwork = true;
+        ProtectHome = true;
+        ProtectHostname = true;
+        PrivateUsers = true;
+        PrivateMounts = true;
+        PrivateTmp = true;
+        ProtectKernelLogs = true;
+        ProtectKernelModules = true;
+        ProtectKernelTunables = true;
+        ProtectControlGroups = true;
+        MemoryDenyWriteExecute = true;
+        LockPersonality = true;
+        ProtectProc = "invisible";
+        IPAddressDeny = ["any"];
+        NoNewPrivileges = true;
+        ProcSubset = "pid";
+        RestrictRealtime = true;
+        SystemCallArchitectures = "native";
+        SystemCallFilter = [
+          "@system-service"
+          "~@privileged"
+          "~@resources"
+        ];
+        CapabilityBoundingSet = "";
+        RestrictAddressFamilies = ["none"];
+      };
+    };
+  };
 
   programs = {
     steam.enable = true;
     wireshark = {
       enable = true;
       package = pkgs.wireshark;
+    };
+    nix-ld = {
+      enable = false;
+      libraries = [];
     };
   };
 

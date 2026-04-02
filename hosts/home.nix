@@ -70,10 +70,11 @@ in {
       obs-studio
       netconf # Netconf protocol browser
       gimp3 # Image processing
-      glogg # Log viewer
+      # glogg # Log viewer
       # darktable # Photography workflow application
       # foliate # Read e-books/pdf
       anki # Learn words
+      pavucontrol
 
       cursorTheme.package
     ];
