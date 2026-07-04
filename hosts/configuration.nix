@@ -85,7 +85,7 @@
     };
   };
 
-  documentation.man.generateCaches = true;
+  documentation.man.cache.enable = true;
 
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code
@@ -112,6 +112,13 @@
     # Don't see any difference actually
     thermald = {
       enable = false;
+    };
+    undervolt = {
+      enable = true;
+      turbo = 1; # 0 - enabled; 1 - disabled
+      temp = 80;
+      tempAc = 80;
+      tempBat = 70;
     };
     strongswan = {
       enable = true;

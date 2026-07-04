@@ -41,7 +41,8 @@
         User y.shymon
         Hostname 192.168.78.119
 
-      ${lib.strings.concatMapStrings (idx: (makePrxX idx 167) + "\n") [3 4 7 10 17 18 19]}
+      ${lib.strings.concatMapStrings (idx: (makePrxX idx 168) + "\n") [10]}
+      ${lib.strings.concatMapStrings (idx: (makePrxX idx 167) + "\n") [3 4 7 17 18 19]}
       ${lib.strings.concatMapStrings (idx: (makePrxX idx 158) + "\n") [2]}
 
       Host prx*

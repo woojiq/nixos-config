@@ -34,7 +34,7 @@ in {
       # CLI
       unzip
       file
-      neofetch # System info
+      fastfetch # System info
       fd # `find` alternative
       tokei # Code statistics
       ripgrep # `grep` alternative
@@ -43,10 +43,12 @@ in {
       hyprpicker # color picker
       traceroute
       # wireguard-tools
+      keyprod # Track keyboard statistics
+      brightnessctl
 
       # Scripts
       trim-clipboard
-      scripts
+      my-scripts
 
       xdg-user-dirs
       xdg-utils
@@ -60,9 +62,9 @@ in {
       # TODO: Try nixd language-server.
       nil
       alejandra # code formatter
+      tinymist # typst lsp
 
       # Desktop application
-      mpv # Media player
       nemo # File manager
       eog # GNOME image viewer
       emote # Emoji picker
@@ -74,7 +76,8 @@ in {
       # darktable # Photography workflow application
       # foliate # Read e-books/pdf
       anki # Learn words
-      pavucontrol
+      pavucontrol # Audio settings
+      libreoffice # Office suite.
 
       cursorTheme.package
     ];
@@ -110,7 +113,10 @@ in {
       gtk-application-prefer-dark-theme = 1;
     '';
     gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-    gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+    gtk4 = {
+      theme = config.gtk.theme;
+      extraConfig.gtk-application-prefer-dark-theme = 1;
+    };
   };
 
   programs = {
@@ -148,8 +154,16 @@ in {
       };
     };
     nix-index.enable = true;
-    firefox.enable = true;
+    firefox = {
+      enable = true;
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
+    };
     foot.enable = true;
+
+    mpv = {
+      enable = true;
+      scripts = [];
+    };
   };
 
   services = {
@@ -196,6 +210,7 @@ in {
         {}
         // (forEachFileType "image" ["jpeg" "jpg" "png" "heic" "heif"] "org.gnome.eog.desktop")
         // (forEachFileType "video" ["mp4" "mov"] "mpv.desktop")
+        // (forEachFileType "audio" ["x-mod"] "mpv.desktop")
         // (forEachFileType "x-scheme-handler" ["http" "https"] "google-chrome.desktop")
         // (forEachFileType "text" ["html"] "google-chrome.desktop");
     };
@@ -211,9 +226,10 @@ in {
     templates = null;
     videos = null;
     extraConfig = {
-      SCREENSHOTS_DIR = "${config.home.homeDirectory}/Pictures/Screenshots";
-      WALLPAPERS_DIR = "${config.home.homeDirectory}/Pictures/Wallpapers";
-      CODE_DIR = "${config.home.homeDirectory}/code";
+      SCREENSHOTS = "${config.home.homeDirectory}/Pictures/Screenshots";
+      WALLPAPERS = "${config.home.homeDirectory}/Pictures/Wallpapers";
+      CODE = "${config.home.homeDirectory}/code";
     };
+    setSessionVariables = true;
   };
 }

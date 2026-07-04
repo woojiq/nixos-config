@@ -24,6 +24,8 @@ in {
         cursor-shape.insert = "underline";
         scrolloff = 3;
         completion-replace = true;
+        clipboard-provider = "wayland";
+        insecure = true;
         statusline = {
           left = ["mode" "spinner" "spacer" "version-control" "read-only-indicator"];
           center = ["file-name" "file-modification-indicator" "spacer" "diagnostics"];
@@ -64,6 +66,8 @@ in {
             "l" = ":lsp-restart";
             "h" = ":toggle-option lsp.display-inlay-hints";
           };
+          # https://forum.typst.app/t/what-is-the-best-setup-for-using-typst-in-helix-editor/5867/3
+          "C-p" = ":lsp-workspace-command tinymist.pinMain \"%sh{realpath %{buffer_name}}\"";
           # Ukrainian layout imitation (https://docs.helix-editor.com/master/keymap.html)
           ## Movement
           "р" = "move_char_left";
@@ -140,6 +144,14 @@ in {
         emmet-ls = {
           command = "emmet-ls";
           args = ["--stdio"];
+        };
+        tinymist = {
+          config = {
+            exportPdf = "onSave";
+            preview.browsing = {
+              args = ["--data-plane-host=127.0.0.1:0" "--invert-colors=never" "--open"];
+            };
+          };
         };
       };
       language = [

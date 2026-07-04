@@ -4,7 +4,7 @@ final: prev: let
     (final: prev: {
       netconf = prev.callPackage ./netconf.nix {};
       keyprod = prev.callPackage ./keyprod.nix {};
-      scripts = prev.callPackage ./scripts.nix {};
+      my-scripts = prev.callPackage ./scripts.nix {};
     })
   ];
 in

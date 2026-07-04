@@ -1,6 +1,6 @@
 {pkgs, ...}: let
-  light = "${pkgs.light}/bin/light";
-  hyprland = "${pkgs.hyprland}/bin/Hyprland";
+  brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
+  hyprland = "${pkgs.hyprland}/bin/start-hyprland";
 in {
   environment = {
     loginShellInit = ''
@@ -8,14 +8,14 @@ in {
       #   exec ${hyprland}
       # fi
       # Set minimum brightness value
-      ${light} -N 5
+      ${brightnessctl} -n 5
     '';
 
     systemPackages = with pkgs; [
       grim
       slurp
       wl-clipboard
-      wl-clip-persist
+      # wl-clip-persist
     ];
     sessionVariables = {
       NIXOS_OZONE_WL = "1";
@@ -27,6 +27,5 @@ in {
       enable = true;
       # package = inputs.hyprland.packages.${pkgs.system}.default;
     };
-    light.enable = true;
   };
 }

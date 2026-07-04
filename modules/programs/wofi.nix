@@ -102,5 +102,30 @@ in {
         esac
       '';
     };
+    "wofi/switch-language.sh" = {
+      executable = true;
+      text = let
+        hyprctl = "${pkgs.hyprland}/bin/hyprctl";
+        wofi = "${pkgs.wofi}/bin/wofi";
+      in ''
+        entries="🇺🇸 us\n🇺🇦 ua\n🇨🇿 cz"
+        selected=$(echo -e $entries|${wofi} --dmenu --cache-file /dev/null --height 20% | cut -d " " -f 2)
+
+        case $selected in
+          us)
+            ${hyprctl} eval 'hl.config({input = {kb_layout = "us,ua"}})'
+            ${hyprctl} switchxkblayout keyd-virtual-keyboard 0
+            ;;
+          ua)
+            ${hyprctl} eval 'hl.config({input = {kb_layout = "us,ua"}})'
+            ${hyprctl} switchxkblayout keyd-virtual-keyboard 1
+            ;;
+          cz)
+            ${hyprctl} eval 'hl.config({input = {kb_layout = "us,ua,cz", kb_variant = ",,qwerty"}})'
+            ${hyprctl} switchxkblayout keyd-virtual-keyboard 2
+            ;;
+        esac
+      '';
+    };
   };
 }

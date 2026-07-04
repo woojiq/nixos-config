@@ -5,7 +5,7 @@
 }: let
   configIni = ''
     [Default]
-    save_dir=${config.home.sessionVariables.SCREENSHOTS_DIR}
+    save_dir=${config.home.sessionVariables.XDG_SCREENSHOTS_DIR}
     early_exit=true
   '';
 in {

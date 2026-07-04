@@ -1,6 +1,7 @@
 {pkgs, ...}: let
-  light = "${pkgs.light}/bin/light";
+  brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
   wpctl = "${pkgs.wireplumber}/bin/wpctl";
+  pavucontrol = "${pkgs.pavucontrol}/bin/pavucontrol";
 in {
   programs.waybar = {
     enable = true;
@@ -10,7 +11,7 @@ in {
       layer = "top";
       modules-left = [
         "custom/arch-pill"
-        "hyprland/workspaces"
+        "ext/workspaces"
         "cpu"
         # "temperature"
         "backlight"
@@ -33,7 +34,9 @@ in {
         on-click = "${pkgs.wofi}/bin/wofi --show drun";
         tooltip = false;
       };
-      "hyprland/workspaces" = {
+      # FIXME: replace with "hyprland/workspaces"
+      # https://github.com/Alexays/Waybar/issues/5008
+      "ext/workspaces" = {
         format = "<span font='12'>{name}</span>";
         all-outputs = true;
         active-only = false;
@@ -64,7 +67,9 @@ in {
       "hyprland/language" = {
         format-en = "🇺🇸";
         format-uk = "🇺🇦";
-        on-click = "hyprctl switchxkblayout keyd-virtual-device next";
+        format-cs = "🇨🇿";
+        # on-click = "hyprctl switchxkblayout keyd-virtual-keyboard next";
+        on-click = "exec ~/.config/wofi/switch-language.sh";
       };
       "network" = {
         # interface = "wlan0",
@@ -96,6 +101,7 @@ in {
       };
       "wireplumber" = {
         on-click = "${wpctl} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+        on-click-right = "${pavucontrol} -t 3";
         on-scroll-down = "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.01+";
         on-scroll-up = "${wpctl} set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 0.01-";
         format = "{icon}  {volume}%";
@@ -113,8 +119,8 @@ in {
           ""
           ""
         ];
-        "on-scroll-up" = "${light} -U 1";
-        "on-scroll-down" = "${light} -A 1";
+        "on-scroll-up" = "${brightnessctl} s +1%";
+        "on-scroll-down" = "${brightnessctl} s 1%-";
       };
       "idle_inhibitor" = {
         "format" = "<span foreground='#a2e8a2'>{icon}</span>";
