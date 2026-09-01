@@ -22,6 +22,8 @@
   # wl-clip-persist = lib.getExe pkgs.wl-clip-persist;
   blueman-applet = "${pkgs.blueman}/bin/blueman-applet";
   hyprpaper = "${pkgs.hyprpaper}/bin/hyprpaper";
+  hyprlock = "${pkgs.hyprlock}/bin/hyprlock";
+  loginctl = "${pkgs.systemd}/bin/loginctl";
 in let
   getVolumeScript = pkgs.writeShellScript "get-volume-script" ''
     ans=$(${wpctl} get-volume @DEFAULT_AUDIO_SINK@)
@@ -135,6 +137,14 @@ in let
         scale = "1",
     })
 
+    hl.monitor({
+        output = "",
+        mode = "preferred",
+        position = "auto",
+        scale = "1",
+        mirror = "eDP-1",
+    })
+
     hl.window_rule({
         match = {
             class = "^(jetbrains-idea)(.*)$",
@@ -168,16 +178,15 @@ in let
 
     hl.window_rule({
         match = {
-            title = "^(.*)(NETCONF|NetConf)(.*)$",
-        },
-        float = false,
-    })
-
-    hl.window_rule({
-        match = {
             class = "steam_app*",
         },
         -- TODO: manual review — unmapped window rule action: "idleinhibit fullscrean"
+    })
+
+    hl.window_rule({
+        match = { fullscreen = true },
+        border_color = "rgb(C54B8C)",
+        border_size = 3,
     })
 
     hl.workspace_rule({
@@ -283,22 +292,21 @@ in {
         ];
       };
     };
-    # WARN: Not sure if it works after nixpkgs upgrade from 25.11 to 26.05
     hypridle = {
       enable = true;
       settings = {
         general = {
-          after_sleep_cmd = "${hyprctl} dispatch dpms on";
+          before_sleep_cmd = "${loginctl} lock-session";
+          after_sleep_cmd = "${hyprctl} dispatch 'hl.dsp.dpms({action = \"enable\"})'";
+          lock_cmd = "pidof hyprlock || ${hyprlock}";
         };
         listener = [
           {
             timeout = 600;
-            on-timeout = "${hyprctl} dispatch dpms off";
-            on-resume = "${hyprctl} dispatch dpms on";
+            on-timeout = "${hyprctl} dispatch 'hl.dsp.dpms({action = \"disable\"})'";
+            on-resume = "${hyprctl} dispatch 'hl.dsp.dpms({action = \"enable\"})'";
           }
           {
-            # TODO: Need to press a key twice after suspend to dpms on.
-            # TODO: Make script to lock screen before hibernation.
             timeout = 1800;
             on-timeout = "${systemctl} suspend";
           }

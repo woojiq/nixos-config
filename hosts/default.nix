@@ -5,23 +5,29 @@
   inputs,
 }: let
   system = "x86_64-linux";
-  pkgs = import nixpkgs {
-    inherit system;
-    config = {
-      allowUnfree = true;
-      permittedInsecurePackages = [];
-    };
-    overlays = [
-      (import ../overlays)
-    ];
-  };
 in {
   laptop = nixpkgs.lib.nixosSystem {
     inherit system;
     specialArgs = {
-      inherit user pkgs inputs;
+      inherit user inputs;
     };
     modules = [
+      {
+        nixpkgs = {
+          config = {
+            allowUnfree = true;
+            permittedInsecurePackages = [];
+          };
+
+          overlays = [
+            (import ../overlays)
+          ];
+        };
+      }
+
+      inputs.disko.nixosModules.disko
+      ./disko-config.nix
+
       ./configuration.nix
 
       home-manager.nixosModules.home-manager
@@ -29,7 +35,7 @@ in {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
-          inherit user pkgs inputs;
+          inherit user inputs;
         };
         home-manager.users.${user} = {
           imports = [

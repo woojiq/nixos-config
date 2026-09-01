@@ -14,7 +14,8 @@ in
     src = fetchFromGitHub {
       owner = "woojiq";
       repo = "keyprod";
-      rev = "plugin-stat";
+      # After changing `rev`, set "" for `hash` and `cargoHash` and recompile configuration.
+      rev = "9f91a35ba67229e7548851fd4d291c76cbdb2a11";
       hash = "sha256-UgVGnSqpEBja44kPNSdsPeiosKvBm3X3PT5ZfEVgGd4=";
     };
 

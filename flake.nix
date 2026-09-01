@@ -10,6 +10,10 @@
       # url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko/latest";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     helix = {
       url = "github:helix-editor/helix/43bf7c2dc219606c64003aef21151f49f48d0939";
       # We don't want to follow nixpkgs to be able to use cachix.

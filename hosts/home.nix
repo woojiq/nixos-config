@@ -43,12 +43,12 @@ in {
       hyprpicker # color picker
       traceroute
       # wireguard-tools
-      keyprod # Track keyboard statistics
       brightnessctl
 
       # Scripts
       trim-clipboard
       my-scripts
+      keyprod # Track keyboard statistics
 
       xdg-user-dirs
       xdg-utils
@@ -70,7 +70,6 @@ in {
       emote # Emoji picker
       telegram-desktop
       obs-studio
-      netconf # Netconf protocol browser
       gimp3 # Image processing
       # glogg # Log viewer
       # darktable # Photography workflow application
@@ -78,6 +77,7 @@ in {
       anki # Learn words
       pavucontrol # Audio settings
       libreoffice # Office suite.
+      qbittorrent
 
       cursorTheme.package
     ];
@@ -156,13 +156,28 @@ in {
     nix-index.enable = true;
     firefox = {
       enable = true;
-      configPath = "${config.xdg.configHome}/mozilla/firefox";
+      # FIXME: set state version 26.05 and remove this line
+      # configPath = "${config.xdg.configHome}/mozilla/firefox";
     };
-    foot.enable = true;
+    foot.enable = false;
 
     mpv = {
       enable = true;
       scripts = [];
+    };
+
+    ghostty = {
+      enable = true;
+      enableFishIntegration = true;
+      settings = {
+        font-size = 18;
+        # fish is not set as a default shell because ghostty is mainly used as a backup option when
+        # wezterm is broken after upgrade.
+      };
+    };
+
+    gpg = {
+      enable = false;
     };
   };
 
@@ -199,6 +214,12 @@ in {
       # Some app overwrites mimeapps all the time.
       "mimeapps.list".force = true;
     };
+    terminal-exec = {
+      enable = true;
+      # wezterm doesn't implement the xdg-terminal-exec specification yet:
+      # https://github.com/wezterm/wezterm/issues/7129
+      # Currently ghostty is used.
+    };
     mimeApps = {
       enable = true;
       # Use `file --mime-type <filename>` to get mime type
@@ -219,17 +240,72 @@ in {
   xdg.userDirs = {
     enable = true;
     createDirectories = true;
+    # documents = true;
+    # projects = true;
+    # pictures = true;
+    # download = true;
+    # videos = true;
     desktop = null; # `nemo` will anyway create this folder.
-    documents = "${config.home.homeDirectory}/docs";
     music = null;
     publicShare = null;
     templates = null;
-    videos = null;
     extraConfig = {
-      SCREENSHOTS = "${config.home.homeDirectory}/Pictures/Screenshots";
-      WALLPAPERS = "${config.home.homeDirectory}/Pictures/Wallpapers";
-      CODE = "${config.home.homeDirectory}/code";
+      GDRIVE = "${config.home.homeDirectory}/Gdrive";
+
+      SCREENSHOTS = "${config.xdg.userDirs.pictures}/Screenshots";
+      WALLPAPERS = "${config.xdg.userDirs.pictures}/Wallpapers";
+      BACKUP = "${config.xdg.userDirs.documents}/backup";
+      BOOKS = "${config.xdg.userDirs.documents}/books";
+      OBS = "${config.xdg.userDirs.videos}/obs";
+      VMS = "${config.xdg.userDirs.documents}/vms";
     };
     setSessionVariables = true;
+  };
+
+  systemd.user = {
+    services = {
+      gdrive-sync = {
+        Unit = {
+          Description = "Google Drive sync folder";
+          StartLimitBurst = 3;
+          StartLimitIntervalSec = "10min";
+        };
+
+        Service = {
+          Type = "oneshot";
+          Restart = "on-failure";
+          RestartSec = "1min";
+          ExecStart = let
+            gdrive-sync = let
+              rclone = "${pkgs.rclone}/bin/rclone";
+              notify-send = "${pkgs.libnotify}/bin/notify-send";
+            in
+              pkgs.writeShellScriptBin "gdrive-sync" ''
+                set -euxo pipefail
+
+                if ${rclone} sync ${config.home.sessionVariables.XDG_GDRIVE_DIR} gdrive:/rclone -v; then
+                  ${notify-send} -u normal -t 0 "Gdrive sync succeed";
+                else
+                  ${notify-send} -u critical -t 0 "Gdrive sync failed" "rclone sync failed. Check journalctl --user -xeu gdrive-sync.service";
+                  exit 1
+                fi
+              '';
+          in "${gdrive-sync}/bin/gdrive-sync";
+        };
+      };
+    };
+
+    timers = {
+      gdrive-sync = {
+        Unit.Description = "Run gdrive sync daily";
+
+        Timer = {
+          OnCalendar = "daily";
+          Persistent = true;
+        };
+
+        Install.WantedBy = ["timers.target"];
+      };
+    };
   };
 }

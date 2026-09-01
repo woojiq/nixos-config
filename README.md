@@ -1,14 +1,8 @@
 ### TODO
-* Replace swappy with flameshot
 * Remove photos from the repo history to decrease its size (use git filter-repo)
-* Wezterm wayland problems with fractional scaling
 * Alt-tab (like on Windows).
-* Screen lock before hibernating.
-* Thunderbird and emails.
 * Encryption for some modules.
-* Hyprland: maximized windows - bold borders or other indicator.
 * Setup LVM (disk).
-* Setup terminal different from wezterm (as a backup option, ghostty?).
 
 _NOTDECL_ comment (not declaratively) means I (you) need to do this manually on fresh installation.
 

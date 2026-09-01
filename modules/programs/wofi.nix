@@ -85,6 +85,7 @@ in {
       executable = true;
       text = let
         wofi = "${pkgs.wofi}/bin/wofi";
+        systemctl = "${pkgs.systemd}/bin/systemctl";
       in ''
         # https://github.com/MatthiasBenaets/nixos-config/blob/9e799904e74d43a2c0ad1a8b6ac4db86993bf2dd/modules/programs/wofi.nix#L18
         entries="⏾ Suspend\n⭮ Reboot\n⏼ Hibernate\n⏻ Shutdown"
@@ -92,13 +93,13 @@ in {
 
         case $selected in
           suspend)
-            exec systemctl suspend;;
+            exec ${systemctl} suspend;;
           reboot)
-            exec systemctl reboot;;
+            exec ${systemctl} reboot;;
           hibernate)
-            exec systemctl hibernate;;
+            exec ${systemctl} hibernate;;
           shutdown)
-            exec systemctl poweroff -i;;
+            exec ${systemctl} poweroff -i;;
         esac
       '';
     };

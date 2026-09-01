@@ -1,4 +1,3 @@
-# TODO: use nix variables to simplify config.
 {
   # pkgs,
   config,

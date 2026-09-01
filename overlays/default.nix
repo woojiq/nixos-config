@@ -2,7 +2,6 @@ final: prev: let
   overlays = [
     (import ./swappy.nix)
     (final: prev: {
-      netconf = prev.callPackage ./netconf.nix {};
       keyprod = prev.callPackage ./keyprod.nix {};
       my-scripts = prev.callPackage ./scripts.nix {};
     })

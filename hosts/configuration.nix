@@ -4,9 +4,7 @@
   options,
   ...
 }: {
-  imports =
-    [(import ./hardware-configuration.nix)]
-    ++ (import ../modules/programs/nix-default.nix);
+  imports = [./hardware-configuration.nix ./disko-config.nix] ++ (import ../modules/programs/nix-default.nix);
 
   networking = {
     nftables = {
@@ -191,7 +189,7 @@
   programs = {
     steam.enable = true;
     wireshark = {
-      enable = true;
+      enable = false;
       package = pkgs.wireshark;
     };
     nix-ld = {
@@ -245,5 +243,6 @@
     '';
   };
 
+  # TODO 26.05
   system.stateVersion = "23.11";
 }
